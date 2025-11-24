@@ -349,8 +349,10 @@ async def get_survey_results(survey_id: str, current_user: dict = Depends(get_cu
                     for answer in response["answers"]:
                         if answer["question_index"] == idx:
                             rating = answer["answer"]
-                            ratings.append(rating)
-                            rating_counts[rating] = rating_counts.get(rating, 0) + 1
+                            # Ensure rating is a number, not a list
+                            if isinstance(rating, (int, float)):
+                                ratings.append(rating)
+                                rating_counts[rating] = rating_counts.get(rating, 0) + 1
                 
                 question_results["results"] = {
                     "average": sum(ratings) / len(ratings) if ratings else 0,
