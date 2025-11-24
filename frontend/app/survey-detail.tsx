@@ -1,0 +1,444 @@
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  Alert,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import api from '../utils/api';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+interface Question {
+  type: string;
+  text: string;
+  options?: string[];
+  max_rating?: number;
+}
+
+interface Survey {
+  id: string;
+  title: string;
+  description: string;
+  questions: Question[];
+  has_answered: boolean;
+}
+
+export default function SurveyDetailScreen() {
+  const { id } = useLocalSearchParams();
+  const router = useRouter();
+  const [survey, setSurvey] = useState<Survey | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [answers, setAnswers] = useState<{ [key: number]: any }>({});
+
+  useEffect(() => {
+    fetchSurvey();
+  }, [id]);
+
+  const fetchSurvey = async () => {
+    try {
+      const response = await api.get(`/api/surveys/${id}`);
+      setSurvey(response.data);
+      
+      if (response.data.has_answered) {
+        Alert.alert(
+          'Already Answered',
+          'You have already answered this survey. View results?',
+          [
+            { text: 'Go Back', onPress: () => router.back() },
+            { text: 'View Results', onPress: () => router.replace(`/results?id=${id}`) },
+          ]
+        );
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to load survey');
+      router.back();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAnswerChange = (questionIndex: number, answer: any) => {
+    setAnswers({ ...answers, [questionIndex]: answer });
+  };
+
+  const handleSubmit = async () => {
+    // Validate all questions answered
+    for (let i = 0; i < (survey?.questions.length || 0); i++) {
+      if (answers[i] === undefined || answers[i] === '' || 
+          (Array.isArray(answers[i]) && answers[i].length === 0)) {
+        Alert.alert('Incomplete', `Please answer question ${i + 1}`);
+        return;
+      }
+    }
+
+    setSubmitting(true);
+    try {
+      const formattedAnswers = Object.keys(answers).map(key => ({
+        question_index: parseInt(key),
+        answer: answers[parseInt(key)],
+      }));
+
+      await api.post(`/api/surveys/${id}/respond`, {
+        answers: formattedAnswers,
+      });
+
+      Alert.alert('Success', 'Thank you for completing the survey!', [
+        { text: 'View Results', onPress: () => router.replace(`/results?id=${id}`) },
+      ]);
+    } catch (error: any) {
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to submit survey');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const renderQuestion = (question: Question, index: number) => {
+    switch (question.type) {
+      case 'multiple_choice_single':
+        return (
+          <View key={index} style={styles.questionCard}>
+            <Text style={styles.questionNumber}>Question {index + 1}</Text>
+            <Text style={styles.questionText}>{question.text}</Text>
+            {question.options?.map((option, optIndex) => (
+              <TouchableOpacity
+                key={optIndex}
+                style={[
+                  styles.optionButton,
+                  answers[index] === option && styles.optionSelected,
+                ]}
+                onPress={() => handleAnswerChange(index, option)}
+              >
+                <Ionicons
+                  name={answers[index] === option ? 'radio-button-on' : 'radio-button-off'}
+                  size={24}
+                  color={answers[index] === option ? '#6366f1' : '#9ca3af'}
+                />
+                <Text
+                  style={[
+                    styles.optionText,
+                    answers[index] === option && styles.optionTextSelected,
+                  ]}
+                >
+                  {option}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        );
+
+      case 'multiple_choice_multiple':
+        return (
+          <View key={index} style={styles.questionCard}>
+            <Text style={styles.questionNumber}>Question {index + 1}</Text>
+            <Text style={styles.questionText}>{question.text}</Text>
+            <Text style={styles.multipleNote}>Select all that apply</Text>
+            {question.options?.map((option, optIndex) => {
+              const selected = Array.isArray(answers[index]) && answers[index].includes(option);
+              return (
+                <TouchableOpacity
+                  key={optIndex}
+                  style={[styles.optionButton, selected && styles.optionSelected]}
+                  onPress={() => {
+                    const currentAnswers = answers[index] || [];
+                    if (currentAnswers.includes(option)) {
+                      handleAnswerChange(
+                        index,
+                        currentAnswers.filter((a: string) => a !== option)
+                      );
+                    } else {
+                      handleAnswerChange(index, [...currentAnswers, option]);
+                    }
+                  }}
+                >
+                  <Ionicons
+                    name={selected ? 'checkbox' : 'square-outline'}
+                    size={24}
+                    color={selected ? '#6366f1' : '#9ca3af'}
+                  />
+                  <Text style={[styles.optionText, selected && styles.optionTextSelected]}>
+                    {option}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        );
+
+      case 'text_short':
+        return (
+          <View key={index} style={styles.questionCard}>
+            <Text style={styles.questionNumber}>Question {index + 1}</Text>
+            <Text style={styles.questionText}>{question.text}</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Type your answer here"
+              value={answers[index] || ''}
+              onChangeText={(text) => handleAnswerChange(index, text)}
+              placeholderTextColor="#9ca3af"
+            />
+          </View>
+        );
+
+      case 'text_long':
+        return (
+          <View key={index} style={styles.questionCard}>
+            <Text style={styles.questionNumber}>Question {index + 1}</Text>
+            <Text style={styles.questionText}>{question.text}</Text>
+            <TextInput
+              style={[styles.textInput, styles.textAreaInput]}
+              placeholder="Type your answer here"
+              value={answers[index] || ''}
+              onChangeText={(text) => handleAnswerChange(index, text)}
+              multiline
+              numberOfLines={4}
+              placeholderTextColor="#9ca3af"
+            />
+          </View>
+        );
+
+      case 'rating':
+        return (
+          <View key={index} style={styles.questionCard}>
+            <Text style={styles.questionNumber}>Question {index + 1}</Text>
+            <Text style={styles.questionText}>{question.text}</Text>
+            <View style={styles.ratingContainer}>
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <TouchableOpacity
+                  key={rating}
+                  onPress={() => handleAnswerChange(index, rating)}
+                  style={styles.ratingButton}
+                >
+                  <Ionicons
+                    name={answers[index] >= rating ? 'star' : 'star-outline'}
+                    size={40}
+                    color={answers[index] >= rating ? '#fbbf24' : '#d1d5db'}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+            {answers[index] && (
+              <Text style={styles.ratingText}>{answers[index]} / 5</Text>
+            )}
+          </View>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#6366f1" />
+      </View>
+    );
+  }
+
+  if (!survey) {
+    return null;
+  }
+
+  return (
+    <SafeAreaView style={styles.container} edges={['bottom']}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardView}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Take Survey</Text>
+          <View style={{ width: 40 }} />
+        </View>
+
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.surveyHeader}>
+            <Text style={styles.surveyTitle}>{survey.title}</Text>
+            {survey.description && (
+              <Text style={styles.surveyDescription}>{survey.description}</Text>
+            )}
+          </View>
+
+          {survey.questions.map((question, index) => renderQuestion(question, index))}
+
+          <TouchableOpacity
+            style={[styles.submitButton, submitting && styles.buttonDisabled]}
+            onPress={handleSubmit}
+            disabled={submitting || survey.has_answered}
+          >
+            {submitting ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <>
+                <Ionicons name="paper-plane" size={20} color="#fff" />
+                <Text style={styles.submitButtonText}>Submit Survey</Text>
+              </>
+            )}
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f9fafb',
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  keyboardView: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#6366f1',
+    padding: 16,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  scrollContent: {
+    padding: 16,
+  },
+  surveyHeader: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  surveyTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#111827',
+    marginBottom: 8,
+  },
+  surveyDescription: {
+    fontSize: 16,
+    color: '#6b7280',
+    lineHeight: 24,
+  },
+  questionCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  questionNumber: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#6366f1',
+    marginBottom: 8,
+  },
+  questionText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#111827',
+    marginBottom: 16,
+  },
+  multipleNote: {
+    fontSize: 12,
+    color: '#6b7280',
+    fontStyle: 'italic',
+    marginBottom: 12,
+  },
+  optionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: '#f9fafb',
+    marginBottom: 8,
+    borderWidth: 2,
+    borderColor: '#e5e7eb',
+  },
+  optionSelected: {
+    backgroundColor: '#eef2ff',
+    borderColor: '#6366f1',
+  },
+  optionText: {
+    fontSize: 16,
+    color: '#374151',
+    marginLeft: 12,
+    flex: 1,
+  },
+  optionTextSelected: {
+    color: '#6366f1',
+    fontWeight: '600',
+  },
+  textInput: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    color: '#111827',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  textAreaInput: {
+    height: 120,
+    textAlignVertical: 'top',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 16,
+  },
+  ratingButton: {
+    marginHorizontal: 4,
+  },
+  ratingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#6366f1',
+    textAlign: 'center',
+  },
+  submitButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#6366f1',
+    borderRadius: 12,
+    padding: 18,
+    marginTop: 8,
+    marginBottom: 32,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
+  submitButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginLeft: 8,
+  },
+});
