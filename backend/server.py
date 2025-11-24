@@ -156,9 +156,6 @@ async def register(user_data: UserRegister):
 async def login(credentials: UserLogin):
     # Find user
     user = await db.users.find_one({"email": credentials.email})
-    logger.info(f"Login attempt for: {credentials.email}, user found: {user is not None}")
-    if user:
-        logger.info(f"Password check result: {verify_password(credentials.password, user['password'])}")
     if not user or not verify_password(credentials.password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
