@@ -15,11 +15,22 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+const QUESTION_TYPES = [
+  { id: 'multiple_choice_single', label: 'Multiple Choice (Single Answer)' },
+  { id: 'multiple_choice_multiple', label: 'Multiple Choice (Multiple Answers)' },
+  { id: 'text_short', label: 'Short Text' },
+  { id: 'text_long', label: 'Long Text / Paragraph' },
+  { id: 'rating', label: 'Rating (1-5 Stars)' },
+];
+
 export default function SuggestQuestionScreen() {
-  const [questionText, setQuestionText] = useState('');
   const [category, setCategory] = useState('');
+  const [questionType, setQuestionType] = useState('');
+  const [questionText, setQuestionText] = useState('');
+  const [options, setOptions] = useState<string[]>(['', '']);
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showQuestionTypes, setShowQuestionTypes] = useState(false);
 
   const handleSubmit = async () => {
     if (!questionText.trim()) {
