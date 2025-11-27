@@ -159,6 +159,15 @@ export default function CreateSurveyScreen() {
         style={styles.keyboardView}
       >
         <ScrollView contentContainerStyle={styles.scrollContent}>
+          <TouchableOpacity
+            style={styles.viewSuggestionsButton}
+            onPress={() => router.push('/view-suggestions')}
+          >
+            <Ionicons name="bulb" size={20} color="#f59e0b" />
+            <Text style={styles.viewSuggestionsText}>View User Suggestions</Text>
+            <Ionicons name="chevron-forward" size={20} color="#f59e0b" />
+          </TouchableOpacity>
+
           <View style={styles.section}>
             <Text style={styles.label}>Survey Title *</Text>
             <TextInput
