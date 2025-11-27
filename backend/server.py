@@ -454,6 +454,44 @@ async def get_my_responses(current_user: dict = Depends(get_current_user)):
     
     return result
 
+# Suggestion endpoints
+@api_router.post("/suggestions")
+async def create_suggestion(suggestion_data: SuggestionCreate, current_user: dict = Depends(get_current_user)):
+    suggestion_dict = {
+        "user_id": str(current_user["_id"]),
+        "user_name": current_user["name"],
+        "question_text": suggestion_data.question_text,
+        "category": suggestion_data.category,
+        "notes": suggestion_data.notes,
+        "created_at": datetime.utcnow(),
+        "status": "pending"
+    }
+    
+    result = await db.suggestions.insert_one(suggestion_dict)
+    
+    return {
+        "id": str(result.inserted_id),
+        "message": "Suggestion submitted successfully"
+    }
+
+@api_router.get("/suggestions")
+async def get_all_suggestions(current_user: dict = Depends(get_owner_user)):
+    suggestions = await db.suggestions.find().sort("created_at", -1).to_list(1000)
+    
+    result = []
+    for suggestion in suggestions:
+        result.append({
+            "id": str(suggestion["_id"]),
+            "user_name": suggestion["user_name"],
+            "question_text": suggestion["question_text"],
+            "category": suggestion.get("category"),
+            "notes": suggestion.get("notes"),
+            "created_at": suggestion["created_at"],
+            "status": suggestion.get("status", "pending")
+        })
+    
+    return result
+
 # Include the router
 app.include_router(api_router)
 
