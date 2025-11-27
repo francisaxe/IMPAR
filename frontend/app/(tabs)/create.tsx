@@ -299,6 +299,24 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 16,
   },
+  viewSuggestionsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fef3c7',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#fcd34d',
+  },
+  viewSuggestionsText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#f59e0b',
+    marginLeft: 8,
+    marginRight: 8,
+  },
   section: {
     marginBottom: 24,
   },
