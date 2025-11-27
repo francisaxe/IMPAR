@@ -489,8 +489,10 @@ async def get_all_suggestions(current_user: dict = Depends(get_owner_user)):
         result.append({
             "id": str(suggestion["_id"]),
             "user_name": suggestion["user_name"],
-            "question_text": suggestion["question_text"],
             "category": suggestion.get("category"),
+            "question_type": suggestion.get("question_type"),
+            "question_text": suggestion["question_text"],
+            "options": suggestion.get("options"),
             "notes": suggestion.get("notes"),
             "created_at": suggestion["created_at"],
             "status": suggestion.get("status", "pending")
