@@ -30,6 +30,8 @@ export default function SurveysScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
+  const { user } = useAuth();
+  const isOwner = user?.role === 'owner';
 
   const fetchSurveys = async () => {
     try {
