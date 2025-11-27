@@ -16,8 +16,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 interface Suggestion {
   id: string;
   user_name: string;
-  question_text: string;
   category: string | null;
+  question_type: string | null;
+  question_text: string;
+  options: string[] | null;
   notes: string | null;
   created_at: string;
   status: string;
