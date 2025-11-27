@@ -439,7 +439,7 @@ async def get_all_responses(survey_id: str, current_user: dict = Depends(get_own
 
 @api_router.get("/my-responses")
 async def get_my_responses(current_user: dict = Depends(get_current_user)):
-    responses = await db.responses.find({"user_id": str(current_user["_id"])}).to_list(1000)
+    responses = await db.responses.find({"user_id": str(current_user["_id"])}).sort("submitted_at", -1).to_list(1000)
     
     result = []
     for response in responses:
