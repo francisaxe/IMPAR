@@ -219,9 +219,17 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
+  cardTouchable: {
+    padding: 16,
+  },
   cardHeader: {
     flexDirection: 'row',
     marginBottom: 12,
+    alignItems: 'flex-start',
+  },
+  deleteButton: {
+    padding: 8,
+    marginLeft: 8,
   },
   iconContainer: {
     width: 48,
