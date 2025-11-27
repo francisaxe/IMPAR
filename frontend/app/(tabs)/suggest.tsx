@@ -32,27 +32,86 @@ export default function SuggestQuestionScreen() {
   const [loading, setLoading] = useState(false);
   const [showQuestionTypes, setShowQuestionTypes] = useState(false);
 
+  const handleQuestionTypeSelect = (type: string) => {
+    setQuestionType(type);
+    setShowQuestionTypes(false);
+    // Reset options when changing type
+    if (type.includes('multiple_choice')) {
+      setOptions(['', '']);
+    }
+  };
+
+  const addOption = () => {
+    setOptions([...options, '']);
+  };
+
+  const updateOption = (index: number, value: string) => {
+    const updated = [...options];
+    updated[index] = value;
+    setOptions(updated);
+  };
+
+  const removeOption = (index: number) => {
+    if (options.length > 2) {
+      const updated = options.filter((_, i) => i !== index);
+      setOptions(updated);
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!questionText.trim()) {
+    // Validation
+    if (!questionType) {
       if (Platform.OS === 'web') {
-        alert('Please enter a question');
+        alert('Please select a question type');
       } else {
-        Alert.alert('Error', 'Please enter a question');
+        Alert.alert('Error', 'Please select a question type');
       }
       return;
     }
 
+    if (!questionText.trim()) {
+      if (Platform.OS === 'web') {
+        alert('Please enter the question text');
+      } else {
+        Alert.alert('Error', 'Please enter the question text');
+      }
+      return;
+    }
+
+    // Validate options for multiple choice
+    if (questionType.includes('multiple_choice')) {
+      const validOptions = options.filter(opt => opt.trim());
+      if (validOptions.length < 2) {
+        if (Platform.OS === 'web') {
+          alert('Please provide at least 2 answer options');
+        } else {
+          Alert.alert('Error', 'Please provide at least 2 answer options');
+        }
+        return;
+      }
+    }
+
     setLoading(true);
     try {
-      await api.post('/api/suggestions', {
-        question_text: questionText,
+      const payload: any = {
         category: category.trim() || null,
+        question_type: questionType,
+        question_text: questionText.trim(),
         notes: notes.trim() || null,
-      });
+      };
+
+      // Only include options for multiple choice questions
+      if (questionType.includes('multiple_choice')) {
+        payload.options = options.filter(opt => opt.trim());
+      }
+
+      await api.post('/api/suggestions', payload);
 
       // Clear form
-      setQuestionText('');
       setCategory('');
+      setQuestionType('');
+      setQuestionText('');
+      setOptions(['', '']);
       setNotes('');
 
       if (Platform.OS === 'web') {
