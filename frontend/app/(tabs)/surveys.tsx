@@ -107,47 +107,60 @@ export default function SurveysScreen() {
   };
 
   const renderSurveyCard = ({ item }: { item: Survey }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => router.push(`/survey-detail?id=${item.id}`)}
-    >
-      <View style={styles.cardHeader}>
-        <View style={styles.iconContainer}>
-          <Ionicons name="clipboard-outline" size={24} color="#6366f1" />
-        </View>
-        <View style={styles.cardInfo}>
-          <Text style={styles.cardTitle} numberOfLines={2}>
-            {item.title}
-          </Text>
-          <Text style={styles.cardDescription} numberOfLines={2}>
-            {item.description}
-          </Text>
-        </View>
-      </View>
-      
-      <View style={styles.cardFooter}>
-        <View style={styles.cardStats}>
-          <Ionicons name="people-outline" size={16} color="#6b7280" />
-          <Text style={styles.cardStatsText}>
-            {item.response_count} {item.response_count === 1 ? 'response' : 'responses'}
-          </Text>
+    <View style={styles.card}>
+      <TouchableOpacity
+        style={styles.cardTouchable}
+        onPress={() => router.push(`/survey-detail?id=${item.id}`)}
+      >
+        <View style={styles.cardHeader}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="clipboard-outline" size={24} color="#6366f1" />
+          </View>
+          <View style={styles.cardInfo}>
+            <Text style={styles.cardTitle} numberOfLines={2}>
+              {item.title}
+            </Text>
+            <Text style={styles.cardDescription} numberOfLines={2}>
+              {item.description}
+            </Text>
+          </View>
+          {isOwner && (
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={(e) => {
+                e.stopPropagation();
+                handleDeleteSurvey(item.id, item.title);
+              }}
+            >
+              <Ionicons name="trash-outline" size={22} color="#ef4444" />
+            </TouchableOpacity>
+          )}
         </View>
         
-        {item.has_answered ? (
-          <View style={styles.answeredBadge}>
-            <Ionicons name="checkmark-circle" size={16} color="#10b981" />
-            <Text style={styles.answeredText}>Answered</Text>
+        <View style={styles.cardFooter}>
+          <View style={styles.cardStats}>
+            <Ionicons name="people-outline" size={16} color="#6b7280" />
+            <Text style={styles.cardStatsText}>
+              {item.response_count} {item.response_count === 1 ? 'response' : 'responses'}
+            </Text>
           </View>
-        ) : (
-          <View style={styles.pendingBadge}>
-            <Text style={styles.pendingText}>Take Survey</Text>
-            <Ionicons name="chevron-forward" size={16} color="#6366f1" />
-          </View>
-        )}
-      </View>
-      
-      <Text style={styles.cardDate}>{formatDate(item.created_at)}</Text>
-    </TouchableOpacity>
+          
+          {item.has_answered ? (
+            <View style={styles.answeredBadge}>
+              <Ionicons name="checkmark-circle" size={16} color="#10b981" />
+              <Text style={styles.answeredText}>Answered</Text>
+            </View>
+          ) : (
+            <View style={styles.pendingBadge}>
+              <Text style={styles.pendingText}>Take Survey</Text>
+              <Ionicons name="chevron-forward" size={16} color="#6366f1" />
+            </View>
+          )}
+        </View>
+        
+        <Text style={styles.cardDate}>{formatDate(item.created_at)}</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   if (loading) {
