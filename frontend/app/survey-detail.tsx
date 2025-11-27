@@ -91,9 +91,8 @@ export default function SurveyDetailScreen() {
         answers: formattedAnswers,
       });
 
-      Alert.alert('Success', 'Thank you for completing the survey!', [
-        { text: 'View Results', onPress: () => router.replace(`/results?id=${id}`) },
-      ]);
+      // Navigate to results immediately
+      router.replace(`/results?id=${id}`);
     } catch (error: any) {
       Alert.alert('Error', error.response?.data?.detail || 'Failed to submit survey');
     } finally {
