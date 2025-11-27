@@ -149,9 +149,54 @@ export default function SuggestQuestionScreen() {
           </View>
 
           <View style={styles.form}>
+            {/* 1. Category (Optional) */}
+            <View style={styles.section}>
+              <Text style={styles.label}>Category (Optional)</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="e.g., Customer Service, Product Feedback, etc."
+                value={category}
+                onChangeText={setCategory}
+                placeholderTextColor="#9ca3af"
+              />
+            </View>
+
+            {/* 2. Question Type (Mandatory) */}
             <View style={styles.section}>
               <Text style={styles.label}>
-                Question Text <Text style={styles.required}>*</Text>
+                Question Type <Text style={styles.required}>*</Text>
+              </Text>
+              <TouchableOpacity
+                style={[styles.input, styles.typeSelector]}
+                onPress={() => setShowQuestionTypes(!showQuestionTypes)}
+              >
+                <Text style={questionType ? styles.typeSelectorText : styles.typeSelectorPlaceholder}>
+                  {questionType
+                    ? QUESTION_TYPES.find(t => t.id === questionType)?.label
+                    : 'Select question type'}
+                </Text>
+                <Ionicons name="chevron-down" size={20} color="#6b7280" />
+              </TouchableOpacity>
+
+              {showQuestionTypes && (
+                <View style={styles.typeDropdown}>
+                  {QUESTION_TYPES.map((type) => (
+                    <TouchableOpacity
+                      key={type.id}
+                      style={styles.typeOption}
+                      onPress={() => handleQuestionTypeSelect(type.id)}
+                    >
+                      <Text style={styles.typeOptionText}>{type.label}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </View>
+
+            {/* 3. Question Text (Mandatory) */}
+            <View style={styles.section}>
+              <Text style={styles.label}>
+                Question <Text style={styles.required}>*</Text>
               </Text>
               <TextInput
                 style={[styles.input, styles.textArea]}
@@ -164,17 +209,34 @@ export default function SuggestQuestionScreen() {
               />
             </View>
 
-            <View style={styles.section}>
-              <Text style={styles.label}>Category (Optional)</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="e.g., Customer Service, Product Feedback, etc."
-                value={category}
-                onChangeText={setCategory}
-                placeholderTextColor="#9ca3af"
-              />
-            </View>
+            {/* 4. Answer Options (Conditional) */}
+            {questionType && questionType.includes('multiple_choice') && (
+              <View style={styles.section}>
+                <Text style={styles.label}>Answer Options</Text>
+                {options.map((option, index) => (
+                  <View key={index} style={styles.optionRow}>
+                    <TextInput
+                      style={[styles.input, styles.optionInput]}
+                      placeholder={`Option ${index + 1}`}
+                      value={option}
+                      onChangeText={(text) => updateOption(index, text)}
+                      placeholderTextColor="#9ca3af"
+                    />
+                    {options.length > 2 && (
+                      <TouchableOpacity onPress={() => removeOption(index)} style={styles.removeButton}>
+                        <Ionicons name="close-circle" size={24} color="#ef4444" />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                ))}
+                <TouchableOpacity style={styles.addOptionButton} onPress={addOption}>
+                  <Ionicons name="add-circle-outline" size={20} color="#6366f1" />
+                  <Text style={styles.addOptionText}>Add Option</Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
+            {/* 5. Additional Notes (Optional) */}
             <View style={styles.section}>
               <Text style={styles.label}>Additional Notes (Optional)</Text>
               <TextInput
