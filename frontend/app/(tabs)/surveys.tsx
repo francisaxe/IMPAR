@@ -70,6 +70,42 @@ export default function SurveysScreen() {
     });
   };
 
+  const handleDeleteSurvey = async (surveyId: string, surveyTitle: string) => {
+    const confirmDelete = Platform.OS === 'web'
+      ? confirm(`Are you sure you want to delete "${surveyTitle}"? This will also delete all responses.`)
+      : await new Promise((resolve) => {
+          Alert.alert(
+            'Delete Survey',
+            `Are you sure you want to delete "${surveyTitle}"? This will also delete all responses.`,
+            [
+              { text: 'Cancel', style: 'cancel', onPress: () => resolve(false) },
+              { text: 'Delete', style: 'destructive', onPress: () => resolve(true) },
+            ]
+          );
+        });
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/api/surveys/${surveyId}`);
+      // Refresh the list
+      fetchSurveys();
+      
+      if (Platform.OS === 'web') {
+        alert('Survey deleted successfully');
+      } else {
+        Alert.alert('Success', 'Survey deleted successfully');
+      }
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.detail || 'Failed to delete survey';
+      if (Platform.OS === 'web') {
+        alert('Error: ' + errorMsg);
+      } else {
+        Alert.alert('Error', errorMsg);
+      }
+    }
+  };
+
   const renderSurveyCard = ({ item }: { item: Survey }) => (
     <TouchableOpacity
       style={styles.card}
