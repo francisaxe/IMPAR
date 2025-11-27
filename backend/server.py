@@ -464,8 +464,10 @@ async def create_suggestion(suggestion_data: SuggestionCreate, current_user: dic
     suggestion_dict = {
         "user_id": str(current_user["_id"]),
         "user_name": current_user["name"],
-        "question_text": suggestion_data.question_text,
         "category": suggestion_data.category,
+        "question_type": suggestion_data.question_type,
+        "question_text": suggestion_data.question_text,
+        "options": suggestion_data.options,
         "notes": suggestion_data.notes,
         "created_at": datetime.utcnow(),
         "status": "pending"
