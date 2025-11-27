@@ -254,6 +254,26 @@ async def get_survey(survey_id: str, current_user: dict = Depends(get_current_us
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@api_router.delete("/surveys/{survey_id}")
+async def delete_survey(survey_id: str, current_user: dict = Depends(get_owner_user)):
+    try:
+        # Check if survey exists
+        survey = await db.surveys.find_one({"_id": ObjectId(survey_id)})
+        if not survey:
+            raise HTTPException(status_code=404, detail="Survey not found")
+        
+        # Delete all responses for this survey
+        await db.responses.delete_many({"survey_id": survey_id})
+        
+        # Delete the survey
+        await db.surveys.delete_one({"_id": ObjectId(survey_id)})
+        
+        return {"message": "Survey deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @api_router.post("/surveys/{survey_id}/respond")
 async def submit_response(survey_id: str, response_data: ResponseCreate, current_user: dict = Depends(get_current_user)):
     try:
