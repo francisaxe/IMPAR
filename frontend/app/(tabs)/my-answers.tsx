@@ -41,6 +41,13 @@ export default function MyAnswersScreen() {
     fetchMyResponses();
   }, []);
 
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchMyResponses();
+    }, [])
+  );
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchMyResponses();
