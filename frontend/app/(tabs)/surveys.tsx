@@ -7,11 +7,14 @@ import {
   StyleSheet,
   RefreshControl,
   ActivityIndicator,
+  Alert,
+  Platform,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface Survey {
   id: string;
