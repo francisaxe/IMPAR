@@ -32,6 +32,7 @@ const QUESTION_TYPES = [
 ];
 
 export default function CreateSurveyScreen() {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
