@@ -55,27 +55,26 @@ export default function TabLayout() {
           ),
         }}
       />
-      {isOwner ? (
-        <Tabs.Screen
-          name="create"
-          options={{
-            title: 'Create Survey',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="add-circle" size={size} color={color} />
-            ),
-          }}
-        />
-      ) : (
-        <Tabs.Screen
-          name="suggest"
-          options={{
-            title: 'Suggest Question',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="bulb" size={size} color={color} />
-            ),
-          }}
-        />
-      )}
+      <Tabs.Screen
+        name="create"
+        options={{
+          title: 'Create Survey',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="add-circle" size={size} color={color} />
+          ),
+          href: isOwner ? undefined : null,
+        }}
+      />
+      <Tabs.Screen
+        name="suggest"
+        options={{
+          title: 'Suggest Question',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="bulb" size={size} color={color} />
+          ),
+          href: !isOwner ? undefined : null,
+        }}
+      />
       <Tabs.Screen
         name="profile"
         options={{
