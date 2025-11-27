@@ -117,18 +117,30 @@ export default function CreateSurveyScreen() {
 
     setLoading(true);
     try {
-      await api.post('/api/surveys', {
+      const response = await api.post('/api/surveys', {
         title,
         description,
         questions,
       });
 
-      Alert.alert('Success', 'Survey created successfully!');
+      // Clear form
       setTitle('');
       setDescription('');
       setQuestions([]);
+      
+      // Show success message based on platform
+      if (Platform.OS === 'web') {
+        alert('Survey created successfully!');
+      } else {
+        Alert.alert('Success', 'Survey created successfully!');
+      }
     } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to create survey');
+      const errorMsg = error.response?.data?.detail || 'Failed to create survey';
+      if (Platform.OS === 'web') {
+        alert('Error: ' + errorMsg);
+      } else {
+        Alert.alert('Error', errorMsg);
+      }
     } finally {
       setLoading(false);
     }
