@@ -84,16 +84,20 @@ class Response(BaseModel):
     submitted_at: datetime
 
 class SuggestionCreate(BaseModel):
-    question_text: str
     category: Optional[str] = None
+    question_type: str
+    question_text: str
+    options: Optional[List[str]] = None
     notes: Optional[str] = None
 
 class Suggestion(BaseModel):
     id: str
     user_id: str
     user_name: str
-    question_text: str
     category: Optional[str] = None
+    question_type: str
+    question_text: str
+    options: Optional[List[str]] = None
     notes: Optional[str] = None
     created_at: datetime
     status: str = "pending"  # pending, reviewed, used
