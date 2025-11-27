@@ -44,6 +44,13 @@ export default function SurveysScreen() {
     fetchSurveys();
   }, []);
 
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchSurveys();
+    }, [])
+  );
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchSurveys();
