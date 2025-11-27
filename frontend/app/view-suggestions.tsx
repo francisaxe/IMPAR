@@ -61,6 +61,17 @@ export default function ViewSuggestionsScreen() {
     });
   };
 
+  const getQuestionTypeLabel = (type: string) => {
+    const types: { [key: string]: string } = {
+      'multiple_choice_single': 'Multiple Choice (Single)',
+      'multiple_choice_multiple': 'Multiple Choice (Multiple)',
+      'text_short': 'Short Text',
+      'text_long': 'Long Text',
+      'rating': 'Rating (1-5)',
+    };
+    return types[type] || type;
+  };
+
   const renderSuggestion = ({ item }: { item: Suggestion }) => (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
@@ -73,14 +84,34 @@ export default function ViewSuggestionsScreen() {
         </View>
       </View>
 
-      {item.category && (
-        <View style={styles.categoryBadge}>
-          <Ionicons name="pricetag" size={14} color="#6366f1" />
-          <Text style={styles.categoryText}>{item.category}</Text>
-        </View>
-      )}
+      <View style={styles.badgesContainer}>
+        {item.category && (
+          <View style={styles.categoryBadge}>
+            <Ionicons name="pricetag" size={14} color="#6366f1" />
+            <Text style={styles.categoryText}>{item.category}</Text>
+          </View>
+        )}
+        {item.question_type && (
+          <View style={styles.typeBadge}>
+            <Ionicons name="help-circle" size={14} color="#10b981" />
+            <Text style={styles.typeText}>{getQuestionTypeLabel(item.question_type)}</Text>
+          </View>
+        )}
+      </View>
 
       <Text style={styles.questionText}>{item.question_text}</Text>
+
+      {item.options && item.options.length > 0 && (
+        <View style={styles.optionsContainer}>
+          <Text style={styles.optionsLabel}>Suggested Options:</Text>
+          {item.options.map((option, index) => (
+            <View key={index} style={styles.optionItem}>
+              <Ionicons name="ellipse" size={6} color="#6b7280" />
+              <Text style={styles.optionText}>{option}</Text>
+            </View>
+          ))}
+        </View>
+      )}
 
       {item.notes && (
         <View style={styles.notesContainer}>
