@@ -1,38 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../../constants/colors';
 
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <View style={styles.iconContainer}>
-            <Ionicons name="business" size={64} color="#1e3a5f" />
-          </View>
-          <Text style={styles.title}>About Our Company</Text>
+          <Image 
+            source={require('../../assets/rivi-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+          <Text style={styles.subtitle}>Survey Platform</Text>
         </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="information-circle" size={24} color="#1e3a5f" />
-            <Text style={styles.sectionTitle}>Who We Are</Text>
+            <Ionicons name="information-circle" size={24} color={Colors.primary} />
+            <Text style={styles.sectionTitle}>Welcome to RIVI</Text>
           </View>
           <Text style={styles.sectionText}>
-            We are a leading survey platform dedicated to gathering valuable insights and feedback from our community. 
-            Our mission is to bridge the gap between organizations and their audience through meaningful surveys.
+            RIVI is your trusted survey platform for gathering valuable insights and feedback. 
+            We connect organizations with their communities through meaningful, structured surveys.
           </Text>
         </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="trophy" size={24} color="#10b981" />
-            <Text style={styles.sectionTitle}>Our Goal</Text>
+            <Ionicons name="trophy" size={24} color={Colors.success} />
+            <Text style={styles.sectionTitle}>Our Mission</Text>
           </View>
           <Text style={styles.sectionText}>
-            Our goal is to make survey participation simple, engaging, and rewarding. We believe every voice matters, 
-            and through your feedback, we can create better products, services, and experiences for everyone.
+            To provide a simple, engaging platform where every voice matters. Your feedback helps 
+            create better products, services, and experiences for everyone.
           </Text>
         </View>
 
