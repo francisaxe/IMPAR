@@ -50,16 +50,18 @@ export default function LoginScreen() {
       >
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.header}>
-            <View style={styles.iconContainer}>
-              <Ionicons name="clipboard" size={48} color="#6366f1" />
-            </View>
+            <Image 
+              source={require('../assets/rivi-logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
             <Text style={styles.title}>Welcome Back</Text>
-            <Text style={styles.subtitle}>Sign in to answer surveys</Text>
+            <Text style={styles.subtitle}>Sign in to RIVI Survey</Text>
           </View>
 
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <Ionicons name="mail-outline" size={20} color="#9ca3af" style={styles.inputIcon} />
+              <Ionicons name="mail-outline" size={20} color={Colors.gray400} style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -67,19 +69,19 @@ export default function LoginScreen() {
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
-                placeholderTextColor="#9ca3af"
+                placeholderTextColor={Colors.gray400}
               />
             </View>
 
             <View style={styles.inputContainer}>
-              <Ionicons name="lock-closed-outline" size={20} color="#9ca3af" style={styles.inputIcon} />
+              <Ionicons name="lock-closed-outline" size={20} color={Colors.gray400} style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                placeholderTextColor="#9ca3af"
+                placeholderTextColor={Colors.gray400}
               />
             </View>
 
@@ -111,7 +113,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   keyboardView: {
     flex: 1,
@@ -125,24 +127,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 48,
   },
-  iconContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: '#eef2ff',
-    justifyContent: 'center',
-    alignItems: 'center',
+  logo: {
+    width: 200,
+    height: 80,
     marginBottom: 24,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#111827',
+    color: Colors.primary,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#6b7280',
+    color: Colors.textSecondary,
   },
   form: {
     width: '100%',
@@ -155,7 +153,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
   },
   inputIcon: {
     marginRight: 12,
@@ -164,10 +162,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 56,
     fontSize: 16,
-    color: '#111827',
+    color: Colors.textPrimary,
   },
   button: {
-    backgroundColor: '#6366f1',
+    backgroundColor: Colors.primary,
     height: 56,
     borderRadius: 12,
     justifyContent: 'center',
@@ -188,11 +186,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   footerText: {
-    color: '#6b7280',
+    color: Colors.textSecondary,
     fontSize: 16,
   },
   link: {
-    color: '#6366f1',
+    color: Colors.primary,
     fontSize: 16,
     fontWeight: '600',
   },
