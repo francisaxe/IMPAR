@@ -21,9 +21,9 @@ export default function TabLayout() {
           paddingTop: 8,
         },
         headerStyle: {
-          backgroundColor: '#1e3a5f',
+          backgroundColor: Colors.primary,
         },
-        headerTintColor: '#fff',
+        headerTintColor: Colors.textWhite,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
