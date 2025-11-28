@@ -14,29 +14,137 @@ export default function HomeScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.subtitle}>Survey Platform</Text>
+          <Text style={styles.subtitle}>Jornalismo Independente</Text>
         </View>
 
+        {/* MISSÃO */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="information-circle" size={24} color={Colors.primary} />
-            <Text style={styles.sectionTitle}>Welcome to RIVI</Text>
+            <Ionicons name="target" size={24} color={Colors.primary} />
+            <Text style={styles.sectionTitle}>MISSÃO</Text>
           </View>
+          <Text style={styles.sectionTextBold}>
+            Restaurar a confiança na informação em Portugal, oferecendo jornalismo não só independente, 
+            mas também rigoroso, verdadeiro e imparcial.
+          </Text>
           <Text style={styles.sectionText}>
-            RIVI is your trusted survey platform for gathering valuable insights and feedback. 
-            We connect organizations with their communities through meaningful, structured surveys.
+            A RIVI existe para devolver ao público aquilo que se perdeu: a certeza de que a verdade está 
+            acima de interesses políticos, económicos ou narrativos.
+          </Text>
+          <Text style={styles.sectionText}>
+            A nossa missão é informar com integridade absoluta — sempre.
           </Text>
         </View>
 
+        {/* VISÃO */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="trophy" size={24} color={Colors.success} />
-            <Text style={styles.sectionTitle}>Our Mission</Text>
+            <Ionicons name="eye" size={24} color={Colors.primary} />
+            <Text style={styles.sectionTitle}>VISÃO</Text>
           </View>
-          <Text style={styles.sectionText}>
-            To provide a simple, engaging platform where every voice matters. Your feedback helps 
-            create better products, services, and experiences for everyone.
+          <Text style={styles.sectionTextBold}>
+            Ser a principal referência de confiança no panorama mediático português, elevando o padrão 
+            da informação e redefinindo o que significa fazer jornalismo no século XXI.
           </Text>
+          <Text style={styles.sectionText}>
+            Queremos que, ao pensar em credibilidade, imparcialidade e transparência, Portugal pense em RIVI.
+          </Text>
+          <Text style={styles.sectionText}>
+            A visão é ambiciosa, mas clara: colocar o país a confiar novamente.
+          </Text>
+        </View>
+
+        {/* VALORES */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Ionicons name="diamond" size={24} color={Colors.primary} />
+            <Text style={styles.sectionTitle}>VALORES</Text>
+          </View>
+          
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>1. Verdade</Text>
+            </View>
+            <Text style={styles.valueText}>
+              A verdade é o nosso fundamento. Não negociamos factos, não moldamos narrativas. 
+              Procuramos a realidade tal como é — inteira.
+            </Text>
+          </View>
+
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>2. Imparcialidade</Text>
+            </View>
+            <Text style={styles.valueText}>
+              Não tomamos partido. Apresentamos todos os lados da história com equilíbrio, sem favorecer 
+              interesses ou opiniões pessoais. A nossa missão é informar, não persuadir.
+            </Text>
+          </View>
+
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>3. Independência</Text>
+            </View>
+            <Text style={styles.valueText}>
+              Livre de lobbies e interesses externos. A informação só serve o público.
+            </Text>
+          </View>
+
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>4. Transparência</Text>
+            </View>
+            <Text style={styles.valueText}>
+              Explicamos as nossas escolhas, assumimos os nossos erros e mostramos como trabalhamos. 
+              A confiança constrói-se à vista de todos.
+            </Text>
+          </View>
+
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>5. Rigor</Text>
+            </View>
+            <Text style={styles.valueText}>
+              Verificação, validação e método. Não publicamos cedo — publicamos certo.
+            </Text>
+          </View>
+
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>6. Responsabilidade</Text>
+            </View>
+            <Text style={styles.valueText}>
+              O impacto das palavras conta. Colocamos o interesse público acima da velocidade, 
+              do clique ou da polémica.
+            </Text>
+          </View>
+
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>7. Proximidade</Text>
+            </View>
+            <Text style={styles.valueText}>
+              A RIVI é feita com e para as pessoas. Escutamos, explicamos, envolvemos e servimos a comunidade.
+            </Text>
+          </View>
+
+          <View style={styles.valueItem}>
+            <View style={styles.valueHeader}>
+              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+              <Text style={styles.valueTitle}>8. Coragem</Text>
+            </View>
+            <Text style={styles.valueText}>
+              Para confrontar poderes, contrariar tendências, expor falhas e defender a verdade — 
+              mesmo quando é incómoda.
+            </Text>
+          </View>
         </View>
 
         <View style={styles.section}>
