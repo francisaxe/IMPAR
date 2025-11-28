@@ -87,7 +87,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   scrollContent: {
     padding: 16,
@@ -97,24 +97,15 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingVertical: 24,
   },
-  iconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#eef2ff',
-    justifyContent: 'center',
-    alignItems: 'center',
+  logo: {
+    width: 200,
+    height: 80,
     marginBottom: 16,
-    shadowColor: '#1e3a5f',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#111827',
+  subtitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: Colors.textSecondary,
     textAlign: 'center',
   },
   section: {
