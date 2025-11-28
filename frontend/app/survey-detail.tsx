@@ -119,7 +119,7 @@ export default function SurveyDetailScreen() {
                 <Ionicons
                   name={answers[index] === option ? 'radio-button-on' : 'radio-button-off'}
                   size={24}
-                  color={answers[index] === option ? '#6366f1' : '#9ca3af'}
+                  color={answers[index] === option ? '#1e3a5f' : '#9ca3af'}
                 />
                 <Text
                   style={[
@@ -161,7 +161,7 @@ export default function SurveyDetailScreen() {
                   <Ionicons
                     name={selected ? 'checkbox' : 'square-outline'}
                     size={24}
-                    color={selected ? '#6366f1' : '#9ca3af'}
+                    color={selected ? '#1e3a5f' : '#9ca3af'}
                   />
                   <Text style={[styles.optionText, selected && styles.optionTextSelected]}>
                     {option}
@@ -238,7 +238,7 @@ export default function SurveyDetailScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#1e3a5f" />
       </View>
     );
   }
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#1e3a5f',
     padding: 16,
   },
   backButton: {
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   questionNumber: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginBottom: 8,
   },
   questionText: {
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
   },
   optionSelected: {
     backgroundColor: '#eef2ff',
-    borderColor: '#6366f1',
+    borderColor: '#1e3a5f',
   },
   optionText: {
     fontSize: 16,
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   optionTextSelected: {
-    color: '#6366f1',
+    color: '#1e3a5f',
     fontWeight: '600',
   },
   textInput: {
@@ -418,14 +418,14 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#6366f1',
+    color: '#1e3a5f',
     textAlign: 'center',
   },
   submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#1e3a5f',
     borderRadius: 12,
     padding: 18,
     marginTop: 8,

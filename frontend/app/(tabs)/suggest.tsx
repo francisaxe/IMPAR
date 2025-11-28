@@ -230,7 +230,7 @@ export default function SuggestQuestionScreen() {
                   </View>
                 ))}
                 <TouchableOpacity style={styles.addOptionButton} onPress={addOption}>
-                  <Ionicons name="add-circle-outline" size={20} color="#6366f1" />
+                  <Ionicons name="add-circle-outline" size={20} color="#1e3a5f" />
                   <Text style={styles.addOptionText}>Add Option</Text>
                 </TouchableOpacity>
               </View>
@@ -267,7 +267,7 @@ export default function SuggestQuestionScreen() {
           </View>
 
           <View style={styles.infoBox}>
-            <Ionicons name="information-circle" size={24} color="#6366f1" />
+            <Ionicons name="information-circle" size={24} color="#1e3a5f" />
             <Text style={styles.infoText}>
               Your suggestions help us create better surveys. We review all submissions and may use your
               question in future surveys!
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   },
   addOptionText: {
     fontSize: 14,
-    color: '#6366f1',
+    color: '#1e3a5f',
     fontWeight: '600',
     marginLeft: 8,
   },

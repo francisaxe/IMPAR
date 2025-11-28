@@ -55,7 +55,7 @@ export default function RegisterScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.header}>
             <View style={styles.iconContainer}>
-              <Ionicons name="person-add" size={48} color="#6366f1" />
+              <Ionicons name="person-add" size={48} color="#1e3a5f" />
             </View>
             <Text style={styles.title}>Create Account</Text>
             <Text style={styles.subtitle}>Join to answer surveys</Text>
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   button: {
-    backgroundColor: '#6366f1',
+    backgroundColor: '#1e3a5f',
     height: 56,
     borderRadius: 12,
     justifyContent: 'center',
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   link: {
-    color: '#6366f1',
+    color: '#1e3a5f',
     fontSize: 16,
     fontWeight: '600',
   },

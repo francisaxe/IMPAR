@@ -178,7 +178,7 @@ export default function ResultsScreen() {
     return (
       <View style={styles.textResultsContainer}>
         <View style={styles.textResultCard}>
-          <Ionicons name="chatbox-ellipses" size={32} color="#6366f1" />
+          <Ionicons name="chatbox-ellipses" size={32} color="#1e3a5f" />
           <Text style={styles.textResultCount}>{count}</Text>
           <Text style={styles.textResultLabel}>Text Responses</Text>
         </View>
@@ -206,7 +206,7 @@ export default function ResultsScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#1e3a5f" />
       </View>
     );
   }
@@ -229,7 +229,7 @@ export default function ResultsScreen() {
         <View style={styles.surveyHeader}>
           <Text style={styles.surveyTitle}>{results.title}</Text>
           <View style={styles.responseCount}>
-            <Ionicons name="people" size={24} color="#6366f1" />
+            <Ionicons name="people" size={24} color="#1e3a5f" />
             <Text style={styles.responseCountText}>
               {results.total_responses} {results.total_responses === 1 ? 'Response' : 'Responses'}
             </Text>
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#1e3a5f',
     padding: 16,
   },
   backButton: {
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   responseCountText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginLeft: 8,
   },
   resultCard: {
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   questionNumber: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginBottom: 8,
   },
   questionText: {
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#1e3a5f',
   },
   averageContainer: {
     alignItems: 'center',
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
   textResultCount: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginTop: 12,
   },
   textResultLabel: {

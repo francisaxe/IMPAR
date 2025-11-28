@@ -236,7 +236,7 @@ export default function CreateSurveyScreen() {
                       style={styles.addOptionButton}
                       onPress={() => addOption(qIndex)}
                     >
-                      <Ionicons name="add-circle-outline" size={20} color="#6366f1" />
+                      <Ionicons name="add-circle-outline" size={20} color="#1e3a5f" />
                       <Text style={styles.addOptionText}>Add Option</Text>
                     </TouchableOpacity>
                   </View>
@@ -248,7 +248,7 @@ export default function CreateSurveyScreen() {
               style={styles.addQuestionButton}
               onPress={() => setShowQuestionTypes(!showQuestionTypes)}
             >
-              <Ionicons name="add-circle" size={24} color="#6366f1" />
+              <Ionicons name="add-circle" size={24} color="#1e3a5f" />
               <Text style={styles.addQuestionText}>Add Question</Text>
             </TouchableOpacity>
 
@@ -260,7 +260,7 @@ export default function CreateSurveyScreen() {
                     style={styles.questionTypeButton}
                     onPress={() => addQuestion(type.id)}
                   >
-                    <Ionicons name={type.icon as any} size={20} color="#6366f1" />
+                    <Ionicons name={type.icon as any} size={20} color="#1e3a5f" />
                     <Text style={styles.questionTypeText}>{type.label}</Text>
                   </TouchableOpacity>
                 ))}
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
   },
   questionType: {
     fontSize: 12,
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginBottom: 12,
     fontWeight: '600',
   },
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
   },
   addOptionText: {
     fontSize: 14,
-    color: '#6366f1',
+    color: '#1e3a5f',
     fontWeight: '600',
     marginLeft: 6,
   },
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
   addQuestionText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginLeft: 8,
   },
   questionTypesContainer: {
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#1e3a5f',
     borderRadius: 12,
     padding: 16,
     marginTop: 8,

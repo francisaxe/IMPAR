@@ -89,7 +89,7 @@ export default function ViewSuggestionsScreen() {
       <View style={styles.badgesContainer}>
         {item.category && (
           <View style={styles.categoryBadge}>
-            <Ionicons name="pricetag" size={14} color="#6366f1" />
+            <Ionicons name="pricetag" size={14} color="#1e3a5f" />
             <Text style={styles.categoryText}>{item.category}</Text>
           </View>
         )}
@@ -127,7 +127,7 @@ export default function ViewSuggestionsScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#1e3a5f" />
       </View>
     );
   }
@@ -157,7 +157,7 @@ export default function ViewSuggestionsScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#6366f1']} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1e3a5f']} />
           }
         />
       )}
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#1e3a5f',
     padding: 16,
   },
   backButton: {
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginLeft: 4,
   },
   typeBadge: {

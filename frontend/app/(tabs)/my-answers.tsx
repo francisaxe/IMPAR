@@ -89,7 +89,7 @@ export default function MyAnswersScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#1e3a5f" />
       </View>
     );
   }
@@ -109,7 +109,7 @@ export default function MyAnswersScreen() {
           keyExtractor={(item) => item.survey_id}
           contentContainerStyle={styles.listContent}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#6366f1']} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1e3a5f']} />
           }
         />
       )}

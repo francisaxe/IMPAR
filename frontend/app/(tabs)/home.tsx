@@ -9,14 +9,14 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <View style={styles.iconContainer}>
-            <Ionicons name="business" size={64} color="#6366f1" />
+            <Ionicons name="business" size={64} color="#1e3a5f" />
           </View>
           <Text style={styles.title}>About Our Company</Text>
         </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="information-circle" size={24} color="#6366f1" />
+            <Ionicons name="information-circle" size={24} color="#1e3a5f" />
             <Text style={styles.sectionTitle}>Who We Are</Text>
           </View>
           <Text style={styles.sectionText}>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
-    shadowColor: '#6366f1',
+    shadowColor: '#1e3a5f',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,

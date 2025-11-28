@@ -114,7 +114,7 @@ export default function SurveysScreen() {
       >
         <View style={styles.cardHeader}>
           <View style={styles.iconContainer}>
-            <Ionicons name="clipboard-outline" size={24} color="#6366f1" />
+            <Ionicons name="clipboard-outline" size={24} color="#1e3a5f" />
           </View>
           <View style={styles.cardInfo}>
             <Text style={styles.cardTitle} numberOfLines={2}>
@@ -153,7 +153,7 @@ export default function SurveysScreen() {
           ) : (
             <View style={styles.pendingBadge}>
               <Text style={styles.pendingText}>Take Survey</Text>
-              <Ionicons name="chevron-forward" size={16} color="#6366f1" />
+              <Ionicons name="chevron-forward" size={16} color="#1e3a5f" />
             </View>
           )}
         </View>
@@ -166,7 +166,7 @@ export default function SurveysScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#1e3a5f" />
       </View>
     );
   }
@@ -186,7 +186,7 @@ export default function SurveysScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#6366f1']} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1e3a5f']} />
           }
         />
       )}
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   pendingText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#1e3a5f',
     marginRight: 4,
   },
   cardDate: {

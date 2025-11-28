@@ -40,7 +40,7 @@ export default function ProfileScreen() {
       <View style={styles.content}>
         <View style={styles.profileHeader}>
           <View style={styles.avatarContainer}>
-            <Ionicons name="person" size={48} color="#6366f1" />
+            <Ionicons name="person" size={48} color="#1e3a5f" />
           </View>
           <Text style={styles.name}>{user?.name}</Text>
           <Text style={styles.email}>{user?.email}</Text>
@@ -54,7 +54,7 @@ export default function ProfileScreen() {
 
         <View style={styles.infoSection}>
           <View style={styles.infoCard}>
-            <Ionicons name="mail-outline" size={24} color="#6366f1" />
+            <Ionicons name="mail-outline" size={24} color="#1e3a5f" />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Email</Text>
               <Text style={styles.infoValue}>{user?.email}</Text>
