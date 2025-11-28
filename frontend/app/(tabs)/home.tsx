@@ -20,7 +20,7 @@ export default function HomeScreen() {
         {/* MISSÃO */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="target" size={24} color={Colors.primary} />
+            <Ionicons name="flag" size={24} color={Colors.primary} />
             <Text style={styles.sectionTitle}>MISSÃO</Text>
           </View>
           <Text style={styles.sectionTextBold}>
