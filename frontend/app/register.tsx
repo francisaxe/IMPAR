@@ -58,7 +58,7 @@ export default function RegisterScreen() {
               <Ionicons name="person-add" size={48} color="#1e3a5f" />
             </View>
             <Text style={styles.title}>Create Account</Text>
-            <Text style={styles.subtitle}>Join to answer surveys</Text>
+            <Text style={styles.subtitle}>Join RIVI Survey</Text>
           </View>
 
           <View style={styles.form}>
