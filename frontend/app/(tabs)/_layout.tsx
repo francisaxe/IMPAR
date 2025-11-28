@@ -2,6 +2,20 @@ import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { Colors } from '../../constants/colors';
+import { View, Image, Text, StyleSheet } from 'react-native';
+
+function HeaderTitle({ title }: { title: string }) {
+  return (
+    <View style={styles.headerContainer}>
+      <Image 
+        source={require('../../assets/rivi-logo.png')}
+        style={styles.headerLogo}
+        resizeMode="contain"
+      />
+      <Text style={styles.headerTitle}>{title}</Text>
+    </View>
+  );
+}
 
 export default function TabLayout() {
   const { user } = useAuth();
