@@ -46,7 +46,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="surveys"
         options={{
-          title: 'Surveys',
+          headerTitle: () => <HeaderTitle title="Inquéritos" />,
+          tabBarLabel: 'Inquéritos',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list" size={size} color={color} />
           ),
@@ -55,7 +56,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="my-answers"
         options={{
-          title: 'My Answers',
+          headerTitle: () => <HeaderTitle title="Minhas Respostas" />,
+          tabBarLabel: 'Respostas',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="checkmark-circle" size={size} color={color} />
           ),
@@ -64,7 +66,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
+          headerTitle: () => <HeaderTitle title="Início" />,
+          tabBarLabel: 'Início',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
@@ -73,7 +76,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="create"
         options={{
-          title: 'Create Survey',
+          headerTitle: () => <HeaderTitle title="Criar Inquérito" />,
+          tabBarLabel: 'Criar',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle" size={size} color={color} />
           ),
@@ -83,7 +87,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="suggest"
         options={{
-          title: 'Suggest Question',
+          headerTitle: () => <HeaderTitle title="Sugerir Questão" />,
+          tabBarLabel: 'Sugerir',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bulb" size={size} color={color} />
           ),
@@ -93,7 +98,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          headerTitle: () => <HeaderTitle title="Perfil" />,
+          tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
