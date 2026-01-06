@@ -36,6 +36,18 @@ class UserRegister(BaseModel):
     email: EmailStr
     password: str
     name: str
+    birth_date: str
+    gender: str  # Masculino / Feminino
+    nationality: str
+    district: str
+    municipality: str  # Concelho
+    parish: str  # Freguesia
+    marital_status: str  # solteiro, casado, divorciado, viuvo
+    religion: str
+    education_level: str
+    profession: str
+    lived_abroad: bool
+    abroad_duration: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
