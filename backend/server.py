@@ -156,13 +156,25 @@ async def register(user_data: UserRegister):
     # Check if user exists
     existing_user = await db.users.find_one({"email": user_data.email})
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(status_code=400, detail="Email já registado")
     
-    # Create user
+    # Create user with all profile fields
     user_dict = {
         "email": user_data.email,
         "password": hash_password(user_data.password),
         "name": user_data.name,
+        "birth_date": user_data.birth_date,
+        "gender": user_data.gender,
+        "nationality": user_data.nationality,
+        "district": user_data.district,
+        "municipality": user_data.municipality,
+        "parish": user_data.parish,
+        "marital_status": user_data.marital_status,
+        "religion": user_data.religion,
+        "education_level": user_data.education_level,
+        "profession": user_data.profession,
+        "lived_abroad": user_data.lived_abroad,
+        "abroad_duration": user_data.abroad_duration if user_data.lived_abroad else None,
         "role": "user",  # Default role
         "created_at": datetime.utcnow()
     }
