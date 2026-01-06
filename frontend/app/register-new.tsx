@@ -17,7 +17,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../constants/colors';
-import { Picker } from '@react-native-picker/picker';
 import { PORTUGAL_DATA } from '../constants/portugalData';
 
 export default function RegisterScreen() {
