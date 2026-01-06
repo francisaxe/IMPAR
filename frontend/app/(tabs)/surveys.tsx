@@ -181,19 +181,24 @@ export default function SurveysScreen() {
       {surveys.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Ionicons name="clipboard-outline" size={64} color="#d1d5db" />
-          <Text style={styles.emptyTitle}>No Surveys Yet</Text>
-          <Text style={styles.emptyText}>Check back later for new surveys</Text>
+          <Text style={styles.emptyTitle}>Sem Inquéritos</Text>
+          <Text style={styles.emptyText}>Volte mais tarde para novos inquéritos</Text>
         </View>
       ) : (
-        <FlatList
-          data={surveys}
-          renderItem={renderSurveyCard}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1e3a5f']} />
-          }
-        />
+        <View style={styles.contentContainer}>
+          <FlatList
+            data={surveys}
+            renderItem={renderSurveyCard}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            key={isDesktop ? 'desktop' : 'mobile'}
+            numColumns={isDesktop ? 2 : 1}
+            columnWrapperStyle={isDesktop ? styles.columnWrapper : undefined}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.primary]} />
+            }
+          />
+        </View>
       )}
     </SafeAreaView>
   );
