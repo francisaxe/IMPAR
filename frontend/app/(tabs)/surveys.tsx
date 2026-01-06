@@ -207,27 +207,39 @@ export default function SurveysScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
   listContent: {
-    padding: 16,
+    padding: isDesktop ? 32 : 16,
+    maxWidth: getMaxContentWidth(),
+    width: '100%',
+    alignSelf: 'center',
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+    marginBottom: 0,
   },
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
+    width: isDesktop ? '48%' : '100%',
   },
   cardTouchable: {
     padding: 16,
