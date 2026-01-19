@@ -28,7 +28,7 @@ export default function HomeScreen() {
             mas também rigoroso, verdadeiro e imparcial.
           </Text>
           <Text style={styles.sectionText}>
-            A RIVI existe para devolver ao público aquilo que se perdeu: a certeza de que a verdade está 
+            A IMPAR existe para devolver ao público aquilo que se perdeu: a certeza de que a verdade está 
             acima de interesses políticos, económicos ou narrativos.
           </Text>
           <Text style={styles.sectionText}>
@@ -47,7 +47,7 @@ export default function HomeScreen() {
             da informação e redefinindo o que significa fazer jornalismo no século XXI.
           </Text>
           <Text style={styles.sectionText}>
-            Queremos que, ao pensar em credibilidade, imparcialidade e transparência, Portugal pense em RIVI.
+            Queremos que, ao pensar em credibilidade, imparcialidade e transparência, Portugal pense em IMPAR.
           </Text>
           <Text style={styles.sectionText}>
             A visão é ambiciosa, mas clara: colocar o país a confiar novamente.
@@ -131,7 +131,7 @@ export default function HomeScreen() {
               <Text style={styles.valueTitle}>7. Proximidade</Text>
             </View>
             <Text style={styles.valueText}>
-              A RIVI é feita com e para as pessoas. Escutamos, explicamos, envolvemos e servimos a comunidade.
+              A IMPAR é feita com e para as pessoas. Escutamos, explicamos, envolvemos e servimos a comunidade.
             </Text>
           </View>
 

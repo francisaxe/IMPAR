@@ -163,7 +163,7 @@ export default function RegisterScreen() {
               resizeMode="contain"
             />
             <Text style={styles.title}>Criar Conta</Text>
-            <Text style={styles.subtitle}>Registe-se na RIVI</Text>
+            <Text style={styles.subtitle}>Registe-se na IMPAR</Text>
           </View>
 
           <View style={styles.form}>
