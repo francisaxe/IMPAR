@@ -14,7 +14,7 @@ export default function HomeScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.subtitle}>Jornalismo Independente</Text>
+          <Text style={styles.subtitle}>Jornalismo Factual</Text>
         </View>
 
         {/* MISSÃO */}
@@ -23,16 +23,13 @@ export default function HomeScreen() {
             <Ionicons name="flag" size={24} color={Colors.primary} />
             <Text style={styles.sectionTitle}>MISSÃO</Text>
           </View>
-          <Text style={styles.sectionTextBold}>
-            Restaurar a confiança na informação em Portugal, oferecendo jornalismo não só independente, 
-            mas também rigoroso, verdadeiro e imparcial.
+          <Text style={styles.sectionText}>
+            A missão da IMPAR é examinar os factos com rigor, apresentá-los com clareza e publicá-los com imparcialidade, 
+            para que o público possa compreender a realidade sem distorção.
           </Text>
           <Text style={styles.sectionText}>
-            A IMPAR existe para devolver ao público aquilo que se perdeu: a certeza de que a verdade está 
-            acima de interesses políticos, económicos ou narrativos.
-          </Text>
-          <Text style={styles.sectionText}>
-            A nossa missão é informar com integridade absoluta — sempre.
+            Não competimos pela rapidez nem pela reação imediata. Comprometemo-nos com a precisão, o contexto e a 
+            responsabilidade editorial, colocando o interesse público acima do ruído informativo.
           </Text>
         </View>
 
@@ -42,15 +39,13 @@ export default function HomeScreen() {
             <Ionicons name="eye" size={24} color={Colors.primary} />
             <Text style={styles.sectionTitle}>VISÃO</Text>
           </View>
-          <Text style={styles.sectionTextBold}>
-            Ser a principal referência de confiança no panorama mediático português, elevando o padrão 
-            da informação e redefinindo o que significa fazer jornalismo no século XXI.
+          <Text style={styles.sectionText}>
+            A IMPAR ambiciona tornar-se uma referência de confiança no jornalismo factual, num tempo marcado pela 
+            desinformação, pela polarização e pelo sensacionalismo.
           </Text>
           <Text style={styles.sectionText}>
-            Queremos que, ao pensar em credibilidade, imparcialidade e transparência, Portugal pense em IMPAR.
-          </Text>
-          <Text style={styles.sectionText}>
-            A visão é ambiciosa, mas clara: colocar o país a confiar novamente.
+            Acreditamos num jornalismo onde a informação é avaliada pela sua exatidão, profundidade e responsabilidade 
+            — e não pela velocidade, pelo impacto emocional ou por agendas externas.
           </Text>
         </View>
 
@@ -64,85 +59,54 @@ export default function HomeScreen() {
           <View style={styles.valueItem}>
             <View style={styles.valueHeader}>
               <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>1. Verdade</Text>
+              <Text style={styles.valueTitle}>Verdade</Text>
             </View>
             <Text style={styles.valueText}>
-              A verdade é o nosso fundamento. Não negociamos factos, não moldamos narrativas. 
-              Procuramos a realidade tal como é — inteira.
+              A verdade é o nosso fundamento. Não negociamos factos nem moldamos narrativas. Procuramos a realidade 
+              tal como é — inteira, complexa e verificável.
             </Text>
           </View>
 
           <View style={styles.valueItem}>
             <View style={styles.valueHeader}>
               <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>2. Imparcialidade</Text>
+              <Text style={styles.valueTitle}>Imparcialidade</Text>
             </View>
             <Text style={styles.valueText}>
-              Não tomamos partido. Apresentamos todos os lados da história com equilíbrio, sem favorecer 
-              interesses ou opiniões pessoais. A nossa missão é informar, não persuadir.
+              Não tomamos partido. Apresentamos os factos e os diferentes lados com equilíbrio, distância crítica e 
+              respeito pelo leitor. O nosso papel é informar, não persuadir.
             </Text>
           </View>
 
           <View style={styles.valueItem}>
             <View style={styles.valueHeader}>
               <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>3. Independência</Text>
+              <Text style={styles.valueTitle}>Independência</Text>
             </View>
             <Text style={styles.valueText}>
-              Livre de lobbies e interesses externos. A informação só serve o público.
+              Somos independentes de pressões políticas, económicas ou ideológicas. A informação que publicamos serve 
+              apenas o interesse público.
             </Text>
           </View>
 
           <View style={styles.valueItem}>
             <View style={styles.valueHeader}>
               <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>4. Transparência</Text>
+              <Text style={styles.valueTitle}>Rigor</Text>
             </View>
             <Text style={styles.valueText}>
-              Explicamos as nossas escolhas, assumimos os nossos erros e mostramos como trabalhamos. 
-              A confiança constrói-se à vista de todos.
+              Trabalhamos com método, verificação e validação contínua. Não publicamos cedo — publicamos certo.
             </Text>
           </View>
 
           <View style={styles.valueItem}>
             <View style={styles.valueHeader}>
               <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>5. Rigor</Text>
+              <Text style={styles.valueTitle}>Transparência e Responsabilidade</Text>
             </View>
             <Text style={styles.valueText}>
-              Verificação, validação e método. Não publicamos cedo — publicamos certo.
-            </Text>
-          </View>
-
-          <View style={styles.valueItem}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>6. Responsabilidade</Text>
-            </View>
-            <Text style={styles.valueText}>
-              O impacto das palavras conta. Colocamos o interesse público acima da velocidade, 
-              do clique ou da polémica.
-            </Text>
-          </View>
-
-          <View style={styles.valueItem}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>7. Proximidade</Text>
-            </View>
-            <Text style={styles.valueText}>
-              A IMPAR é feita com e para as pessoas. Escutamos, explicamos, envolvemos e servimos a comunidade.
-            </Text>
-          </View>
-
-          <View style={styles.valueItem}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>8. Coragem</Text>
-            </View>
-            <Text style={styles.valueText}>
-              Para confrontar poderes, contrariar tendências, expor falhas e defender a verdade — 
-              mesmo quando é incómoda.
+              Explicamos como trabalhamos, assumimos os nossos erros e corrigimo-los de forma clara e pública. 
+              Sabemos que as palavras têm impacto e agimos com consciência desse peso.
             </Text>
           </View>
         </View>
