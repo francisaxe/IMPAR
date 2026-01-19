@@ -114,24 +114,24 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Ionicons name="bulb" size={24} color="#f59e0b" />
-            <Text style={styles.sectionTitle}>Why Participate</Text>
+            <Text style={styles.sectionTitle}>Porquê Participar</Text>
           </View>
           <View style={styles.benefitsList}>
             <View style={styles.benefitItem}>
               <Ionicons name="checkmark-circle" size={20} color="#10b981" />
-              <Text style={styles.benefitText}>Share your valuable opinions</Text>
+              <Text style={styles.benefitText}>Partilhe as suas opiniões valiosas</Text>
             </View>
             <View style={styles.benefitItem}>
               <Ionicons name="checkmark-circle" size={20} color="#10b981" />
-              <Text style={styles.benefitText}>Influence important decisions</Text>
+              <Text style={styles.benefitText}>Influencie decisões importantes</Text>
             </View>
             <View style={styles.benefitItem}>
               <Ionicons name="checkmark-circle" size={20} color="#10b981" />
-              <Text style={styles.benefitText}>See real-time results</Text>
+              <Text style={styles.benefitText}>Veja resultados em tempo real</Text>
             </View>
             <View style={styles.benefitItem}>
               <Ionicons name="checkmark-circle" size={20} color="#10b981" />
-              <Text style={styles.benefitText}>Quick and easy surveys</Text>
+              <Text style={styles.benefitText}>Inquéritos rápidos e fáceis</Text>
             </View>
           </View>
         </View>
@@ -139,17 +139,17 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Ionicons name="rocket" size={24} color="#ef4444" />
-            <Text style={styles.sectionTitle}>Get Started</Text>
+            <Text style={styles.sectionTitle}>Como Começar</Text>
           </View>
           <Text style={styles.sectionText}>
-            Browse available surveys in the "Surveys" tab, complete them, and view aggregated results. 
-            Track your participation in "My Answers" and see how your input contributes to the bigger picture.
+            Navegue pelos inquéritos disponíveis no separador "Inquéritos", complete-os e veja os resultados agregados. 
+            Acompanhe a sua participação em "Minhas Respostas" e veja como a sua contribuição faz a diferença.
           </Text>
         </View>
 
         <View style={styles.footer}>
           <Ionicons name="heart" size={20} color="#ef4444" />
-          <Text style={styles.footerText}>Thank you for being part of our community!</Text>
+          <Text style={styles.footerText}>Obrigado por fazer parte da nossa comunidade!</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
