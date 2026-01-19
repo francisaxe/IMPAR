@@ -2,7 +2,8 @@ import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { Colors } from '../../constants/colors';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, Platform } from 'react-native';
+import TopNavigation from '../../components/TopNavigation';
 
 function HeaderTitle({ title }: { title: string }) {
   return (
@@ -20,29 +21,33 @@ function HeaderTitle({ title }: { title: string }) {
 export default function TabLayout() {
   const { user } = useAuth();
   const isOwner = user?.role === 'owner';
+  const isWeb = Platform.OS === 'web';
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.gray400,
-        tabBarStyle: {
-          backgroundColor: Colors.accent,
-          borderTopWidth: 1,
-          borderTopColor: Colors.gray200,
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
-        },
-        headerStyle: {
-          backgroundColor: Colors.primary,
-        },
-        headerTintColor: Colors.textWhite,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}
-    >
+    <>
+      {isWeb && <TopNavigation />}
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: Colors.primary,
+          tabBarInactiveTintColor: Colors.gray400,
+          tabBarStyle: isWeb ? { display: 'none' } : {
+            backgroundColor: Colors.accent,
+            borderTopWidth: 1,
+            borderTopColor: Colors.gray200,
+            height: 60,
+            paddingBottom: 8,
+            paddingTop: 8,
+          },
+          headerStyle: {
+            backgroundColor: isWeb ? 'transparent' : Colors.primary,
+          },
+          headerShown: !isWeb,
+          headerTintColor: Colors.textWhite,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
       <Tabs.Screen
         name="surveys"
         options={{
