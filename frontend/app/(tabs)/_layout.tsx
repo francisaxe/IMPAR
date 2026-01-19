@@ -8,7 +8,7 @@ function HeaderTitle({ title }: { title: string }) {
   return (
     <View style={styles.headerContainer}>
       <Image 
-        source={require('../../assets/rivi-logo.png')}
+        source={require('../../assets/impar-logo.png')}
         style={styles.headerLogo}
         resizeMode="contain"
       />

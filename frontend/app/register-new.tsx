@@ -158,7 +158,7 @@ export default function RegisterScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.header}>
             <Image 
-              source={require('../assets/rivi-logo.png')}
+              source={require('../assets/impar-logo.png')}
               style={styles.logo}
               resizeMode="contain"
             />
