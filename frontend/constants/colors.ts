@@ -1,13 +1,14 @@
-// RIVI Brand Colors
+// IMPAR Brand Colors - Preto e Branco
 export const Colors = {
-  // Primary Navy Blue
-  primary: '#1e3a5f',
-  primaryLight: '#2c5282',
-  primaryDark: '#162e4d',
+  // Primary Black
+  primary: '#000000',
+  primaryLight: '#333333',
+  primaryDark: '#000000',
   
   // Accent colors
   accent: '#ffffff',
   accentLight: '#f7fafc',
+  accentDark: '#e5e7eb',
   
   // Status colors
   success: '#10b981',
@@ -28,8 +29,8 @@ export const Colors = {
   gray900: '#111827',
   
   // Text colors
-  textPrimary: '#111827',
-  textSecondary: '#6b7280',
+  textPrimary: '#000000',
+  textSecondary: '#4b5563',
   textLight: '#9ca3af',
   textWhite: '#ffffff',
 };
