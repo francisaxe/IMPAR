@@ -51,12 +51,12 @@ export default function LoginScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.header}>
             <Image 
-              source={require('../assets/rivi-logo.png')}
+              source={require('../assets/impar-logo.png')}
               style={styles.logo}
               resizeMode="contain"
             />
-            <Text style={styles.title}>Welcome Back</Text>
-            <Text style={styles.subtitle}>Sign in to RIVI Survey</Text>
+            <Text style={styles.title}>Bem-vindo</Text>
+            <Text style={styles.subtitle}>Entre na IMPAR</Text>
           </View>
 
           <View style={styles.form}>
