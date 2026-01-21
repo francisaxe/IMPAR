@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/colors';
@@ -14,9 +14,10 @@ export default function SobreScreen() {
         styles.scrollContent,
         isDesktop && styles.scrollContentDesktop
       ]}>
+        {/* Header com IMPAR centralizado - mesmo tamanho que Início */}
         <View style={[styles.header, isDesktop && styles.headerDesktop]}>
           <Text style={styles.logoText}>IMPAR</Text>
-          <Text style={styles.subtitle}>Jornalismo Factual</Text>
+          <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método</Text>
         </View>
 
         {/* MISSÃO */}
@@ -101,7 +102,7 @@ export default function SobreScreen() {
             </Text>
           </View>
 
-          <View style={styles.valueItem}>
+          <View style={[styles.valueItem, { borderBottomWidth: 0 }]}>
             <View style={styles.valueHeader}>
               <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
               <Text style={styles.valueTitle}>Transparência e Responsabilidade</Text>
@@ -111,11 +112,6 @@ export default function SobreScreen() {
               Sabemos que as palavras têm impacto e agimos com consciência desse peso.
             </Text>
           </View>
-        </View>
-
-        <View style={styles.footer}>
-          <Ionicons name="heart" size={20} color="#ef4444" />
-          <Text style={styles.footerText}>Obrigado por fazer parte da nossa comunidade!</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -138,25 +134,26 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginBottom: 32,
-    paddingVertical: 24,
+    marginBottom: 40,
+    paddingVertical: 48,
   },
   headerDesktop: {
-    paddingVertical: 40,
-    marginBottom: 40,
+    paddingVertical: 64,
+    marginBottom: 48,
   },
   logoText: {
-    fontSize: 48,
+    fontSize: 64,
     fontWeight: 'bold',
     color: Colors.primary,
-    letterSpacing: 4,
-    marginBottom: 8,
+    letterSpacing: 6,
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '500',
     color: Colors.textSecondary,
     textAlign: 'center',
+    fontStyle: 'italic',
   },
   section: {
     backgroundColor: '#fff',
@@ -211,21 +208,5 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     lineHeight: 22,
     paddingLeft: 28,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 24,
-    marginBottom: 16,
-    padding: 16,
-    backgroundColor: '#fef2f2',
-    borderRadius: 12,
-  },
-  footerText: {
-    fontSize: 16,
-    color: '#991b1b',
-    marginLeft: 8,
-    fontWeight: '600',
   },
 });
