@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/colors';
 
@@ -7,8 +8,6 @@ export default function SobreScreen() {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 768;
   
-  // Calcular largura das imagens (3 lado a lado em desktop, empilhadas em mobile)
-  const imageWidth = isDesktop ? (width - 128) / 3 - 16 : width - 64;
   const imageHeight = 200;
 
   return (
@@ -24,12 +23,12 @@ export default function SobreScreen() {
             style={styles.logoImage}
             resizeMode="contain"
           />
-          <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método</Text>
+          <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método.</Text>
         </View>
 
         {/* O PROBLEMA */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>O Problema</Text>
+          <Text style={styles.sectionTitleCentered}>O Problema</Text>
           
           <Text style={styles.sectionText}>
             Vivemos num tempo de abundância informativa e escassez de clareza. Nunca houve tanta informação disponível, nem tantos canais a produzi-la, mas essa quantidade não se traduziu numa melhor compreensão da realidade. A velocidade e a fragmentação transformaram a informação num fluxo constante de ruído.
@@ -79,10 +78,48 @@ export default function SobreScreen() {
 
         {/* A NOSSA RESPOSTA */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>A Nossa Resposta</Text>
+          <Text style={styles.sectionTitleCentered}>A Nossa Resposta</Text>
           
           <Text style={styles.sectionText}>
             A resposta da IMPAR é simples, mas exigente: entender qual a realidade em que vivemos e analisá-la com imparcialidade, independência e rigor.
+          </Text>
+        </View>
+
+        {/* PARTICIPA NAS NOSSAS SONDAGENS */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Ionicons name="bulb" size={24} color="#f59e0b" />
+            <Text style={styles.sectionTitle}>Participa nas Nossas Sondagens</Text>
+          </View>
+          <View style={styles.benefitsList}>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Partilhe as suas opiniões valiosas</Text>
+            </View>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Influencie decisões importantes</Text>
+            </View>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Veja resultados em tempo real</Text>
+            </View>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Sondagens rápidas e fáceis</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* COMO PARTICIPAR */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Ionicons name="rocket" size={24} color="#ef4444" />
+            <Text style={styles.sectionTitle}>Como Participar</Text>
+          </View>
+          <Text style={styles.sectionText}>
+            Navegue pelas sondagens disponíveis no separador "Sondagens", complete-as e veja os resultados agregados. 
+            Acompanhe a sua participação em "Respostas" e veja como a sua contribuição faz a diferença.
           </Text>
         </View>
 
@@ -139,7 +176,19 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   sectionTitle: {
+    fontSize: 20,
+    fontFamily: Fonts.heading.bold,
+    color: Colors.primary,
+    marginLeft: 12,
+    letterSpacing: 0.5,
+  },
+  sectionTitleCentered: {
     fontSize: 28,
     fontFamily: Fonts.heading.bold,
     color: Colors.primary,
@@ -188,5 +237,20 @@ const styles = StyleSheet.create({
   sondagemImage: {
     borderRadius: 12,
     marginBottom: 16,
+  },
+  benefitsList: {
+    marginTop: 8,
+  },
+  benefitItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  benefitText: {
+    fontSize: 16,
+    fontFamily: Fonts.body.regular,
+    color: '#4b5563',
+    marginLeft: 12,
+    flex: 1,
   },
 });
