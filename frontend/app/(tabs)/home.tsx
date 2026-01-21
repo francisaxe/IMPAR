@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/colors';
 
@@ -20,7 +21,7 @@ export default function HomeScreen() {
             style={styles.logoImage}
             resizeMode="contain"
           />
-          <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método</Text>
+          <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método.</Text>
         </View>
 
         {/* Texto introdutório */}
@@ -43,6 +44,44 @@ export default function HomeScreen() {
           </Text>
         </View>
 
+        {/* PARTICIPA NAS NOSSAS SONDAGENS */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Ionicons name="bulb" size={24} color="#f59e0b" />
+            <Text style={styles.sectionTitle}>Participa nas Nossas Sondagens</Text>
+          </View>
+          <View style={styles.benefitsList}>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Partilhe as suas opiniões valiosas</Text>
+            </View>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Influencie decisões importantes</Text>
+            </View>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Veja resultados em tempo real</Text>
+            </View>
+            <View style={styles.benefitItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
+              <Text style={styles.benefitText}>Sondagens rápidas e fáceis</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* COMO PARTICIPAR */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Ionicons name="rocket" size={24} color="#ef4444" />
+            <Text style={styles.sectionTitle}>Como Participar</Text>
+          </View>
+          <Text style={styles.sectionText}>
+            Navegue pelas sondagens disponíveis no separador "Sondagens", complete-as e veja os resultados agregados. 
+            Acompanhe a sua participação em "Respostas" e veja como a sua contribuição faz a diferença.
+          </Text>
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -59,7 +98,7 @@ const styles = StyleSheet.create({
   },
   scrollContentDesktop: {
     padding: 32,
-    maxWidth: 900,
+    maxWidth: 1000,
     alignSelf: 'center',
     width: '100%',
   },
@@ -91,12 +130,17 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1,
     borderColor: Colors.gray200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
   introText: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: Fonts.body.regular,
-    color: Colors.textPrimary,
-    lineHeight: 28,
+    color: Colors.textSecondary,
+    lineHeight: 26,
     textAlign: 'center',
   },
   adminSection: {
@@ -109,6 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     minHeight: 200,
     justifyContent: 'center',
+    marginBottom: 24,
   },
   adminPlaceholder: {
     fontSize: 20,
@@ -121,5 +166,51 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.body.regular,
     color: Colors.gray400,
     textAlign: 'center',
+  },
+  section: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: Colors.gray200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontFamily: Fonts.heading.bold,
+    color: Colors.primary,
+    marginLeft: 12,
+    letterSpacing: 0.5,
+  },
+  sectionText: {
+    fontSize: 15,
+    fontFamily: Fonts.body.regular,
+    color: Colors.textSecondary,
+    lineHeight: 24,
+  },
+  benefitsList: {
+    marginTop: 8,
+  },
+  benefitItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  benefitText: {
+    fontSize: 16,
+    fontFamily: Fonts.body.regular,
+    color: '#4b5563',
+    marginLeft: 12,
+    flex: 1,
   },
 });
