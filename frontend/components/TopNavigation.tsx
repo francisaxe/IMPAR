@@ -103,7 +103,11 @@ export default function TopNavigation() {
           <View style={styles.mobileMenuContainer}>
             {/* Header do menu mobile */}
             <View style={styles.mobileMenuHeader}>
-              <Text style={styles.logoTextMobile}>IMPAR</Text>
+              <Image 
+                source={require('../../assets/impar-logo.png')} 
+                style={styles.logoImageMobile}
+                resizeMode="contain"
+              />
               <TouchableOpacity onPress={() => setMenuOpen(false)}>
                 <Ionicons name="close" size={28} color={Colors.primary} />
               </TouchableOpacity>
