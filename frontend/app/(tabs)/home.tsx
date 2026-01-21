@@ -171,10 +171,20 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 16,
   },
+  scrollContentDesktop: {
+    padding: 32,
+    maxWidth: 900,
+    alignSelf: 'center',
+    width: '100%',
+  },
   header: {
     alignItems: 'center',
     marginBottom: 32,
     paddingVertical: 24,
+  },
+  headerDesktop: {
+    paddingVertical: 40,
+    marginBottom: 40,
   },
   logo: {
     width: 200,
