@@ -175,10 +175,10 @@ export default function CreateSurveyScreen() {
           </TouchableOpacity>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Título do Inquérito *</Text>
+            <Text style={styles.label}>Título da Sondagem *</Text>
             <TextInput
               style={styles.input}
-              placeholder="Insira o título do inquérito"
+              placeholder="Insira o título da sondagem"
               value={title}
               onChangeText={setTitle}
               placeholderTextColor="#9ca3af"
@@ -189,13 +189,27 @@ export default function CreateSurveyScreen() {
             <Text style={styles.label}>Descrição</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
-              placeholder="Insira a descrição do inquérito"
+              placeholder="Insira a descrição da sondagem"
               value={description}
               onChangeText={setDescription}
               multiline
               numberOfLines={3}
               placeholderTextColor="#9ca3af"
             />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.label}>Data Limite (Opcional)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="AAAA-MM-DD (ex: 2026-02-15)"
+              value={endDate}
+              onChangeText={setEndDate}
+              placeholderTextColor="#9ca3af"
+            />
+            <Text style={styles.helperText}>
+              Deixe em branco se a sondagem não tiver data de fim
+            </Text>
           </View>
 
           <View style={styles.section}>
