@@ -177,13 +177,14 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.bold,
     color: Colors.primary,
     marginLeft: 12,
     letterSpacing: 0.5,
   },
   sectionText: {
     fontSize: 15,
+    fontFamily: Fonts.body.regular,
     color: Colors.textSecondary,
     lineHeight: 24,
     marginBottom: 12,
