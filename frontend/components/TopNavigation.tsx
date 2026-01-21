@@ -46,7 +46,11 @@ export default function TopNavigation() {
           style={styles.logoContainer}
           onPress={() => navigateTo('/(tabs)/home')}
         >
-          <Text style={styles.logoText}>IMPAR</Text>
+          <Image 
+            source={require('../../assets/impar-logo.png')} 
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
 
         {/* Desktop Menu */}
