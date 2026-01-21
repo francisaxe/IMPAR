@@ -386,17 +386,19 @@ const styles = StyleSheet.create({
   },
   textResultCount: {
     fontSize: 48,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.bold,
     color: Colors.primary,
     marginTop: 12,
   },
   textResultLabel: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: '#6b7280',
     marginTop: 4,
   },
   noDataText: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: '#9ca3af',
     fontStyle: 'italic',
     textAlign: 'center',
