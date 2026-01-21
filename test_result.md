@@ -224,6 +224,81 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: My responses endpoint working correctly. Returns list of surveys user has answered with proper structure (survey_id, survey_title, submitted_at). Currently showing 1 answered survey for test user."
+  
+  - task: "Get user profile (GET /api/profile)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented GET /api/profile endpoint. Returns complete user profile with all personal data fields including birth_date, gender, nationality, district, municipality, parish, marital_status, religion, education_level, profession, lived_abroad, abroad_duration."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/profile endpoint working perfectly. Returns user profile with all required fields (id, email, name, role) plus extended profile data. Authentication working correctly."
+  
+  - task: "Update user profile (PUT /api/profile)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented PUT /api/profile endpoint. Allows updating profile fields (name, birth_date, gender, nationality, district, municipality, parish, marital_status, religion, education_level, profession, lived_abroad, abroad_duration). Only updates provided fields."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: PUT /api/profile endpoint working perfectly. Successfully updates profile fields (name, profession, nationality tested). Changes are persisted and retrievable via GET /api/profile."
+  
+  - task: "Team application submission (POST /api/team-application)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented POST /api/team-application endpoint. Allows users to submit team applications with message. Stores user info, message, timestamp and status (pending)."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: POST /api/team-application endpoint working perfectly. Successfully submits team applications with proper message response. Authentication required and working."
+  
+  - task: "Feature/unfeature surveys (PUT /api/surveys/{id}/feature)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented PUT /api/surveys/{survey_id}/feature endpoint. Owner-only access. Toggles featured status of surveys. Enforces 3-feature limit across surveys and news. Returns updated featured status."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: PUT /api/surveys/{id}/feature endpoint working perfectly. Owner can toggle feature status, regular users correctly denied (403). Feature limit enforcement working (max 3 total featured items)."
+  
+  - task: "Get featured content (GET /api/featured)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented GET /api/featured endpoint. Public endpoint (no authentication required). Returns up to 3 featured items (surveys and news) sorted by creation date. Includes type, title, description, and relevant metadata."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/featured endpoint working perfectly. Public access working (no authentication required). Returns featured content list with proper structure. Correctly shows featured surveys when they are featured."
 
 frontend:
   - task: "Authentication screens (login/register)"
