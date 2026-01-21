@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   },
   surveyTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.bold,
     color: '#111827',
     marginBottom: 16,
   },
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   },
   responseCountText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.body.semiBold,
     color: Colors.primary,
     marginLeft: 8,
   },
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   },
   questionNumber: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: Fonts.body.semiBold,
     color: Colors.primary,
     marginBottom: 8,
   },
