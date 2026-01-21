@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 # Backend URL from frontend .env
-BACKEND_URL = "https://quick-polls-3.preview.emergentagent.com/api"
+BACKEND_URL = "https://feedback-flow-23.preview.emergentagent.com/api"
 
 # Test accounts
 OWNER_EMAIL = "owner@survey.com"
