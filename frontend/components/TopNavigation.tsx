@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, useWindowDimensions, Modal, Pressable } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '../constants/colors';
+import { Colors, Fonts } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function TopNavigation() {
