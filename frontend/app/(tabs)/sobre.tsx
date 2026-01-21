@@ -202,12 +202,13 @@ const styles = StyleSheet.create({
   },
   valueTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.semiBold,
     color: Colors.primary,
     marginLeft: 8,
   },
   valueText: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: Colors.textSecondary,
     lineHeight: 22,
     paddingLeft: 28,
