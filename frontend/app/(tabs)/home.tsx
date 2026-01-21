@@ -22,7 +22,10 @@ export default function HomeScreen() {
         {/* Texto introdutório */}
         <View style={styles.introSection}>
           <Text style={styles.introText}>
-            Vivemos num tempo de abundância informativa e escassez de clareza. A IMPAR nasce para examinar os factos com rigor, contexto e responsabilidade.
+            Vivemos num tempo de abundância informativa e escassez de clareza.
+          </Text>
+          <Text style={[styles.introText, { marginTop: 16, marginBottom: 0 }]}>
+            A IMPAR nasce para examinar os factos com rigor, contexto e responsabilidade.
           </Text>
         </View>
 
