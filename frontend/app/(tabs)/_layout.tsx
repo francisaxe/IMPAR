@@ -28,6 +28,7 @@ export default function TabLayout() {
           name="suggest" 
           options={{ href: !isOwner ? undefined : null }}
         />
+        <Tabs.Screen name="sobre" />
         <Tabs.Screen name="profile" />
       </Tabs>
     </>

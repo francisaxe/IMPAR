@@ -18,13 +18,14 @@ export default function TopNavigation() {
 
   const menuItems = [
     { name: 'Início', path: '/(tabs)/home', icon: 'home-outline' as const },
-    { name: 'Inquéritos', path: '/(tabs)/surveys', icon: 'list-outline' as const },
+    { name: 'Sondagens', path: '/(tabs)/surveys', icon: 'list-outline' as const },
     { name: 'Respostas', path: '/(tabs)/my-answers', icon: 'checkmark-circle-outline' as const },
     { 
       name: isOwner ? 'Criar' : 'Sugerir', 
       path: isOwner ? '/(tabs)/create' : '/(tabs)/suggest', 
       icon: isOwner ? 'add-circle-outline' as const : 'bulb-outline' as const 
     },
+    { name: 'Sobre', path: '/(tabs)/sobre', icon: 'information-circle-outline' as const },
     { name: 'Perfil', path: '/(tabs)/profile', icon: 'person-outline' as const },
   ];
 
@@ -45,11 +46,7 @@ export default function TopNavigation() {
           style={styles.logoContainer}
           onPress={() => navigateTo('/(tabs)/home')}
         >
-          <Image 
-            source={require('../assets/impar-logo.png')}
-            style={[styles.logo, isMobile && styles.logoMobile]}
-            resizeMode="contain"
-          />
+          <Text style={styles.logoText}>IMPAR</Text>
         </TouchableOpacity>
 
         {/* Desktop Menu */}
@@ -66,7 +63,7 @@ export default function TopNavigation() {
               >
                 <Ionicons 
                   name={isActive(item.path) ? item.icon.replace('-outline', '') as any : item.icon} 
-                  size={20} 
+                  size={18} 
                   color={isActive(item.path) ? Colors.primary : Colors.textSecondary} 
                 />
                 <Text style={[
@@ -102,11 +99,7 @@ export default function TopNavigation() {
           <View style={styles.mobileMenuContainer}>
             {/* Header do menu mobile */}
             <View style={styles.mobileMenuHeader}>
-              <Image 
-                source={require('../assets/impar-logo.png')}
-                style={styles.logoMobile}
-                resizeMode="contain"
-              />
+              <Text style={styles.logoTextMobile}>IMPAR</Text>
               <TouchableOpacity onPress={() => setMenuOpen(false)}>
                 <Ionicons name="close" size={28} color={Colors.primary} />
               </TouchableOpacity>
@@ -180,32 +173,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logo: {
-    width: 180,
-    height: 60,
+  logoText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: Colors.primary,
+    letterSpacing: 2,
   },
-  logoMobile: {
-    width: 140,
-    height: 48,
+  logoTextMobile: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: Colors.primary,
+    letterSpacing: 2,
   },
   menu: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 2,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 8,
-    gap: 6,
+    gap: 5,
   },
   menuItemActive: {
     backgroundColor: Colors.gray100,
   },
   menuText: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '500',
     color: Colors.textSecondary,
   },
