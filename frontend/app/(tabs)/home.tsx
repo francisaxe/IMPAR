@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors } from '../../constants/colors';
+import { Colors, Fonts } from '../../constants/colors';
 
 export default function HomeScreen() {
   const { width } = useWindowDimensions();
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: Fonts.heading.regular,
     color: Colors.textSecondary,
     textAlign: 'center',
     fontStyle: 'italic',
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
   },
   introText: {
     fontSize: 18,
+    fontFamily: Fonts.body.regular,
     color: Colors.textPrimary,
     lineHeight: 28,
     textAlign: 'center',
@@ -111,12 +112,13 @@ const styles = StyleSheet.create({
   },
   adminPlaceholder: {
     fontSize: 20,
-    fontWeight: '600',
+    fontFamily: Fonts.heading.semiBold,
     color: Colors.gray400,
     marginBottom: 8,
   },
   adminSubtext: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: Colors.gray400,
     textAlign: 'center',
   },
