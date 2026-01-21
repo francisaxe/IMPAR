@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.bold,
     color: '#fff',
   },
   scrollContent: {
