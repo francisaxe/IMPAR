@@ -226,6 +226,72 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         "role": current_user["role"]
     }
 
+@api_router.get("/profile")
+async def get_profile(current_user: dict = Depends(get_current_user)):
+    return {
+        "id": str(current_user["_id"]),
+        "email": current_user["email"],
+        "name": current_user.get("name", ""),
+        "role": current_user["role"],
+        "birth_date": current_user.get("birth_date", ""),
+        "gender": current_user.get("gender", ""),
+        "nationality": current_user.get("nationality", ""),
+        "district": current_user.get("district", ""),
+        "municipality": current_user.get("municipality", ""),
+        "parish": current_user.get("parish", ""),
+        "marital_status": current_user.get("marital_status", ""),
+        "religion": current_user.get("religion", ""),
+        "education_level": current_user.get("education_level", ""),
+        "profession": current_user.get("profession", ""),
+        "lived_abroad": current_user.get("lived_abroad", False),
+        "abroad_duration": current_user.get("abroad_duration", "")
+    }
+
+class ProfileUpdate(BaseModel):
+    name: Optional[str] = None
+    birth_date: Optional[str] = None
+    gender: Optional[str] = None
+    nationality: Optional[str] = None
+    district: Optional[str] = None
+    municipality: Optional[str] = None
+    parish: Optional[str] = None
+    marital_status: Optional[str] = None
+    religion: Optional[str] = None
+    education_level: Optional[str] = None
+    profession: Optional[str] = None
+    lived_abroad: Optional[bool] = None
+    abroad_duration: Optional[str] = None
+
+@api_router.put("/profile")
+async def update_profile(profile_data: ProfileUpdate, current_user: dict = Depends(get_current_user)):
+    update_dict = {k: v for k, v in profile_data.dict().items() if v is not None}
+    
+    if update_dict:
+        await db.users.update_one(
+            {"_id": current_user["_id"]},
+            {"$set": update_dict}
+        )
+    
+    return {"message": "Perfil atualizado com sucesso"}
+
+class TeamApplication(BaseModel):
+    message: str
+
+@api_router.post("/team-application")
+async def submit_team_application(application: TeamApplication, current_user: dict = Depends(get_current_user)):
+    application_dict = {
+        "user_id": str(current_user["_id"]),
+        "user_name": current_user.get("name", ""),
+        "user_email": current_user["email"],
+        "message": application.message,
+        "created_at": datetime.utcnow(),
+        "status": "pending"
+    }
+    
+    await db.team_applications.insert_one(application_dict)
+    
+    return {"message": "Candidatura enviada com sucesso"}
+
 # Survey endpoints
 @api_router.post("/surveys")
 async def create_survey(survey_data: SurveyCreate, current_user: dict = Depends(get_owner_user)):
