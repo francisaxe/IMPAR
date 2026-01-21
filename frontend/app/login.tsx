@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
   Image,
+  useWindowDimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../contexts/AuthContext';
@@ -24,10 +25,12 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Erro', 'Por favor, preencha todos os campos');
       return;
     }
 
@@ -36,7 +39,7 @@ export default function LoginScreen() {
       await login(email, password);
       router.replace('/(tabs)/surveys');
     } catch (error: any) {
-      Alert.alert('Login Failed', error.message);
+      Alert.alert('Falha no Login', error.message);
     } finally {
       setLoading(false);
     }
@@ -48,60 +51,65 @@ export default function LoginScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.header}>
-            <Image 
-              source={require('../assets/impar-logo.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
-            <Text style={styles.title}>Bem-vindo</Text>
-            <Text style={styles.subtitle}>Entre na IMPAR</Text>
-          </View>
-
-          <View style={styles.form}>
-            <View style={styles.inputContainer}>
-              <Ionicons name="mail-outline" size={20} color={Colors.gray400} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                placeholderTextColor={Colors.gray400}
+        <ScrollView contentContainerStyle={[
+          styles.scrollContent,
+          isDesktop && styles.scrollContentDesktop
+        ]}>
+          <View style={[styles.formContainer, isDesktop && styles.formContainerDesktop]}>
+            <View style={styles.header}>
+              <Image 
+                source={require('../assets/impar-logo.png')}
+                style={[styles.logo, isDesktop && styles.logoDesktop]}
+                resizeMode="contain"
               />
+              <Text style={[styles.title, isDesktop && styles.titleDesktop]}>Bem-vindo</Text>
+              <Text style={styles.subtitle}>Entre na IMPAR</Text>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Ionicons name="lock-closed-outline" size={20} color={Colors.gray400} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
+            <View style={styles.form}>
+              <View style={styles.inputContainer}>
+                <Ionicons name="mail-outline" size={20} color={Colors.gray400} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  placeholderTextColor={Colors.gray400}
+                />
+              </View>
 
-            <TouchableOpacity
-              style={[styles.button, loading && styles.buttonDisabled]}
-              onPress={handleLogin}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.buttonText}>Sign In</Text>
-              )}
-            </TouchableOpacity>
+              <View style={styles.inputContainer}>
+                <Ionicons name="lock-closed-outline" size={20} color={Colors.gray400} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Palavra-passe"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  placeholderTextColor={Colors.gray400}
+                />
+              </View>
 
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={() => router.push('/register')}>
-                <Text style={styles.link}>Sign Up</Text>
+              <TouchableOpacity
+                style={[styles.button, loading && styles.buttonDisabled]}
+                onPress={handleLogin}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.buttonText}>Entrar</Text>
+                )}
               </TouchableOpacity>
+
+              <View style={styles.footer}>
+                <Text style={styles.footerText}>Não tem conta? </Text>
+                <TouchableOpacity onPress={() => router.push('/register')}>
+                  <Text style={styles.link}>Registar</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -123,6 +131,23 @@ const styles = StyleSheet.create({
     padding: 24,
     justifyContent: 'center',
   },
+  scrollContentDesktop: {
+    alignItems: 'center',
+  },
+  formContainer: {
+    width: '100%',
+  },
+  formContainerDesktop: {
+    maxWidth: 450,
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    padding: 48,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 5,
+  },
   header: {
     alignItems: 'center',
     marginBottom: 48,
@@ -132,11 +157,18 @@ const styles = StyleSheet.create({
     height: 80,
     marginBottom: 24,
   },
+  logoDesktop: {
+    width: 180,
+    height: 72,
+  },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: Colors.primary,
     marginBottom: 8,
+  },
+  titleDesktop: {
+    fontSize: 28,
   },
   subtitle: {
     fontSize: 16,

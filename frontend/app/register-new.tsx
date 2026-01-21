@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
   Image,
+  useWindowDimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../contexts/AuthContext';
@@ -20,6 +21,8 @@ import { Colors } from '../constants/colors';
 import { PORTUGAL_DATA } from '../constants/portugalData';
 
 export default function RegisterScreen() {
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,7 +54,6 @@ export default function RegisterScreen() {
   const parishes = municipality ? PORTUGAL_DATA.getParishes(municipality) : [];
 
   const handleRegister = async () => {
-    // Validation
     if (!name || !email || !password || !birthDate || !gender || !nationality || 
         !district || !municipality || !parish || !maritalStatus || !religion || 
         !educationLevel || !profession || !livedAbroad) {
@@ -64,7 +66,7 @@ export default function RegisterScreen() {
       return;
     }
 
-    if (livedAbroad === 'sim' && !abroadDuration) {
+    if (livedAbroad === 'Sim' && !abroadDuration) {
       Alert.alert('Erro', 'Por favor, indique quanto tempo viveu no estrangeiro');
       return;
     }
@@ -88,8 +90,8 @@ export default function RegisterScreen() {
           religion,
           education_level: educationLevel,
           profession,
-          lived_abroad: livedAbroad === 'sim',
-          abroad_duration: livedAbroad === 'sim' ? abroadDuration : null,
+          lived_abroad: livedAbroad === 'Sim',
+          abroad_duration: livedAbroad === 'Sim' ? abroadDuration : null,
         }),
       });
 
@@ -99,7 +101,6 @@ export default function RegisterScreen() {
         throw new Error(data.detail || 'Falha no registro');
       }
 
-      // Save to storage manually
       const AsyncStorage = require('@react-native-async-storage/async-storage').default;
       await AsyncStorage.setItem('token', data.token);
       await AsyncStorage.setItem('user', JSON.stringify(data.user));
@@ -131,7 +132,7 @@ export default function RegisterScreen() {
         <Ionicons name="chevron-down" size={20} color={Colors.gray400} />
       </TouchableOpacity>
       {show && (
-        <View style={styles.pickerContainer}>
+        <ScrollView style={styles.pickerContainer} nestedScrollEnabled>
           {options.map((option) => (
             <TouchableOpacity
               key={option}
@@ -144,7 +145,7 @@ export default function RegisterScreen() {
               <Text style={styles.pickerOptionText}>{option}</Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
       )}
     </>
   );
@@ -155,235 +156,237 @@ export default function RegisterScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.header}>
-            <Image 
-              source={require('../assets/impar-logo.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
-            <Text style={styles.title}>Criar Conta</Text>
-            <Text style={styles.subtitle}>Registe-se na IMPAR</Text>
-          </View>
-
-          <View style={styles.form}>
-            {/* Nome */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>1. Nome Completo *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Nome completo"
-                value={name}
-                onChangeText={setName}
-                placeholderTextColor={Colors.gray400}
+        <ScrollView contentContainerStyle={[
+          styles.scrollContent,
+          isDesktop && styles.scrollContentDesktop
+        ]}>
+          <View style={[styles.formContainer, isDesktop && styles.formContainerDesktop]}>
+            <View style={styles.header}>
+              <Image 
+                source={require('../assets/impar-logo.png')}
+                style={styles.logo}
+                resizeMode="contain"
               />
+              <Text style={styles.title}>Criar Conta</Text>
+              <Text style={styles.subtitle}>Registe-se na IMPAR</Text>
             </View>
 
-            {/* Email e Password */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Palavra-passe *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Palavra-passe (mín 6 caracteres)"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
-
-            {/* Data de Nascimento */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>2. Data de Nascimento *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="DD/MM/AAAA"
-                value={birthDate}
-                onChangeText={setBirthDate}
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
-
-            {/* Género */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>3. Género *</Text>
-              {renderPicker(
-                showGenderPicker,
-                setShowGenderPicker,
-                gender,
-                setGender,
-                ['Masculino', 'Feminino'],
-                'Selecione o género'
-              )}
-            </View>
-
-            {/* Nacionalidade */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>4. Nacionalidade *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Nacionalidade"
-                value={nationality}
-                onChangeText={setNationality}
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
-
-            {/* Onde Vive */}
-            <Text style={styles.sectionTitle}>5. Onde Vive *</Text>
-            
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Distrito *</Text>
-              {renderPicker(
-                showDistrictPicker,
-                setShowDistrictPicker,
-                district,
-                (value) => {
-                  setDistrict(value);
-                  setMunicipality('');
-                  setParish('');
-                },
-                PORTUGAL_DATA.districts,
-                'Selecione o distrito'
-              )}
-            </View>
-
-            {district && (
+            <View style={styles.form}>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Concelho *</Text>
-                {renderPicker(
-                  showMunicipalityPicker,
-                  setShowMunicipalityPicker,
-                  municipality,
-                  (value) => {
-                    setMunicipality(value);
-                    setParish('');
-                  },
-                  municipalities,
-                  'Selecione o concelho'
-                )}
-              </View>
-            )}
-
-            {municipality && (
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Freguesia *</Text>
-                {renderPicker(
-                  showParishPicker,
-                  setShowParishPicker,
-                  parish,
-                  setParish,
-                  parishes,
-                  'Selecione a freguesia'
-                )}
-              </View>
-            )}
-
-            {/* Estado Civil */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>6. Estado Civil *</Text>
-              {renderPicker(
-                showMaritalPicker,
-                setShowMaritalPicker,
-                maritalStatus,
-                setMaritalStatus,
-                ['Solteiro', 'Casado', 'Divorciado', 'Viúvo'],
-                'Selecione o estado civil'
-              )}
-            </View>
-
-            {/* Religião */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>7. Religião *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Religião"
-                value={religion}
-                onChangeText={setReligion}
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
-
-            {/* Escolaridade */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>8. Nível de Escolaridade *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Nível mais elevado completado"
-                value={educationLevel}
-                onChangeText={setEducationLevel}
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
-
-            {/* Profissão */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>9. Profissão *</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Profissão"
-                value={profession}
-                onChangeText={setProfession}
-                placeholderTextColor={Colors.gray400}
-              />
-            </View>
-
-            {/* Viveu no Estrangeiro */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>10. Já viveu no estrangeiro? *</Text>
-              {renderPicker(
-                showAbroadPicker,
-                setShowAbroadPicker,
-                livedAbroad,
-                setLivedAbroad,
-                ['Sim', 'Não'],
-                'Selecione'
-              )}
-            </View>
-
-            {livedAbroad === 'Sim' && (
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>10.2. Quanto tempo? *</Text>
+                <Text style={styles.label}>1. Nome Completo *</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Ex: 2 anos, 6 meses"
-                  value={abroadDuration}
-                  onChangeText={setAbroadDuration}
+                  placeholder="Nome completo"
+                  value={name}
+                  onChangeText={setName}
                   placeholderTextColor={Colors.gray400}
                 />
               </View>
-            )}
 
-            <TouchableOpacity
-              style={[styles.button, loading && styles.buttonDisabled]}
-              onPress={handleRegister}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.buttonText}>Registar</Text>
+              <View style={[styles.row, isDesktop && styles.rowDesktop]}>
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>Email *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    placeholderTextColor={Colors.gray400}
+                  />
+                </View>
+
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>Palavra-passe *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Palavra-passe (mín 6 caracteres)"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    placeholderTextColor={Colors.gray400}
+                  />
+                </View>
+              </View>
+
+              <View style={[styles.row, isDesktop && styles.rowDesktop]}>
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>2. Data de Nascimento *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="DD/MM/AAAA"
+                    value={birthDate}
+                    onChangeText={setBirthDate}
+                    placeholderTextColor={Colors.gray400}
+                  />
+                </View>
+
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>3. Género *</Text>
+                  {renderPicker(
+                    showGenderPicker,
+                    setShowGenderPicker,
+                    gender,
+                    setGender,
+                    ['Masculino', 'Feminino'],
+                    'Selecione o género'
+                  )}
+                </View>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>4. Nacionalidade *</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Nacionalidade"
+                  value={nationality}
+                  onChangeText={setNationality}
+                  placeholderTextColor={Colors.gray400}
+                />
+              </View>
+
+              <Text style={styles.sectionTitle}>5. Onde Vive *</Text>
+              
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Distrito *</Text>
+                {renderPicker(
+                  showDistrictPicker,
+                  setShowDistrictPicker,
+                  district,
+                  (value) => {
+                    setDistrict(value);
+                    setMunicipality('');
+                    setParish('');
+                  },
+                  PORTUGAL_DATA.districts,
+                  'Selecione o distrito'
+                )}
+              </View>
+
+              {district && (
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Concelho *</Text>
+                  {renderPicker(
+                    showMunicipalityPicker,
+                    setShowMunicipalityPicker,
+                    municipality,
+                    (value) => {
+                      setMunicipality(value);
+                      setParish('');
+                    },
+                    municipalities,
+                    'Selecione o concelho'
+                  )}
+                </View>
               )}
-            </TouchableOpacity>
 
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Já tem conta? </Text>
-              <TouchableOpacity onPress={() => router.push('/login')}>
-                <Text style={styles.link}>Entrar</Text>
+              {municipality && (
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Freguesia *</Text>
+                  {renderPicker(
+                    showParishPicker,
+                    setShowParishPicker,
+                    parish,
+                    setParish,
+                    parishes,
+                    'Selecione a freguesia'
+                  )}
+                </View>
+              )}
+
+              <View style={[styles.row, isDesktop && styles.rowDesktop]}>
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>6. Estado Civil *</Text>
+                  {renderPicker(
+                    showMaritalPicker,
+                    setShowMaritalPicker,
+                    maritalStatus,
+                    setMaritalStatus,
+                    ['Solteiro', 'Casado', 'Divorciado', 'Viúvo'],
+                    'Selecione o estado civil'
+                  )}
+                </View>
+
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>7. Religião *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Religião"
+                    value={religion}
+                    onChangeText={setReligion}
+                    placeholderTextColor={Colors.gray400}
+                  />
+                </View>
+              </View>
+
+              <View style={[styles.row, isDesktop && styles.rowDesktop]}>
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>8. Nível de Escolaridade *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Nível mais elevado completado"
+                    value={educationLevel}
+                    onChangeText={setEducationLevel}
+                    placeholderTextColor={Colors.gray400}
+                  />
+                </View>
+
+                <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
+                  <Text style={styles.label}>9. Profissão *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Profissão"
+                    value={profession}
+                    onChangeText={setProfession}
+                    placeholderTextColor={Colors.gray400}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>10. Já viveu no estrangeiro? *</Text>
+                {renderPicker(
+                  showAbroadPicker,
+                  setShowAbroadPicker,
+                  livedAbroad,
+                  setLivedAbroad,
+                  ['Sim', 'Não'],
+                  'Selecione'
+                )}
+              </View>
+
+              {livedAbroad === 'Sim' && (
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>10.2. Quanto tempo? *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Ex: 2 anos, 6 meses"
+                    value={abroadDuration}
+                    onChangeText={setAbroadDuration}
+                    placeholderTextColor={Colors.gray400}
+                  />
+                </View>
+              )}
+
+              <TouchableOpacity
+                style={[styles.button, loading && styles.buttonDisabled]}
+                onPress={handleRegister}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.buttonText}>Registar</Text>
+                )}
               </TouchableOpacity>
+
+              <View style={styles.footer}>
+                <Text style={styles.footerText}>Já tem conta? </Text>
+                <TouchableOpacity onPress={() => router.push('/login')}>
+                  <Text style={styles.link}>Entrar</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -404,10 +407,27 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 24,
   },
+  scrollContentDesktop: {
+    alignItems: 'center',
+    paddingVertical: 32,
+  },
+  formContainer: {
+    width: '100%',
+  },
+  formContainerDesktop: {
+    maxWidth: 700,
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    padding: 48,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 5,
+  },
   header: {
     alignItems: 'center',
     marginBottom: 32,
-    marginTop: 16,
   },
   logo: {
     width: 150,
@@ -426,6 +446,16 @@ const styles = StyleSheet.create({
   },
   form: {
     width: '100%',
+  },
+  row: {
+    width: '100%',
+  },
+  rowDesktop: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  halfWidth: {
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 18,

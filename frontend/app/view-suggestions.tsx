@@ -7,11 +7,13 @@ import {
   StyleSheet,
   ActivityIndicator,
   RefreshControl,
+  useWindowDimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../constants/colors';
 
 interface Suggestion {
   id: string;
@@ -30,6 +32,8 @@ export default function ViewSuggestionsScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
 
   const fetchSuggestions = async () => {
     try {
@@ -54,7 +58,7 @@ export default function ViewSuggestionsScreen() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('pt-PT', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -65,17 +69,17 @@ export default function ViewSuggestionsScreen() {
 
   const getQuestionTypeLabel = (type: string) => {
     const types: { [key: string]: string } = {
-      'multiple_choice_single': 'Multiple Choice (Single)',
-      'multiple_choice_multiple': 'Multiple Choice (Multiple)',
-      'text_short': 'Short Text',
-      'text_long': 'Long Text',
-      'rating': 'Rating (1-5)',
+      'multiple_choice_single': 'Escolha Múltipla (Uma)',
+      'multiple_choice_multiple': 'Escolha Múltipla (Várias)',
+      'text_short': 'Texto Curto',
+      'text_long': 'Texto Longo',
+      'rating': 'Avaliação (1-5)',
     };
     return types[type] || type;
   };
 
   const renderSuggestion = ({ item }: { item: Suggestion }) => (
-    <View style={styles.card}>
+    <View style={[styles.card, isDesktop && styles.cardDesktop]}>
       <View style={styles.cardHeader}>
         <View style={styles.iconContainer}>
           <Ionicons name="bulb" size={24} color="#f59e0b" />
@@ -89,7 +93,7 @@ export default function ViewSuggestionsScreen() {
       <View style={styles.badgesContainer}>
         {item.category && (
           <View style={styles.categoryBadge}>
-            <Ionicons name="pricetag" size={14} color="#1e3a5f" />
+            <Ionicons name="pricetag" size={14} color={Colors.primary} />
             <Text style={styles.categoryText}>{item.category}</Text>
           </View>
         )}
@@ -105,7 +109,7 @@ export default function ViewSuggestionsScreen() {
 
       {item.options && item.options.length > 0 && (
         <View style={styles.optionsContainer}>
-          <Text style={styles.optionsLabel}>Suggested Options:</Text>
+          <Text style={styles.optionsLabel}>Opções Sugeridas:</Text>
           {item.options.map((option, index) => (
             <View key={index} style={styles.optionItem}>
               <Ionicons name="ellipse" size={6} color="#6b7280" />
@@ -117,7 +121,7 @@ export default function ViewSuggestionsScreen() {
 
       {item.notes && (
         <View style={styles.notesContainer}>
-          <Text style={styles.notesLabel}>Notes:</Text>
+          <Text style={styles.notesLabel}>Notas:</Text>
           <Text style={styles.notesText}>{item.notes}</Text>
         </View>
       )}
@@ -127,7 +131,7 @@ export default function ViewSuggestionsScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#1e3a5f" />
+        <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
   }
@@ -138,16 +142,16 @@ export default function ViewSuggestionsScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>User Suggestions</Text>
+        <Text style={styles.headerTitle}>Sugestões de Utilizadores</Text>
         <View style={{ width: 40 }} />
       </View>
 
       {suggestions.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Ionicons name="bulb-outline" size={64} color="#d1d5db" />
-          <Text style={styles.emptyTitle}>No Suggestions Yet</Text>
+          <Text style={styles.emptyTitle}>Sem Sugestões</Text>
           <Text style={styles.emptyText}>
-            Users will see their suggestions here when they submit them
+            As sugestões dos utilizadores aparecerão aqui quando forem submetidas
           </Text>
         </View>
       ) : (
@@ -155,9 +159,15 @@ export default function ViewSuggestionsScreen() {
           data={suggestions}
           renderItem={renderSuggestion}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={[
+            styles.listContent,
+            isDesktop && styles.listContentDesktop
+          ]}
+          key={isDesktop ? 'desktop' : 'mobile'}
+          numColumns={isDesktop ? 2 : 1}
+          columnWrapperStyle={isDesktop ? styles.columnWrapper : undefined}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1e3a5f']} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.primary]} />
           }
         />
       )}
@@ -168,7 +178,7 @@ export default function ViewSuggestionsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   centerContainer: {
     flex: 1,
@@ -179,7 +189,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#1e3a5f',
+    backgroundColor: Colors.primary,
     padding: 16,
   },
   backButton: {
@@ -196,18 +206,30 @@ const styles = StyleSheet.create({
   listContent: {
     padding: 16,
   },
+  listContentDesktop: {
+    padding: 32,
+    maxWidth: 1200,
+    alignSelf: 'center',
+    width: '100%',
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
+  },
+  cardDesktop: {
+    width: '48%',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -253,7 +275,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#1e3a5f',
+    color: Colors.primary,
     marginLeft: 4,
   },
   typeBadge: {

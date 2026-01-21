@@ -6,15 +6,14 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  Dimensions,
+  useWindowDimensions,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BarChart, PieChart } from 'react-native-chart-kit';
-
-const screenWidth = Dimensions.get('window').width;
+import { BarChart } from 'react-native-chart-kit';
+import { Colors } from '../constants/colors';
 
 interface QuestionResult {
   question_index: number;
@@ -33,6 +32,9 @@ interface SurveyResults {
 export default function ResultsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
+  const chartWidth = isDesktop ? Math.min(width - 128, 600) : width - 64;
   const [results, setResults] = useState<SurveyResults | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -57,23 +59,19 @@ export default function ResultsScreen() {
     const values = Object.values(data) as number[];
 
     if (values.every(v => v === 0)) {
-      return (
-        <Text style={styles.noDataText}>No responses yet</Text>
-      );
+      return <Text style={styles.noDataText}>Sem respostas ainda</Text>;
     }
 
     const chartData = {
       labels: labels.map(l => l.length > 15 ? l.substring(0, 15) + '...' : l),
-      datasets: [{
-        data: values,
-      }],
+      datasets: [{ data: values }],
     };
 
     return (
       <View style={styles.chartContainer}>
         <BarChart
           data={chartData}
-          width={screenWidth - 64}
+          width={chartWidth}
           height={220}
           yAxisSuffix=""
           yAxisLabel=""
@@ -82,14 +80,10 @@ export default function ResultsScreen() {
             backgroundGradientFrom: '#fff',
             backgroundGradientTo: '#fff',
             decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(99, 102, 241, ${opacity})`,
+            color: (opacity = 1) => `rgba(30, 58, 95, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(107, 114, 128, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForLabels: {
-              fontSize: 12,
-            },
+            style: { borderRadius: 16 },
+            propsForLabels: { fontSize: 12 },
           }}
           style={styles.chart}
           fromZero
@@ -98,7 +92,7 @@ export default function ResultsScreen() {
           {labels.map((label, idx) => (
             <View key={idx} style={styles.statRow}>
               <Text style={styles.statLabel}>{label}</Text>
-              <Text style={styles.statValue}>{values[idx]} votes</Text>
+              <Text style={styles.statValue}>{values[idx]} votos</Text>
             </View>
           ))}
         </View>
@@ -110,9 +104,7 @@ export default function ResultsScreen() {
     const { average, distribution } = result.results;
 
     if (!distribution || Object.keys(distribution).length === 0) {
-      return (
-        <Text style={styles.noDataText}>No responses yet</Text>
-      );
+      return <Text style={styles.noDataText}>Sem respostas ainda</Text>;
     }
 
     const labels = ['1', '2', '3', '4', '5'];
@@ -120,15 +112,13 @@ export default function ResultsScreen() {
 
     const chartData = {
       labels,
-      datasets: [{
-        data: values,
-      }],
+      datasets: [{ data: values }],
     };
 
     return (
       <View style={styles.chartContainer}>
         <View style={styles.averageContainer}>
-          <Text style={styles.averageLabel}>Average Rating</Text>
+          <Text style={styles.averageLabel}>Média de Avaliação</Text>
           <View style={styles.averageValue}>
             <Text style={styles.averageNumber}>{average.toFixed(1)}</Text>
             <Ionicons name="star" size={32} color="#fbbf24" />
@@ -137,7 +127,7 @@ export default function ResultsScreen() {
 
         <BarChart
           data={chartData}
-          width={screenWidth - 64}
+          width={chartWidth}
           height={220}
           yAxisSuffix=""
           yAxisLabel=""
@@ -148,9 +138,7 @@ export default function ResultsScreen() {
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(251, 191, 36, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(107, 114, 128, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
+            style: { borderRadius: 16 },
           }}
           style={styles.chart}
           fromZero
@@ -164,7 +152,7 @@ export default function ResultsScreen() {
                   <Ionicons key={i} name="star" size={14} color="#fbbf24" />
                 ))}
               </View>
-              <Text style={styles.statValue}>{values[idx]} responses</Text>
+              <Text style={styles.statValue}>{values[idx]} respostas</Text>
             </View>
           ))}
         </View>
@@ -178,9 +166,9 @@ export default function ResultsScreen() {
     return (
       <View style={styles.textResultsContainer}>
         <View style={styles.textResultCard}>
-          <Ionicons name="chatbox-ellipses" size={32} color="#1e3a5f" />
+          <Ionicons name="chatbox-ellipses" size={32} color={Colors.primary} />
           <Text style={styles.textResultCount}>{count}</Text>
-          <Text style={styles.textResultLabel}>Text Responses</Text>
+          <Text style={styles.textResultLabel}>Respostas de Texto</Text>
         </View>
       </View>
     );
@@ -189,9 +177,7 @@ export default function ResultsScreen() {
   const renderQuestionResult = (result: QuestionResult) => {
     return (
       <View key={result.question_index} style={styles.resultCard}>
-        <Text style={styles.questionNumber}>
-          Question {result.question_index + 1}
-        </Text>
+        <Text style={styles.questionNumber}>Questão {result.question_index + 1}</Text>
         <Text style={styles.questionText}>{result.question_text}</Text>
 
         {result.question_type === 'multiple_choice_single' && renderMultipleChoiceResults(result)}
@@ -206,7 +192,7 @@ export default function ResultsScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#1e3a5f" />
+        <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
   }
@@ -221,17 +207,20 @@ export default function ResultsScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Survey Results</Text>
+        <Text style={styles.headerTitle}>Resultados do Inquérito</Text>
         <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={[
+        styles.scrollContent,
+        isDesktop && styles.scrollContentDesktop
+      ]}>
         <View style={styles.surveyHeader}>
           <Text style={styles.surveyTitle}>{results.title}</Text>
           <View style={styles.responseCount}>
-            <Ionicons name="people" size={24} color="#1e3a5f" />
+            <Ionicons name="people" size={24} color={Colors.primary} />
             <Text style={styles.responseCountText}>
-              {results.total_responses} {results.total_responses === 1 ? 'Response' : 'Responses'}
+              {results.total_responses} {results.total_responses === 1 ? 'Resposta' : 'Respostas'}
             </Text>
           </View>
         </View>
@@ -245,7 +234,7 @@ export default function ResultsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   centerContainer: {
     flex: 1,
@@ -256,7 +245,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#1e3a5f',
+    backgroundColor: Colors.primary,
     padding: 16,
   },
   backButton: {
@@ -273,13 +262,19 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 16,
   },
+  scrollContentDesktop: {
+    padding: 32,
+    maxWidth: 900,
+    alignSelf: 'center',
+    width: '100%',
+  },
   surveyHeader: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 24,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
   },
   surveyTitle: {
     fontSize: 24,
@@ -297,7 +292,7 @@ const styles = StyleSheet.create({
   responseCountText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e3a5f',
+    color: Colors.primary,
     marginLeft: 8,
   },
   resultCard: {
@@ -306,12 +301,12 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
   },
   questionNumber: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#1e3a5f',
+    color: Colors.primary,
     marginBottom: 8,
   },
   questionText: {
@@ -347,7 +342,7 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1e3a5f',
+    color: Colors.primary,
   },
   averageContainer: {
     alignItems: 'center',
@@ -390,7 +385,7 @@ const styles = StyleSheet.create({
   textResultCount: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#1e3a5f',
+    color: Colors.primary,
     marginTop: 12,
   },
   textResultLabel: {
