@@ -207,12 +207,12 @@ const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Fonts.body.medium,
     color: Colors.textSecondary,
   },
   menuTextActive: {
     color: Colors.primary,
-    fontWeight: '600',
+    fontFamily: Fonts.body.semiBold,
   },
   hamburger: {
     padding: 8,
