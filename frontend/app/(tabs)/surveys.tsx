@@ -267,12 +267,13 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.bold,
     color: '#111827',
     marginBottom: 4,
   },
   cardDescription: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: '#6b7280',
     lineHeight: 20,
   },
