@@ -343,7 +343,8 @@ async def get_surveys(current_user: dict = Depends(get_current_user)):
             "end_date": end_date,
             "is_closed": is_closed,
             "response_count": survey.get("response_count", 0),
-            "has_answered": has_answered is not None
+            "has_answered": has_answered is not None,
+            "featured": survey.get("featured", False)
         })
     
     return result
