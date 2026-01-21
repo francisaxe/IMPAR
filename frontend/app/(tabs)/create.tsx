@@ -39,6 +39,7 @@ export default function CreateSurveyScreen() {
   const isDesktop = width >= 768;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
   const [showQuestionTypes, setShowQuestionTypes] = useState(false);
