@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   logoImage: {
-    width: 280,
-    height: 70,
+    width: 560,
+    height: 140,
     marginBottom: 16,
   },
   subtitle: {
