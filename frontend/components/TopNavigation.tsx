@@ -181,17 +181,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logoText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: Colors.primary,
-    letterSpacing: 2,
+  logoImage: {
+    height: 32,
+    width: 120,
   },
-  logoTextMobile: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: Colors.primary,
-    letterSpacing: 2,
+  logoImageMobile: {
+    height: 28,
+    width: 105,
   },
   menu: {
     flexDirection: 'row',
