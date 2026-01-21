@@ -308,9 +308,20 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     alignItems: 'flex-start',
   },
+  ownerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  featureButton: {
+    padding: 8,
+    marginRight: 4,
+  },
+  featureButtonActive: {
+    backgroundColor: '#fef3c7',
+    borderRadius: 8,
+  },
   deleteButton: {
     padding: 8,
-    marginLeft: 8,
   },
   iconContainer: {
     width: 48,
@@ -324,11 +335,17 @@ const styles = StyleSheet.create({
   cardInfo: {
     flex: 1,
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
   cardTitle: {
     fontSize: 18,
     fontFamily: Fonts.heading.bold,
     color: '#111827',
     marginBottom: 4,
+    flex: 1,
   },
   cardDescription: {
     fontSize: 14,
