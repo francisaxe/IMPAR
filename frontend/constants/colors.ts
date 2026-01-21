@@ -34,3 +34,20 @@ export const Colors = {
   textLight: '#9ca3af',
   textWhite: '#ffffff',
 };
+
+// IMPAR Fonts
+export const Fonts = {
+  // Headlines, Títulos e Secções
+  heading: {
+    regular: 'SourceSerif4_400Regular',
+    semiBold: 'SourceSerif4_600SemiBold',
+    bold: 'SourceSerif4_700Bold',
+  },
+  // Corpo do texto
+  body: {
+    regular: 'Inter_400Regular',
+    medium: 'Inter_500Medium',
+    semiBold: 'Inter_600SemiBold',
+    bold: 'Inter_700Bold',
+  },
+};
