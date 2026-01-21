@@ -104,7 +104,7 @@ export default function TopNavigation() {
             {/* Header do menu mobile */}
             <View style={styles.mobileMenuHeader}>
               <Image 
-                source={require('../../assets/impar-logo.png')} 
+                source={require('../assets/impar-logo.png')} 
                 style={styles.logoImageMobile}
                 resizeMode="contain"
               />
