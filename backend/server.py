@@ -70,6 +70,7 @@ class SurveyCreate(BaseModel):
     title: str
     description: str
     questions: List[QuestionModel]
+    end_date: Optional[str] = None  # Data limite opcional (formato: YYYY-MM-DD)
 
 class Survey(BaseModel):
     id: str
@@ -78,6 +79,7 @@ class Survey(BaseModel):
     questions: List[QuestionModel]
     created_by: str
     created_at: datetime
+    end_date: Optional[datetime] = None  # Data limite opcional
     response_count: int = 0
 
 class AnswerModel(BaseModel):
