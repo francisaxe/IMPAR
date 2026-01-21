@@ -292,6 +292,7 @@ const styles = StyleSheet.create({
   },
   cardStatsText: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: '#6b7280',
     marginLeft: 6,
   },
@@ -305,7 +306,7 @@ const styles = StyleSheet.create({
   },
   answeredText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: Fonts.body.semiBold,
     color: '#10b981',
     marginLeft: 4,
   },
@@ -315,12 +316,13 @@ const styles = StyleSheet.create({
   },
   pendingText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.body.semiBold,
     color: '#1e3a5f',
     marginRight: 4,
   },
   cardDate: {
     fontSize: 12,
+    fontFamily: Fonts.body.regular,
     color: '#9ca3af',
     marginTop: 8,
   },
@@ -332,13 +334,14 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.bold,
     color: '#111827',
     marginTop: 16,
     marginBottom: 8,
   },
   emptyText: {
     fontSize: 16,
+    fontFamily: Fonts.body.regular,
     color: '#6b7280',
     textAlign: 'center',
   },
