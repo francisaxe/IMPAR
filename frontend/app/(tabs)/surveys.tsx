@@ -26,6 +26,8 @@ interface Survey {
   title: string;
   description: string;
   created_at: string;
+  end_date: string | null;
+  is_closed: boolean;
   response_count: number;
   has_answered: boolean;
 }
