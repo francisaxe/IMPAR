@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/colors';
 
@@ -15,7 +15,11 @@ export default function HomeScreen() {
       ]}>
         {/* Header com IMPAR centralizado */}
         <View style={[styles.header, isDesktop && styles.headerDesktop]}>
-          <Text style={styles.logoText}>IMPAR</Text>
+          <Image 
+            source={require('../../assets/impar-logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método</Text>
         </View>
 
