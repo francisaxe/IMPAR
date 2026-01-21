@@ -149,23 +149,43 @@ export default function SurveysScreen() {
             <Ionicons name={item.is_closed ? "lock-closed" : "clipboard-outline"} size={24} color={item.is_closed ? "#9ca3af" : "#1e3a5f"} />
           </View>
           <View style={styles.cardInfo}>
-            <Text style={[styles.cardTitle, item.is_closed && styles.cardTitleClosed]} numberOfLines={2}>
-              {item.title}
-            </Text>
+            <View style={styles.titleRow}>
+              <Text style={[styles.cardTitle, item.is_closed && styles.cardTitleClosed]} numberOfLines={2}>
+                {item.title}
+              </Text>
+              {item.featured && (
+                <Ionicons name="star" size={18} color="#f59e0b" style={{ marginLeft: 6 }} />
+              )}
+            </View>
             <Text style={styles.cardDescription} numberOfLines={2}>
               {item.description}
             </Text>
           </View>
           {isOwner && (
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={(e) => {
-                e.stopPropagation();
-                handleDeleteSurvey(item.id, item.title);
-              }}
-            >
-              <Ionicons name="trash-outline" size={22} color="#ef4444" />
-            </TouchableOpacity>
+            <View style={styles.ownerActions}>
+              <TouchableOpacity
+                style={[styles.featureButton, item.featured && styles.featureButtonActive]}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  handleToggleFeature(item.id, item.featured);
+                }}
+              >
+                <Ionicons 
+                  name={item.featured ? "star" : "star-outline"} 
+                  size={20} 
+                  color={item.featured ? "#f59e0b" : "#9ca3af"} 
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  handleDeleteSurvey(item.id, item.title);
+                }}
+              >
+                <Ionicons name="trash-outline" size={22} color="#ef4444" />
+              </TouchableOpacity>
+            </View>
           )}
         </View>
         
