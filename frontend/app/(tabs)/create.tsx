@@ -123,18 +123,24 @@ export default function CreateSurveyScreen() {
 
     setLoading(true);
     try {
-      await api.post('/api/surveys', { title, description, questions });
+      await api.post('/api/surveys', { 
+        title, 
+        description, 
+        questions,
+        end_date: endDate || null
+      });
       setTitle('');
       setDescription('');
+      setEndDate('');
       setQuestions([]);
       
       if (Platform.OS === 'web') {
-        alert('Inquérito criado com sucesso!');
+        alert('Sondagem criada com sucesso!');
       } else {
-        Alert.alert('Sucesso', 'Inquérito criado com sucesso!');
+        Alert.alert('Sucesso', 'Sondagem criada com sucesso!');
       }
     } catch (error: any) {
-      const errorMsg = error.response?.data?.detail || 'Falha ao criar inquérito';
+      const errorMsg = error.response?.data?.detail || 'Falha ao criar sondagem';
       if (Platform.OS === 'web') {
         alert('Erro: ' + errorMsg);
       } else {
