@@ -16,7 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../contexts/AuthContext';
-import { Colors } from '../../constants/colors';
+import { Colors, Fonts } from '../../constants/colors';
 import { isDesktop, getMaxContentWidth } from '../../utils/responsive';
 
 const { width } = Dimensions.get('window');
