@@ -182,12 +182,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoImage: {
-    height: 48,
-    width: 180,
+    height: 96,
+    width: 360,
   },
   logoImageMobile: {
-    height: 36,
-    width: 135,
+    height: 72,
+    width: 270,
   },
   menu: {
     flexDirection: 'row',
