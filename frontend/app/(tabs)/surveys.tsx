@@ -324,6 +324,20 @@ const styles = StyleSheet.create({
     color: '#10b981',
     marginLeft: 4,
   },
+  closedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fee2e2',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  closedText: {
+    fontSize: 12,
+    fontFamily: Fonts.body.semiBold,
+    color: '#ef4444',
+    marginLeft: 4,
+  },
   pendingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -334,11 +348,26 @@ const styles = StyleSheet.create({
     color: '#1e3a5f',
     marginRight: 4,
   },
+  cardDates: {
+    marginTop: 8,
+  },
   cardDate: {
     fontSize: 12,
     fontFamily: Fonts.body.regular,
     color: '#9ca3af',
-    marginTop: 8,
+  },
+  cardDateClosed: {
+    color: '#ef4444',
+  },
+  cardClosed: {
+    opacity: 0.8,
+    borderColor: '#e5e7eb',
+  },
+  iconContainerClosed: {
+    backgroundColor: '#f3f4f6',
+  },
+  cardTitleClosed: {
+    color: '#6b7280',
   },
   emptyContainer: {
     flex: 1,
