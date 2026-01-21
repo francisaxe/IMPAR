@@ -352,6 +352,12 @@ const styles = StyleSheet.create({
     color: '#374151',
     marginBottom: 8,
   },
+  helperText: {
+    fontSize: 12,
+    color: '#9ca3af',
+    marginTop: 8,
+    fontStyle: 'italic',
+  },
   input: {
     backgroundColor: '#fff',
     borderRadius: 12,
