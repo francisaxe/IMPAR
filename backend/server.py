@@ -335,6 +335,11 @@ async def submit_response(survey_id: str, response_data: ResponseCreate, current
         if not survey:
             raise HTTPException(status_code=404, detail="Survey not found")
         
+        # Check if survey is closed
+        end_date = survey.get("end_date")
+        if end_date and datetime.utcnow() > end_date:
+            raise HTTPException(status_code=400, detail="Esta sondagem já está encerrada")
+        
         # Check if user already answered
         existing_response = await db.responses.find_one({
             "survey_id": survey_id,
