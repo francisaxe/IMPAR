@@ -30,6 +30,7 @@ interface Survey {
   is_closed: boolean;
   response_count: number;
   has_answered: boolean;
+  featured: boolean;
 }
 
 export default function SurveysScreen() {
