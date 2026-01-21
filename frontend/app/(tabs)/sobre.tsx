@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/colors';
 
 export default function SobreScreen() {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 768;
+  
+  // Calcular largura das imagens (3 lado a lado em desktop, empilhadas em mobile)
+  const imageWidth = isDesktop ? (width - 128) / 3 - 16 : width - 64;
+  const imageHeight = 200;
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -14,7 +17,7 @@ export default function SobreScreen() {
         styles.scrollContent,
         isDesktop && styles.scrollContentDesktop
       ]}>
-        {/* Header com IMPAR centralizado - mesmo tamanho que Início */}
+        {/* Header com IMPAR centralizado */}
         <View style={[styles.header, isDesktop && styles.headerDesktop]}>
           <Image 
             source={require('../../assets/impar-logo.png')}
@@ -24,99 +27,65 @@ export default function SobreScreen() {
           <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método</Text>
         </View>
 
-        {/* MISSÃO */}
+        {/* O PROBLEMA */}
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Ionicons name="flag" size={24} color={Colors.primary} />
-            <Text style={styles.sectionTitle}>MISSÃO</Text>
-          </View>
+          <Text style={styles.sectionTitle}>O Problema</Text>
+          
           <Text style={styles.sectionText}>
-            A missão da IMPAR é examinar os factos com rigor, apresentá-los com clareza e publicá-los com imparcialidade, 
-            para que o público possa compreender a realidade sem distorção.
+            Vivemos num tempo de abundância informativa e escassez de clareza. Nunca houve tanta informação disponível, nem tantos canais a produzi-la, mas essa quantidade não se traduziu numa melhor compreensão da realidade. A velocidade e a fragmentação transformaram a informação num fluxo constante de ruído.
           </Text>
+          
           <Text style={styles.sectionText}>
-            Não competimos pela rapidez nem pela reação imediata. Comprometemo-nos com a precisão, o contexto e a 
-            responsabilidade editorial, colocando o interesse público acima do ruído informativo.
+            Grande parte do jornalismo contemporâneo passou a competir pela reação imediata — pelo clique, pela partilha, pela emoção — em detrimento do contexto, da verificação e da responsabilidade. Factos surgem sem enquadramento, opiniões confundem-se com informação e a urgência substitui o rigor.
+          </Text>
+          
+          <Text style={styles.sectionText}>
+            O problema não é a falta de informação, é a dificuldade crescente em compreender a realidade de forma clara, equilibrada e fundamentada.
+          </Text>
+          
+          <Text style={[styles.sectionText, styles.highlightText]}>
+            É neste contexto que a IMPAR nasce.
           </Text>
         </View>
 
-        {/* VISÃO */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Ionicons name="eye" size={24} color={Colors.primary} />
-            <Text style={styles.sectionTitle}>VISÃO</Text>
-          </View>
-          <Text style={styles.sectionText}>
-            A IMPAR ambiciona tornar-se uma referência de confiança no jornalismo factual, num tempo marcado pela 
-            desinformação, pela polarização e pelo sensacionalismo.
+        {/* Separador com imagens */}
+        <View style={styles.imagesSection}>
+          <View style={styles.separator} />
+          
+          <Text style={styles.imagesIntro}>
+            Estes são resultados de algumas sondagens que nos foram apresentadas antes da primeira volta das eleições presidenciais de 2026.
           </Text>
-          <Text style={styles.sectionText}>
-            Acreditamos num jornalismo onde a informação é avaliada pela sua exatidão, profundidade e responsabilidade 
-            — e não pela velocidade, pelo impacto emocional ou por agendas externas.
-          </Text>
-        </View>
-
-        {/* VALORES */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Ionicons name="diamond" size={24} color={Colors.primary} />
-            <Text style={styles.sectionTitle}>VALORES</Text>
+          
+          <View style={[styles.imagesContainer, isDesktop && styles.imagesContainerDesktop]}>
+            <Image 
+              source={require('../../assets/sondagem1.jpg')}
+              style={[styles.sondagemImage, { width: isDesktop ? '31%' : '100%', height: imageHeight }]}
+              resizeMode="cover"
+            />
+            <Image 
+              source={require('../../assets/sondagem2.jpg')}
+              style={[styles.sondagemImage, { width: isDesktop ? '31%' : '100%', height: imageHeight }]}
+              resizeMode="cover"
+            />
+            <Image 
+              source={require('../../assets/sondagem3.jpg')}
+              style={[styles.sondagemImage, { width: isDesktop ? '31%' : '100%', height: imageHeight }]}
+              resizeMode="cover"
+            />
           </View>
           
-          <View style={styles.valueItem}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>Verdade</Text>
-            </View>
-            <Text style={styles.valueText}>
-              A verdade é o nosso fundamento. Não negociamos factos nem moldamos narrativas. Procuramos a realidade 
-              tal como é — inteira, complexa e verificável.
-            </Text>
-          </View>
-
-          <View style={styles.valueItem}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>Imparcialidade</Text>
-            </View>
-            <Text style={styles.valueText}>
-              Não tomamos partido. Apresentamos os factos e os diferentes lados com equilíbrio, distância crítica e 
-              respeito pelo leitor. O nosso papel é informar, não persuadir.
-            </Text>
-          </View>
-
-          <View style={styles.valueItem}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>Independência</Text>
-            </View>
-            <Text style={styles.valueText}>
-              Somos independentes de pressões políticas, económicas ou ideológicas. A informação que publicamos serve 
-              apenas o interesse público.
-            </Text>
-          </View>
-
-          <View style={styles.valueItem}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>Rigor</Text>
-            </View>
-            <Text style={styles.valueText}>
-              Trabalhamos com método, verificação e validação contínua. Não publicamos cedo — publicamos certo.
-            </Text>
-          </View>
-
-          <View style={[styles.valueItem, { borderBottomWidth: 0 }]}>
-            <View style={styles.valueHeader}>
-              <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
-              <Text style={styles.valueTitle}>Transparência e Responsabilidade</Text>
-            </View>
-            <Text style={styles.valueText}>
-              Explicamos como trabalhamos, assumimos os nossos erros e corrigimo-los de forma clara e pública. 
-              Sabemos que as palavras têm impacto e agimos com consciência desse peso.
-            </Text>
-          </View>
+          <View style={styles.separator} />
         </View>
+
+        {/* A NOSSA RESPOSTA */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>A Nossa Resposta</Text>
+          
+          <Text style={styles.sectionText}>
+            A resposta da IMPAR é simples, mas exigente: entender qual a realidade em que vivemos e analisá-la com imparcialidade, independência e rigor.
+          </Text>
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -132,7 +101,7 @@ const styles = StyleSheet.create({
   },
   scrollContentDesktop: {
     padding: 32,
-    maxWidth: 900,
+    maxWidth: 1000,
     alignSelf: 'center',
     width: '100%',
   },
@@ -160,8 +129,8 @@ const styles = StyleSheet.create({
   section: {
     backgroundColor: '#fff',
     borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
+    padding: 24,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: Colors.gray200,
     shadowColor: '#000',
@@ -170,47 +139,54 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 28,
     fontFamily: Fonts.heading.bold,
     color: Colors.primary,
-    marginLeft: 12,
-    letterSpacing: 0.5,
+    marginBottom: 20,
+    textAlign: 'center',
   },
   sectionText: {
+    fontSize: 16,
+    fontFamily: Fonts.body.regular,
+    color: Colors.textSecondary,
+    lineHeight: 26,
+    marginBottom: 16,
+    textAlign: 'justify',
+  },
+  highlightText: {
+    fontFamily: Fonts.body.semiBold,
+    color: Colors.primary,
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 0,
+  },
+  imagesSection: {
+    marginBottom: 24,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: Colors.gray300,
+    marginVertical: 24,
+  },
+  imagesIntro: {
     fontSize: 15,
     fontFamily: Fonts.body.regular,
     color: Colors.textSecondary,
     lineHeight: 24,
-    marginBottom: 12,
+    textAlign: 'center',
+    marginBottom: 24,
+    fontStyle: 'italic',
   },
-  valueItem: {
-    marginBottom: 16,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.gray100,
+  imagesContainer: {
+    gap: 16,
   },
-  valueHeader: {
+  imagesContainerDesktop: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
+    justifyContent: 'space-between',
   },
-  valueTitle: {
-    fontSize: 16,
-    fontFamily: Fonts.heading.semiBold,
-    color: Colors.primary,
-    marginLeft: 8,
-  },
-  valueText: {
-    fontSize: 14,
-    fontFamily: Fonts.body.regular,
-    color: Colors.textSecondary,
-    lineHeight: 22,
-    paddingLeft: 28,
+  sondagemImage: {
+    borderRadius: 12,
+    marginBottom: 16,
   },
 });
