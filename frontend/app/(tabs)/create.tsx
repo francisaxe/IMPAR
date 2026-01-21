@@ -298,7 +298,7 @@ export default function CreateSurveyScreen() {
             ) : (
               <>
                 <Ionicons name="checkmark-circle" size={24} color="#fff" />
-                <Text style={styles.submitButtonText}>Criar Inquérito</Text>
+                <Text style={styles.submitButtonText}>Criar Sondagem</Text>
               </>
             )}
           </TouchableOpacity>
