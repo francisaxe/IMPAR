@@ -153,13 +153,13 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   logo: {
-    width: 200,
-    height: 80,
+    width: 250,
+    height: 100,
     marginBottom: 24,
   },
   logoDesktop: {
-    width: 180,
-    height: 72,
+    width: 220,
+    height: 90,
   },
   title: {
     fontSize: 32,
