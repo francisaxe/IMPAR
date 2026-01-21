@@ -98,15 +98,11 @@ export default function SobreScreen() {
             </View>
             <View style={styles.benefitItem}>
               <Ionicons name="checkmark-circle" size={20} color="#10b981" />
-              <Text style={styles.benefitText}>Influencie decisões importantes</Text>
+              <Text style={styles.benefitText}>Ajude-nos a descobrir a realidade</Text>
             </View>
             <View style={styles.benefitItem}>
               <Ionicons name="checkmark-circle" size={20} color="#10b981" />
               <Text style={styles.benefitText}>Veja resultados em tempo real</Text>
-            </View>
-            <View style={styles.benefitItem}>
-              <Ionicons name="checkmark-circle" size={20} color="#10b981" />
-              <Text style={styles.benefitText}>Sondagens rápidas e fáceis</Text>
             </View>
           </View>
         </View>
