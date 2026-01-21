@@ -47,8 +47,8 @@ export default function TopNavigation() {
           onPress={() => navigateTo('/(tabs)/home')}
         >
           <Image 
-            source={require('../../assets/impar-logo.png')} 
-            style={styles.logoImage}
+            source={require('../assets/impar-logo.png')} 
+            style={[styles.logoImage, isMobile && styles.logoImageMobile]}
             resizeMode="contain"
           />
         </TouchableOpacity>
