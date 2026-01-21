@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: Fonts.heading.regular,
     color: Colors.textSecondary,
     textAlign: 'center',
     fontStyle: 'italic',
