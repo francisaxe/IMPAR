@@ -235,7 +235,8 @@ async def create_survey(survey_data: SurveyCreate, current_user: dict = Depends(
         "questions": [q.dict() for q in survey_data.questions],
         "created_by": str(current_user["_id"]),
         "created_at": datetime.utcnow(),
-        "response_count": 0
+        "response_count": 0,
+        "end_date": datetime.strptime(survey_data.end_date, "%Y-%m-%d") if survey_data.end_date else None
     }
     
     result = await db.surveys.insert_one(survey_dict)
@@ -248,6 +249,7 @@ async def create_survey(survey_data: SurveyCreate, current_user: dict = Depends(
         "questions": survey_dict["questions"],
         "created_by": survey_dict["created_by"],
         "created_at": survey_dict["created_at"],
+        "end_date": survey_dict["end_date"],
         "response_count": 0
     }
 
@@ -263,11 +265,17 @@ async def get_surveys(current_user: dict = Depends(get_current_user)):
             "user_id": str(current_user["_id"])
         })
         
+        # Check if survey is closed (end_date passed)
+        end_date = survey.get("end_date")
+        is_closed = end_date is not None and datetime.utcnow() > end_date
+        
         result.append({
             "id": str(survey["_id"]),
             "title": survey["title"],
             "description": survey["description"],
             "created_at": survey["created_at"],
+            "end_date": end_date,
+            "is_closed": is_closed,
             "response_count": survey.get("response_count", 0),
             "has_answered": has_answered is not None
         })
