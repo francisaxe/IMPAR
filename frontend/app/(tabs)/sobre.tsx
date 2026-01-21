@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/colors';
@@ -16,7 +16,11 @@ export default function SobreScreen() {
       ]}>
         {/* Header com IMPAR centralizado - mesmo tamanho que Início */}
         <View style={[styles.header, isDesktop && styles.headerDesktop]}>
-          <Text style={styles.logoText}>IMPAR</Text>
+          <Image 
+            source={require('../../assets/impar-logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>Jornalismo factual. Imparcialidade por método</Text>
         </View>
 
