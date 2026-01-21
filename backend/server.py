@@ -605,6 +605,167 @@ async def get_all_suggestions(current_user: dict = Depends(get_owner_user)):
     
     return result
 
+# ===========================================
+# Featured Content / Destaques Endpoints
+# ===========================================
+
+# Toggle feature status for a survey
+@api_router.put("/surveys/{survey_id}/feature")
+async def toggle_survey_feature(survey_id: str, current_user: dict = Depends(get_owner_user)):
+    try:
+        survey = await db.surveys.find_one({"_id": ObjectId(survey_id)})
+        if not survey:
+            raise HTTPException(status_code=404, detail="Sondagem não encontrada")
+        
+        current_featured = survey.get("featured", False)
+        
+        # Check how many surveys are already featured (max 3 total featured items)
+        if not current_featured:
+            featured_surveys = await db.surveys.count_documents({"featured": True})
+            featured_news = await db.news.count_documents({"featured": True})
+            if featured_surveys + featured_news >= 3:
+                raise HTTPException(status_code=400, detail="Limite de 3 destaques atingido. Remova um destaque primeiro.")
+        
+        await db.surveys.update_one(
+            {"_id": ObjectId(survey_id)},
+            {"$set": {"featured": not current_featured}}
+        )
+        
+        return {
+            "message": "Destaque atualizado com sucesso",
+            "featured": not current_featured
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# Get all featured content for homepage
+@api_router.get("/featured")
+async def get_featured_content():
+    featured_items = []
+    
+    # Get featured surveys
+    featured_surveys = await db.surveys.find({"featured": True}).sort("created_at", -1).to_list(3)
+    for survey in featured_surveys:
+        featured_items.append({
+            "id": str(survey["_id"]),
+            "type": "survey",
+            "title": survey["title"],
+            "description": survey["description"],
+            "created_at": survey["created_at"],
+            "response_count": survey.get("response_count", 0),
+            "is_closed": survey.get("end_date") is not None and datetime.utcnow() > survey.get("end_date")
+        })
+    
+    # Get featured news
+    featured_news = await db.news.find({"featured": True}).sort("created_at", -1).to_list(3)
+    for news in featured_news:
+        featured_items.append({
+            "id": str(news["_id"]),
+            "type": "news",
+            "title": news["title"],
+            "description": news["description"],
+            "created_at": news["created_at"],
+            "image_url": news.get("image_url")
+        })
+    
+    # Sort by created_at and limit to 3
+    featured_items.sort(key=lambda x: x["created_at"], reverse=True)
+    return featured_items[:3]
+
+# News CRUD endpoints
+class NewsCreate(BaseModel):
+    title: str
+    description: str
+    image_url: Optional[str] = None
+    featured: bool = False
+
+@api_router.post("/news")
+async def create_news(news_data: NewsCreate, current_user: dict = Depends(get_owner_user)):
+    # Check featured limit
+    if news_data.featured:
+        featured_surveys = await db.surveys.count_documents({"featured": True})
+        featured_news = await db.news.count_documents({"featured": True})
+        if featured_surveys + featured_news >= 3:
+            raise HTTPException(status_code=400, detail="Limite de 3 destaques atingido.")
+    
+    news_dict = {
+        "title": news_data.title,
+        "description": news_data.description,
+        "image_url": news_data.image_url,
+        "featured": news_data.featured,
+        "created_by": str(current_user["_id"]),
+        "created_at": datetime.utcnow()
+    }
+    
+    result = await db.news.insert_one(news_dict)
+    
+    return {
+        "id": str(result.inserted_id),
+        "message": "Notícia criada com sucesso"
+    }
+
+@api_router.get("/news")
+async def get_all_news(current_user: dict = Depends(get_owner_user)):
+    news_list = await db.news.find().sort("created_at", -1).to_list(100)
+    
+    result = []
+    for news in news_list:
+        result.append({
+            "id": str(news["_id"]),
+            "title": news["title"],
+            "description": news["description"],
+            "image_url": news.get("image_url"),
+            "featured": news.get("featured", False),
+            "created_at": news["created_at"]
+        })
+    
+    return result
+
+@api_router.put("/news/{news_id}/feature")
+async def toggle_news_feature(news_id: str, current_user: dict = Depends(get_owner_user)):
+    try:
+        news = await db.news.find_one({"_id": ObjectId(news_id)})
+        if not news:
+            raise HTTPException(status_code=404, detail="Notícia não encontrada")
+        
+        current_featured = news.get("featured", False)
+        
+        # Check featured limit
+        if not current_featured:
+            featured_surveys = await db.surveys.count_documents({"featured": True})
+            featured_news = await db.news.count_documents({"featured": True})
+            if featured_surveys + featured_news >= 3:
+                raise HTTPException(status_code=400, detail="Limite de 3 destaques atingido. Remova um destaque primeiro.")
+        
+        await db.news.update_one(
+            {"_id": ObjectId(news_id)},
+            {"$set": {"featured": not current_featured}}
+        )
+        
+        return {
+            "message": "Destaque atualizado com sucesso",
+            "featured": not current_featured
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.delete("/news/{news_id}")
+async def delete_news(news_id: str, current_user: dict = Depends(get_owner_user)):
+    try:
+        result = await db.news.delete_one({"_id": ObjectId(news_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Notícia não encontrada")
+        
+        return {"message": "Notícia eliminada com sucesso"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # Include the router
 app.include_router(api_router)
 
