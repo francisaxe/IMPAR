@@ -72,11 +72,9 @@ const styles = StyleSheet.create({
     paddingVertical: 64,
     marginBottom: 48,
   },
-  logoText: {
-    fontSize: 64,
-    fontWeight: 'bold',
-    color: Colors.primary,
-    letterSpacing: 6,
+  logoImage: {
+    width: 280,
+    height: 70,
     marginBottom: 16,
   },
   subtitle: {
