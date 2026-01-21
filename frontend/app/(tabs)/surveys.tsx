@@ -114,6 +114,30 @@ export default function SurveysScreen() {
     }
   };
 
+  const handleToggleFeature = async (surveyId: string, currentFeatured: boolean) => {
+    try {
+      await api.put(`/api/surveys/${surveyId}/feature`);
+      fetchSurveys();
+      
+      const message = currentFeatured 
+        ? 'Destaque removido com sucesso' 
+        : 'Sondagem destacada com sucesso';
+      
+      if (Platform.OS === 'web') {
+        alert(message);
+      } else {
+        Alert.alert('Sucesso', message);
+      }
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.detail || 'Erro ao atualizar destaque';
+      if (Platform.OS === 'web') {
+        alert('Erro: ' + errorMsg);
+      } else {
+        Alert.alert('Erro', errorMsg);
+      }
+    }
+  };
+
   const renderSurveyCard = ({ item }: { item: Survey }) => (
     <View style={[styles.card, item.is_closed && styles.cardClosed]}>
       <TouchableOpacity
