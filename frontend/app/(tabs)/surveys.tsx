@@ -114,17 +114,17 @@ export default function SurveysScreen() {
   };
 
   const renderSurveyCard = ({ item }: { item: Survey }) => (
-    <View style={styles.card}>
+    <View style={[styles.card, item.is_closed && styles.cardClosed]}>
       <TouchableOpacity
         style={styles.cardTouchable}
-        onPress={() => router.push(`/survey-detail?id=${item.id}`)}
+        onPress={() => item.is_closed ? router.push(`/results?id=${item.id}`) : router.push(`/survey-detail?id=${item.id}`)}
       >
         <View style={styles.cardHeader}>
-          <View style={styles.iconContainer}>
-            <Ionicons name="clipboard-outline" size={24} color="#1e3a5f" />
+          <View style={[styles.iconContainer, item.is_closed && styles.iconContainerClosed]}>
+            <Ionicons name={item.is_closed ? "lock-closed" : "clipboard-outline"} size={24} color={item.is_closed ? "#9ca3af" : "#1e3a5f"} />
           </View>
           <View style={styles.cardInfo}>
-            <Text style={styles.cardTitle} numberOfLines={2}>
+            <Text style={[styles.cardTitle, item.is_closed && styles.cardTitleClosed]} numberOfLines={2}>
               {item.title}
             </Text>
             <Text style={styles.cardDescription} numberOfLines={2}>
@@ -148,24 +148,36 @@ export default function SurveysScreen() {
           <View style={styles.cardStats}>
             <Ionicons name="people-outline" size={16} color="#6b7280" />
             <Text style={styles.cardStatsText}>
-              {item.response_count} {item.response_count === 1 ? 'response' : 'responses'}
+              {item.response_count} {item.response_count === 1 ? 'resposta' : 'respostas'}
             </Text>
           </View>
           
-          {item.has_answered ? (
+          {item.is_closed ? (
+            <View style={styles.closedBadge}>
+              <Ionicons name="lock-closed" size={16} color="#ef4444" />
+              <Text style={styles.closedText}>Encerrada</Text>
+            </View>
+          ) : item.has_answered ? (
             <View style={styles.answeredBadge}>
               <Ionicons name="checkmark-circle" size={16} color="#10b981" />
-              <Text style={styles.answeredText}>Answered</Text>
+              <Text style={styles.answeredText}>Respondida</Text>
             </View>
           ) : (
             <View style={styles.pendingBadge}>
-              <Text style={styles.pendingText}>Take Survey</Text>
+              <Text style={styles.pendingText}>Participar</Text>
               <Ionicons name="chevron-forward" size={16} color="#1e3a5f" />
             </View>
           )}
         </View>
         
-        <Text style={styles.cardDate}>{formatDate(item.created_at)}</Text>
+        <View style={styles.cardDates}>
+          <Text style={styles.cardDate}>Criada: {formatDate(item.created_at)}</Text>
+          {item.end_date && (
+            <Text style={[styles.cardDate, item.is_closed && styles.cardDateClosed]}>
+              {item.is_closed ? 'Encerrou' : 'Termina'}: {formatDate(item.end_date)}
+            </Text>
+          )}
+        </View>
       </TouchableOpacity>
     </View>
   );
