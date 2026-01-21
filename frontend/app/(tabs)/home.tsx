@@ -1,14 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/colors';
 
 export default function HomeScreen() {
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
+  const isLargeDesktop = width >= 1024;
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.header}>
+      <ScrollView contentContainerStyle={[
+        styles.scrollContent,
+        isDesktop && styles.scrollContentDesktop
+      ]}>
+        <View style={[styles.header, isDesktop && styles.headerDesktop]}>
           <Image 
             source={require('../../assets/impar-logo.png')}
             style={styles.logo}
