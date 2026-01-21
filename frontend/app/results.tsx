@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Fonts.heading.semiBold,
     color: '#111827',
     marginBottom: 20,
   },
@@ -336,12 +336,13 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: '#374151',
     flex: 1,
   },
   statValue: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.body.semiBold,
     color: Colors.primary,
   },
   averageContainer: {
@@ -354,6 +355,7 @@ const styles = StyleSheet.create({
   },
   averageLabel: {
     fontSize: 14,
+    fontFamily: Fonts.body.regular,
     color: '#92400e',
     marginBottom: 8,
   },
@@ -363,7 +365,7 @@ const styles = StyleSheet.create({
   },
   averageNumber: {
     fontSize: 48,
-    fontWeight: 'bold',
+    fontFamily: Fonts.heading.bold,
     color: '#92400e',
     marginRight: 8,
   },
