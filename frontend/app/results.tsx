@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BarChart } from 'react-native-chart-kit';
-import { Colors } from '../constants/colors';
+import { Colors, Fonts } from '../constants/colors';
 
 interface QuestionResult {
   question_index: number;
