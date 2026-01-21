@@ -255,12 +255,12 @@ const styles = StyleSheet.create({
   },
   mobileMenuText: {
     fontSize: 17,
-    fontWeight: '500',
+    fontFamily: Fonts.body.medium,
     color: Colors.textSecondary,
   },
   mobileMenuTextActive: {
     color: Colors.primary,
-    fontWeight: '600',
+    fontFamily: Fonts.body.semiBold,
   },
   mobileUserInfo: {
     flexDirection: 'row',
