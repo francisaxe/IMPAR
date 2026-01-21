@@ -10,11 +10,13 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  useWindowDimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../../constants/colors';
 
 interface Question {
   type: string;
@@ -24,15 +26,17 @@ interface Question {
 }
 
 const QUESTION_TYPES = [
-  { id: 'multiple_choice_single', label: 'Multiple Choice (Single)', icon: 'radio-button-on' },
-  { id: 'multiple_choice_multiple', label: 'Multiple Choice (Multiple)', icon: 'checkbox' },
-  { id: 'text_short', label: 'Short Text', icon: 'text' },
-  { id: 'text_long', label: 'Long Text', icon: 'document-text' },
-  { id: 'rating', label: 'Rating (1-5)', icon: 'star' },
+  { id: 'multiple_choice_single', label: 'Escolha Múltipla (Uma)', icon: 'radio-button-on' },
+  { id: 'multiple_choice_multiple', label: 'Escolha Múltipla (Várias)', icon: 'checkbox' },
+  { id: 'text_short', label: 'Texto Curto', icon: 'text' },
+  { id: 'text_long', label: 'Texto Longo', icon: 'document-text' },
+  { id: 'rating', label: 'Avaliação (1-5)', icon: 'star' },
 ];
 
 export default function CreateSurveyScreen() {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -87,31 +91,30 @@ export default function CreateSurveyScreen() {
 
   const handleSubmit = async () => {
     if (!title.trim()) {
-      Alert.alert('Error', 'Please enter a survey title');
+      Alert.alert('Erro', 'Por favor, insira um título para o inquérito');
       return;
     }
 
     if (questions.length === 0) {
-      Alert.alert('Error', 'Please add at least one question');
+      Alert.alert('Erro', 'Por favor, adicione pelo menos uma questão');
       return;
     }
 
-    // Validate questions
     for (let i = 0; i < questions.length; i++) {
       const q = questions[i];
       if (!q.text.trim()) {
-        Alert.alert('Error', `Question ${i + 1} text is required`);
+        Alert.alert('Erro', `O texto da questão ${i + 1} é obrigatório`);
         return;
       }
 
       if (q.type.includes('multiple_choice')) {
         if (!q.options || q.options.length < 2) {
-          Alert.alert('Error', `Question ${i + 1} must have at least 2 options`);
+          Alert.alert('Erro', `A questão ${i + 1} deve ter pelo menos 2 opções`);
           return;
         }
         const validOptions = q.options.filter(opt => opt.trim());
         if (validOptions.length < 2) {
-          Alert.alert('Error', `Question ${i + 1} must have at least 2 non-empty options`);
+          Alert.alert('Erro', `A questão ${i + 1} deve ter pelo menos 2 opções preenchidas`);
           return;
         }
       }
@@ -119,29 +122,22 @@ export default function CreateSurveyScreen() {
 
     setLoading(true);
     try {
-      const response = await api.post('/api/surveys', {
-        title,
-        description,
-        questions,
-      });
-
-      // Clear form
+      await api.post('/api/surveys', { title, description, questions });
       setTitle('');
       setDescription('');
       setQuestions([]);
       
-      // Show success message based on platform
       if (Platform.OS === 'web') {
-        alert('Survey created successfully!');
+        alert('Inquérito criado com sucesso!');
       } else {
-        Alert.alert('Success', 'Survey created successfully!');
+        Alert.alert('Sucesso', 'Inquérito criado com sucesso!');
       }
     } catch (error: any) {
-      const errorMsg = error.response?.data?.detail || 'Failed to create survey';
+      const errorMsg = error.response?.data?.detail || 'Falha ao criar inquérito';
       if (Platform.OS === 'web') {
-        alert('Error: ' + errorMsg);
+        alert('Erro: ' + errorMsg);
       } else {
-        Alert.alert('Error', errorMsg);
+        Alert.alert('Erro', errorMsg);
       }
     } finally {
       setLoading(false);
@@ -158,21 +154,24 @@ export default function CreateSurveyScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView contentContainerStyle={[
+          styles.scrollContent,
+          isDesktop && styles.scrollContentDesktop
+        ]}>
           <TouchableOpacity
             style={styles.viewSuggestionsButton}
             onPress={() => router.push('/view-suggestions')}
           >
             <Ionicons name="bulb" size={20} color="#f59e0b" />
-            <Text style={styles.viewSuggestionsText}>View User Suggestions</Text>
+            <Text style={styles.viewSuggestionsText}>Ver Sugestões de Utilizadores</Text>
             <Ionicons name="chevron-forward" size={20} color="#f59e0b" />
           </TouchableOpacity>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Survey Title *</Text>
+            <Text style={styles.label}>Título do Inquérito *</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter survey title"
+              placeholder="Insira o título do inquérito"
               value={title}
               onChangeText={setTitle}
               placeholderTextColor="#9ca3af"
@@ -180,10 +179,10 @@ export default function CreateSurveyScreen() {
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Description</Text>
+            <Text style={styles.label}>Descrição</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
-              placeholder="Enter survey description"
+              placeholder="Insira a descrição do inquérito"
               value={description}
               onChangeText={setDescription}
               multiline
@@ -193,11 +192,11 @@ export default function CreateSurveyScreen() {
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Questions</Text>
+            <Text style={styles.sectionTitle}>Questões</Text>
             {questions.map((question, qIndex) => (
               <View key={qIndex} style={styles.questionCard}>
                 <View style={styles.questionHeader}>
-                  <Text style={styles.questionNumber}>Question {qIndex + 1}</Text>
+                  <Text style={styles.questionNumber}>Questão {qIndex + 1}</Text>
                   <TouchableOpacity onPress={() => removeQuestion(qIndex)}>
                     <Ionicons name="trash-outline" size={20} color="#ef4444" />
                   </TouchableOpacity>
@@ -207,7 +206,7 @@ export default function CreateSurveyScreen() {
 
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter question text"
+                  placeholder="Insira o texto da questão"
                   value={question.text}
                   onChangeText={(text) => updateQuestion(qIndex, 'text', text)}
                   placeholderTextColor="#9ca3af"
@@ -215,12 +214,12 @@ export default function CreateSurveyScreen() {
 
                 {question.type.includes('multiple_choice') && (
                   <View style={styles.optionsContainer}>
-                    <Text style={styles.optionsLabel}>Options:</Text>
+                    <Text style={styles.optionsLabel}>Opções:</Text>
                     {question.options?.map((option, oIndex) => (
                       <View key={oIndex} style={styles.optionRow}>
                         <TextInput
                           style={[styles.input, styles.optionInput]}
-                          placeholder={`Option ${oIndex + 1}`}
+                          placeholder={`Opção ${oIndex + 1}`}
                           value={option}
                           onChangeText={(text) => updateOption(qIndex, oIndex, text)}
                           placeholderTextColor="#9ca3af"
@@ -236,8 +235,8 @@ export default function CreateSurveyScreen() {
                       style={styles.addOptionButton}
                       onPress={() => addOption(qIndex)}
                     >
-                      <Ionicons name="add-circle-outline" size={20} color="#1e3a5f" />
-                      <Text style={styles.addOptionText}>Add Option</Text>
+                      <Ionicons name="add-circle-outline" size={20} color={Colors.primary} />
+                      <Text style={styles.addOptionText}>Adicionar Opção</Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -248,19 +247,19 @@ export default function CreateSurveyScreen() {
               style={styles.addQuestionButton}
               onPress={() => setShowQuestionTypes(!showQuestionTypes)}
             >
-              <Ionicons name="add-circle" size={24} color="#1e3a5f" />
-              <Text style={styles.addQuestionText}>Add Question</Text>
+              <Ionicons name="add-circle" size={24} color={Colors.primary} />
+              <Text style={styles.addQuestionText}>Adicionar Questão</Text>
             </TouchableOpacity>
 
             {showQuestionTypes && (
-              <View style={styles.questionTypesContainer}>
+              <View style={[styles.questionTypesContainer, isDesktop && styles.questionTypesDesktop]}>
                 {QUESTION_TYPES.map((type) => (
                   <TouchableOpacity
                     key={type.id}
                     style={styles.questionTypeButton}
                     onPress={() => addQuestion(type.id)}
                   >
-                    <Ionicons name={type.icon as any} size={20} color="#1e3a5f" />
+                    <Ionicons name={type.icon as any} size={20} color={Colors.primary} />
                     <Text style={styles.questionTypeText}>{type.label}</Text>
                   </TouchableOpacity>
                 ))}
@@ -278,7 +277,7 @@ export default function CreateSurveyScreen() {
             ) : (
               <>
                 <Ionicons name="checkmark-circle" size={24} color="#fff" />
-                <Text style={styles.submitButtonText}>Create Survey</Text>
+                <Text style={styles.submitButtonText}>Criar Inquérito</Text>
               </>
             )}
           </TouchableOpacity>
@@ -291,13 +290,19 @@ export default function CreateSurveyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   keyboardView: {
     flex: 1,
   },
   scrollContent: {
     padding: 16,
+  },
+  scrollContentDesktop: {
+    padding: 32,
+    maxWidth: 800,
+    alignSelf: 'center',
+    width: '100%',
   },
   viewSuggestionsButton: {
     flexDirection: 'row',
@@ -333,7 +338,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#111827',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
   },
   textArea: {
     height: 100,
@@ -351,7 +356,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
   },
   questionHeader: {
     flexDirection: 'row',
@@ -366,7 +371,7 @@ const styles = StyleSheet.create({
   },
   questionType: {
     fontSize: 12,
-    color: '#1e3a5f',
+    color: Colors.primary,
     marginBottom: 12,
     fontWeight: '600',
   },
@@ -396,7 +401,7 @@ const styles = StyleSheet.create({
   },
   addOptionText: {
     fontSize: 14,
-    color: '#1e3a5f',
+    color: Colors.primary,
     fontWeight: '600',
     marginLeft: 6,
   },
@@ -414,7 +419,7 @@ const styles = StyleSheet.create({
   addQuestionText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e3a5f',
+    color: Colors.primary,
     marginLeft: 8,
   },
   questionTypesContainer: {
@@ -423,7 +428,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
+  },
+  questionTypesDesktop: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
   },
   questionTypeButton: {
     flexDirection: 'row',
@@ -431,7 +441,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   questionTypeText: {
     fontSize: 14,
@@ -443,7 +453,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1e3a5f',
+    backgroundColor: Colors.primary,
     borderRadius: 12,
     padding: 16,
     marginTop: 8,

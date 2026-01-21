@@ -1,29 +1,31 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform, useWindowDimensions, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../../constants/colors';
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
 
   const handleLogout = async () => {
-    // Use native confirm for web compatibility
     if (Platform.OS === 'web') {
-      if (confirm('Are you sure you want to logout?')) {
+      if (confirm('Tem a certeza que deseja sair?')) {
         await logout();
         router.replace('/login');
       }
     } else {
       Alert.alert(
-        'Logout',
-        'Are you sure you want to logout?',
+        'Sair',
+        'Tem a certeza que deseja sair?',
         [
-          { text: 'Cancel', style: 'cancel' },
+          { text: 'Cancelar', style: 'cancel' },
           {
-            text: 'Logout',
+            text: 'Sair',
             style: 'destructive',
             onPress: async () => {
               await logout();
@@ -37,24 +39,27 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <View style={styles.content}>
-        <View style={styles.profileHeader}>
-          <View style={styles.avatarContainer}>
-            <Ionicons name="person" size={48} color="#1e3a5f" />
+      <ScrollView contentContainerStyle={[
+        styles.content,
+        isDesktop && styles.contentDesktop
+      ]}>
+        <View style={[styles.profileHeader, isDesktop && styles.profileHeaderDesktop]}>
+          <View style={[styles.avatarContainer, isDesktop && styles.avatarContainerDesktop]}>
+            <Ionicons name="person" size={isDesktop ? 64 : 48} color={Colors.primary} />
           </View>
-          <Text style={styles.name}>{user?.name}</Text>
+          <Text style={[styles.name, isDesktop && styles.nameDesktop]}>{user?.name}</Text>
           <Text style={styles.email}>{user?.email}</Text>
           {user?.role === 'owner' && (
             <View style={styles.ownerBadge}>
               <Ionicons name="star" size={16} color="#f59e0b" />
-              <Text style={styles.ownerText}>Survey Owner</Text>
+              <Text style={styles.ownerText}>Administrador de Inquéritos</Text>
             </View>
           )}
         </View>
 
-        <View style={styles.infoSection}>
+        <View style={[styles.infoSection, isDesktop && styles.infoSectionDesktop]}>
           <View style={styles.infoCard}>
-            <Ionicons name="mail-outline" size={24} color="#1e3a5f" />
+            <Ionicons name="mail-outline" size={24} color={Colors.primary} />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Email</Text>
               <Text style={styles.infoValue}>{user?.email}</Text>
@@ -64,19 +69,19 @@ export default function ProfileScreen() {
           <View style={styles.infoCard}>
             <Ionicons name="shield-checkmark-outline" size={24} color="#10b981" />
             <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Role</Text>
+              <Text style={styles.infoLabel}>Tipo de Conta</Text>
               <Text style={styles.infoValue}>
-                {user?.role === 'owner' ? 'Survey Owner' : 'Survey Participant'}
+                {user?.role === 'owner' ? 'Administrador' : 'Participante'}
               </Text>
             </View>
           </View>
         </View>
 
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <TouchableOpacity style={[styles.logoutButton, isDesktop && styles.logoutButtonDesktop]} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={24} color="#ef4444" />
-          <Text style={styles.logoutText}>Logout</Text>
+          <Text style={styles.logoutText}>Terminar Sessão</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -84,11 +89,16 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   content: {
-    flex: 1,
     padding: 16,
+  },
+  contentDesktop: {
+    padding: 32,
+    maxWidth: 600,
+    alignSelf: 'center',
+    width: '100%',
   },
   profileHeader: {
     alignItems: 'center',
@@ -97,7 +107,10 @@ const styles = StyleSheet.create({
     padding: 32,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
+  },
+  profileHeaderDesktop: {
+    padding: 48,
   },
   avatarContainer: {
     width: 96,
@@ -108,11 +121,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  avatarContainerDesktop: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+  },
   name: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#111827',
     marginBottom: 4,
+  },
+  nameDesktop: {
+    fontSize: 28,
   },
   email: {
     fontSize: 16,
@@ -137,6 +158,9 @@ const styles = StyleSheet.create({
   infoSection: {
     marginBottom: 24,
   },
+  infoSectionDesktop: {
+    marginBottom: 32,
+  },
   infoCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -145,7 +169,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
   },
   infoContent: {
     marginLeft: 16,
@@ -170,6 +194,11 @@ const styles = StyleSheet.create({
     padding: 16,
     borderWidth: 1,
     borderColor: '#fecaca',
+  },
+  logoutButtonDesktop: {
+    maxWidth: 300,
+    alignSelf: 'center',
+    width: '100%',
   },
   logoutText: {
     fontSize: 16,

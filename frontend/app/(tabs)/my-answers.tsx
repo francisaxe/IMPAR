@@ -7,11 +7,13 @@ import {
   StyleSheet,
   RefreshControl,
   ActivityIndicator,
+  useWindowDimensions,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../../constants/colors';
 
 interface MyResponse {
   survey_id: string;
@@ -24,6 +26,8 @@ export default function MyAnswersScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
 
   const fetchMyResponses = async () => {
     try {
@@ -41,7 +45,6 @@ export default function MyAnswersScreen() {
     fetchMyResponses();
   }, []);
 
-  // Refresh when screen comes into focus
   useFocusEffect(
     useCallback(() => {
       fetchMyResponses();
@@ -55,7 +58,7 @@ export default function MyAnswersScreen() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('pt-PT', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -66,7 +69,7 @@ export default function MyAnswersScreen() {
 
   const renderResponseCard = ({ item }: { item: MyResponse }) => (
     <TouchableOpacity
-      style={styles.card}
+      style={[styles.card, isDesktop && styles.cardDesktop]}
       onPress={() => router.push(`/results?id=${item.survey_id}`)}
     >
       <View style={styles.cardHeader}>
@@ -78,7 +81,7 @@ export default function MyAnswersScreen() {
             {item.survey_title}
           </Text>
           <Text style={styles.cardDate}>
-            Answered on {formatDate(item.submitted_at)}
+            Respondido em {formatDate(item.submitted_at)}
           </Text>
         </View>
         <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
@@ -89,7 +92,7 @@ export default function MyAnswersScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#1e3a5f" />
+        <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
   }
@@ -99,17 +102,23 @@ export default function MyAnswersScreen() {
       {responses.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Ionicons name="chatbox-ellipses-outline" size={64} color="#d1d5db" />
-          <Text style={styles.emptyTitle}>No Responses Yet</Text>
-          <Text style={styles.emptyText}>Start answering surveys to see your responses here</Text>
+          <Text style={styles.emptyTitle}>Sem Respostas</Text>
+          <Text style={styles.emptyText}>Comece a responder inquéritos para ver as suas respostas aqui</Text>
         </View>
       ) : (
         <FlatList
           data={responses}
           renderItem={renderResponseCard}
           keyExtractor={(item) => item.survey_id}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={[
+            styles.listContent,
+            isDesktop && styles.listContentDesktop
+          ]}
+          key={isDesktop ? 'desktop' : 'mobile'}
+          numColumns={isDesktop ? 2 : 1}
+          columnWrapperStyle={isDesktop ? styles.columnWrapper : undefined}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1e3a5f']} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.primary]} />
           }
         />
       )}
@@ -120,7 +129,7 @@ export default function MyAnswersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   centerContainer: {
     flex: 1,
@@ -130,18 +139,30 @@ const styles = StyleSheet.create({
   listContent: {
     padding: 16,
   },
+  listContentDesktop: {
+    padding: 32,
+    maxWidth: 1000,
+    alignSelf: 'center',
+    width: '100%',
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
+  },
+  cardDesktop: {
+    width: '48%',
   },
   cardHeader: {
     flexDirection: 'row',

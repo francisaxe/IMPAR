@@ -10,20 +10,24 @@ import {
   Platform,
   Alert,
   ActivityIndicator,
+  useWindowDimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../../constants/colors';
 
 const QUESTION_TYPES = [
-  { id: 'multiple_choice_single', label: 'Multiple Choice (Single Answer)' },
-  { id: 'multiple_choice_multiple', label: 'Multiple Choice (Multiple Answers)' },
-  { id: 'text_short', label: 'Short Text' },
-  { id: 'text_long', label: 'Long Text / Paragraph' },
-  { id: 'rating', label: 'Rating (1-5 Stars)' },
+  { id: 'multiple_choice_single', label: 'Escolha Múltipla (Uma Resposta)' },
+  { id: 'multiple_choice_multiple', label: 'Escolha Múltipla (Várias Respostas)' },
+  { id: 'text_short', label: 'Texto Curto' },
+  { id: 'text_long', label: 'Texto Longo / Parágrafo' },
+  { id: 'rating', label: 'Avaliação (1-5 Estrelas)' },
 ];
 
 export default function SuggestQuestionScreen() {
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
   const [category, setCategory] = useState('');
   const [questionType, setQuestionType] = useState('');
   const [questionText, setQuestionText] = useState('');
@@ -35,7 +39,6 @@ export default function SuggestQuestionScreen() {
   const handleQuestionTypeSelect = (type: string) => {
     setQuestionType(type);
     setShowQuestionTypes(false);
-    // Reset options when changing type
     if (type.includes('multiple_choice')) {
       setOptions(['', '']);
     }
@@ -59,33 +62,31 @@ export default function SuggestQuestionScreen() {
   };
 
   const handleSubmit = async () => {
-    // Validation
     if (!questionType) {
       if (Platform.OS === 'web') {
-        alert('Please select a question type');
+        alert('Por favor, selecione o tipo de questão');
       } else {
-        Alert.alert('Error', 'Please select a question type');
+        Alert.alert('Erro', 'Por favor, selecione o tipo de questão');
       }
       return;
     }
 
     if (!questionText.trim()) {
       if (Platform.OS === 'web') {
-        alert('Please enter the question text');
+        alert('Por favor, insira o texto da questão');
       } else {
-        Alert.alert('Error', 'Please enter the question text');
+        Alert.alert('Erro', 'Por favor, insira o texto da questão');
       }
       return;
     }
 
-    // Validate options for multiple choice
     if (questionType.includes('multiple_choice')) {
       const validOptions = options.filter(opt => opt.trim());
       if (validOptions.length < 2) {
         if (Platform.OS === 'web') {
-          alert('Please provide at least 2 answer options');
+          alert('Por favor, forneça pelo menos 2 opções de resposta');
         } else {
-          Alert.alert('Error', 'Please provide at least 2 answer options');
+          Alert.alert('Erro', 'Por favor, forneça pelo menos 2 opções de resposta');
         }
         return;
       }
@@ -100,14 +101,12 @@ export default function SuggestQuestionScreen() {
         notes: notes.trim() || null,
       };
 
-      // Only include options for multiple choice questions
       if (questionType.includes('multiple_choice')) {
         payload.options = options.filter(opt => opt.trim());
       }
 
       await api.post('/api/suggestions', payload);
 
-      // Clear form
       setCategory('');
       setQuestionType('');
       setQuestionText('');
@@ -115,16 +114,16 @@ export default function SuggestQuestionScreen() {
       setNotes('');
 
       if (Platform.OS === 'web') {
-        alert('Question suggestion submitted successfully! Thank you for your input.');
+        alert('Sugestão de questão submetida com sucesso! Obrigado pela sua contribuição.');
       } else {
-        Alert.alert('Success', 'Question suggestion submitted successfully! Thank you for your input.');
+        Alert.alert('Sucesso', 'Sugestão de questão submetida com sucesso! Obrigado pela sua contribuição.');
       }
     } catch (error: any) {
-      const errorMsg = error.response?.data?.detail || 'Failed to submit suggestion';
+      const errorMsg = error.response?.data?.detail || 'Falha ao submeter sugestão';
       if (Platform.OS === 'web') {
-        alert('Error: ' + errorMsg);
+        alert('Erro: ' + errorMsg);
       } else {
-        Alert.alert('Error', errorMsg);
+        Alert.alert('Erro', errorMsg);
       }
     } finally {
       setLoading(false);
@@ -137,34 +136,35 @@ export default function SuggestQuestionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView contentContainerStyle={[
+          styles.scrollContent,
+          isDesktop && styles.scrollContentDesktop
+        ]}>
           <View style={styles.header}>
             <View style={styles.iconContainer}>
               <Ionicons name="bulb" size={48} color="#f59e0b" />
             </View>
-            <Text style={styles.title}>Suggest a Question</Text>
+            <Text style={styles.title}>Sugerir uma Questão</Text>
             <Text style={styles.subtitle}>
-              Have an idea for a great survey question? Share it with us!
+              Tem uma ideia para uma boa questão de inquérito? Partilhe connosco!
             </Text>
           </View>
 
           <View style={styles.form}>
-            {/* 1. Category (Optional) */}
             <View style={styles.section}>
-              <Text style={styles.label}>Category (Optional)</Text>
+              <Text style={styles.label}>Categoria (Opcional)</Text>
               <TextInput
                 style={styles.input}
-                placeholder="e.g., Customer Service, Product Feedback, etc."
+                placeholder="Ex: Atendimento ao Cliente, Feedback de Produto, etc."
                 value={category}
                 onChangeText={setCategory}
                 placeholderTextColor="#9ca3af"
               />
             </View>
 
-            {/* 2. Question Type (Mandatory) */}
             <View style={styles.section}>
               <Text style={styles.label}>
-                Question Type <Text style={styles.required}>*</Text>
+                Tipo de Questão <Text style={styles.required}>*</Text>
               </Text>
               <TouchableOpacity
                 style={[styles.input, styles.typeSelector]}
@@ -173,7 +173,7 @@ export default function SuggestQuestionScreen() {
                 <Text style={questionType ? styles.typeSelectorText : styles.typeSelectorPlaceholder}>
                   {questionType
                     ? QUESTION_TYPES.find(t => t.id === questionType)?.label
-                    : 'Select question type'}
+                    : 'Selecione o tipo de questão'}
                 </Text>
                 <Ionicons name="chevron-down" size={20} color="#6b7280" />
               </TouchableOpacity>
@@ -193,14 +193,13 @@ export default function SuggestQuestionScreen() {
               )}
             </View>
 
-            {/* 3. Question Text (Mandatory) */}
             <View style={styles.section}>
               <Text style={styles.label}>
-                Question <Text style={styles.required}>*</Text>
+                Questão <Text style={styles.required}>*</Text>
               </Text>
               <TextInput
                 style={[styles.input, styles.textArea]}
-                placeholder="What question would you like to ask in a survey?"
+                placeholder="Que questão gostaria de ver num inquérito?"
                 value={questionText}
                 onChangeText={setQuestionText}
                 multiline
@@ -209,15 +208,14 @@ export default function SuggestQuestionScreen() {
               />
             </View>
 
-            {/* 4. Answer Options (Conditional) */}
             {questionType && questionType.includes('multiple_choice') && (
               <View style={styles.section}>
-                <Text style={styles.label}>Answer Options</Text>
+                <Text style={styles.label}>Opções de Resposta</Text>
                 {options.map((option, index) => (
                   <View key={index} style={styles.optionRow}>
                     <TextInput
                       style={[styles.input, styles.optionInput]}
-                      placeholder={`Option ${index + 1}`}
+                      placeholder={`Opção ${index + 1}`}
                       value={option}
                       onChangeText={(text) => updateOption(index, text)}
                       placeholderTextColor="#9ca3af"
@@ -230,18 +228,17 @@ export default function SuggestQuestionScreen() {
                   </View>
                 ))}
                 <TouchableOpacity style={styles.addOptionButton} onPress={addOption}>
-                  <Ionicons name="add-circle-outline" size={20} color="#1e3a5f" />
-                  <Text style={styles.addOptionText}>Add Option</Text>
+                  <Ionicons name="add-circle-outline" size={20} color={Colors.primary} />
+                  <Text style={styles.addOptionText}>Adicionar Opção</Text>
                 </TouchableOpacity>
               </View>
             )}
 
-            {/* 5. Additional Notes (Optional) */}
             <View style={styles.section}>
-              <Text style={styles.label}>Additional Notes (Optional)</Text>
+              <Text style={styles.label}>Notas Adicionais (Opcional)</Text>
               <TextInput
                 style={[styles.input, styles.textArea]}
-                placeholder="Any context or explanation for your suggestion..."
+                placeholder="Algum contexto ou explicação para a sua sugestão..."
                 value={notes}
                 onChangeText={setNotes}
                 multiline
@@ -260,17 +257,16 @@ export default function SuggestQuestionScreen() {
               ) : (
                 <>
                   <Ionicons name="paper-plane" size={20} color="#fff" />
-                  <Text style={styles.submitButtonText}>Submit Suggestion</Text>
+                  <Text style={styles.submitButtonText}>Submeter Sugestão</Text>
                 </>
               )}
             </TouchableOpacity>
           </View>
 
           <View style={styles.infoBox}>
-            <Ionicons name="information-circle" size={24} color="#1e3a5f" />
+            <Ionicons name="information-circle" size={24} color={Colors.primary} />
             <Text style={styles.infoText}>
-              Your suggestions help us create better surveys. We review all submissions and may use your
-              question in future surveys!
+              As suas sugestões ajudam-nos a criar melhores inquéritos. Revemos todas as submissões e podemos usar a sua questão em futuros inquéritos!
             </Text>
           </View>
         </ScrollView>
@@ -282,13 +278,19 @@ export default function SuggestQuestionScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.gray50,
   },
   keyboardView: {
     flex: 1,
   },
   scrollContent: {
     padding: 16,
+  },
+  scrollContentDesktop: {
+    padding: 32,
+    maxWidth: 700,
+    alignSelf: 'center',
+    width: '100%',
   },
   header: {
     alignItems: 'center',
@@ -338,7 +340,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#111827',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
   },
   textArea: {
     height: 100,
@@ -362,7 +364,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 8,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Colors.gray200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -398,7 +400,7 @@ const styles = StyleSheet.create({
   },
   addOptionText: {
     fontSize: 14,
-    color: '#1e3a5f',
+    color: Colors.primary,
     fontWeight: '600',
     marginLeft: 8,
   },
