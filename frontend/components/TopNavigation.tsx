@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image, useWindowDimensions, Modal, Pressable } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/colors';
@@ -10,62 +10,144 @@ export default function TopNavigation() {
   const pathname = usePathname();
   const { user } = useAuth();
   const isOwner = user?.role === 'owner';
+  const { width } = useWindowDimensions();
+  const [menuOpen, setMenuOpen] = useState(false);
   
-  const isWeb = Platform.OS === 'web';
+  // Breakpoint para mobile: 768px
+  const isMobile = width < 768;
 
   const menuItems = [
-    { name: 'Início', path: '/(tabs)/home', icon: 'home' },
-    { name: 'Sondagens', path: '/(tabs)/surveys', icon: 'list' },
-    { name: 'Respostas', path: '/(tabs)/my-answers', icon: 'checkmark-circle' },
-    { name: 'Sugerir', path: isOwner ? '/(tabs)/create' : '/(tabs)/suggest', icon: isOwner ? 'add-circle' : 'bulb' },
-    { name: 'Perfil', path: '/(tabs)/profile', icon: 'person' },
+    { name: 'Início', path: '/(tabs)/home', icon: 'home-outline' as const },
+    { name: 'Inquéritos', path: '/(tabs)/surveys', icon: 'list-outline' as const },
+    { name: 'Respostas', path: '/(tabs)/my-answers', icon: 'checkmark-circle-outline' as const },
+    { 
+      name: isOwner ? 'Criar' : 'Sugerir', 
+      path: isOwner ? '/(tabs)/create' : '/(tabs)/suggest', 
+      icon: isOwner ? 'add-circle-outline' as const : 'bulb-outline' as const 
+    },
+    { name: 'Perfil', path: '/(tabs)/profile', icon: 'person-outline' as const },
   ];
 
   const isActive = (path: string) => {
     return pathname === path || pathname?.startsWith(path);
   };
 
+  const navigateTo = (path: string) => {
+    router.push(path as any);
+    setMenuOpen(false);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <View style={[styles.content, isMobile && styles.contentMobile]}>
         {/* Logo */}
         <TouchableOpacity 
           style={styles.logoContainer}
-          onPress={() => router.push('/(tabs)/home')}
+          onPress={() => navigateTo('/(tabs)/home')}
         >
           <Image 
             source={require('../assets/impar-logo.png')}
-            style={styles.logo}
+            style={[styles.logo, isMobile && styles.logoMobile]}
             resizeMode="contain"
           />
         </TouchableOpacity>
 
-        {/* Menu Items */}
-        <View style={styles.menu}>
-          {menuItems.map((item) => (
-            <TouchableOpacity
-              key={item.path}
-              style={[
-                styles.menuItem,
-                isActive(item.path) && styles.menuItemActive
-              ]}
-              onPress={() => router.push(item.path as any)}
-            >
-              <Ionicons 
-                name={item.icon as any} 
-                size={20} 
-                color={isActive(item.path) ? Colors.primary : Colors.textSecondary} 
-              />
-              <Text style={[
-                styles.menuText,
-                isActive(item.path) && styles.menuTextActive
-              ]}>
-                {item.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {/* Desktop Menu */}
+        {!isMobile && (
+          <View style={styles.menu}>
+            {menuItems.map((item) => (
+              <TouchableOpacity
+                key={item.path}
+                style={[
+                  styles.menuItem,
+                  isActive(item.path) && styles.menuItemActive
+                ]}
+                onPress={() => navigateTo(item.path)}
+              >
+                <Ionicons 
+                  name={isActive(item.path) ? item.icon.replace('-outline', '') as any : item.icon} 
+                  size={20} 
+                  color={isActive(item.path) ? Colors.primary : Colors.textSecondary} 
+                />
+                <Text style={[
+                  styles.menuText,
+                  isActive(item.path) && styles.menuTextActive
+                ]}>
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        {/* Mobile Hamburger Button */}
+        {isMobile && (
+          <TouchableOpacity 
+            style={styles.hamburger}
+            onPress={() => setMenuOpen(true)}
+          >
+            <Ionicons name="menu" size={28} color={Colors.primary} />
+          </TouchableOpacity>
+        )}
       </View>
+
+      {/* Mobile Menu Modal */}
+      <Modal
+        visible={menuOpen}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setMenuOpen(false)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={() => setMenuOpen(false)}>
+          <View style={styles.mobileMenuContainer}>
+            {/* Header do menu mobile */}
+            <View style={styles.mobileMenuHeader}>
+              <Image 
+                source={require('../assets/impar-logo.png')}
+                style={styles.logoMobile}
+                resizeMode="contain"
+              />
+              <TouchableOpacity onPress={() => setMenuOpen(false)}>
+                <Ionicons name="close" size={28} color={Colors.primary} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Items do menu mobile */}
+            <View style={styles.mobileMenuItems}>
+              {menuItems.map((item) => (
+                <TouchableOpacity
+                  key={item.path}
+                  style={[
+                    styles.mobileMenuItem,
+                    isActive(item.path) && styles.mobileMenuItemActive
+                  ]}
+                  onPress={() => navigateTo(item.path)}
+                >
+                  <Ionicons 
+                    name={isActive(item.path) ? item.icon.replace('-outline', '') as any : item.icon} 
+                    size={24} 
+                    color={isActive(item.path) ? Colors.primary : Colors.textSecondary} 
+                  />
+                  <Text style={[
+                    styles.mobileMenuText,
+                    isActive(item.path) && styles.mobileMenuTextActive
+                  ]}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* User info no mobile menu */}
+            {user && (
+              <View style={styles.mobileUserInfo}>
+                <Ionicons name="person-circle" size={24} color={Colors.gray400} />
+                <Text style={styles.mobileUserText}>{user.email}</Text>
+              </View>
+            )}
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -87,27 +169,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    maxWidth: 1400,
+    maxWidth: 1200,
     alignSelf: 'center',
     width: '100%',
+  },
+  contentMobile: {
+    paddingHorizontal: 4,
   },
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   logo: {
-    width: 120,
-    height: 40,
+    width: 100,
+    height: 36,
+  },
+  logoMobile: {
+    width: 80,
+    height: 32,
   },
   menu: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 8,
     gap: 6,
@@ -123,5 +212,67 @@ const styles = StyleSheet.create({
   menuTextActive: {
     color: Colors.primary,
     fontWeight: '600',
+  },
+  hamburger: {
+    padding: 8,
+  },
+  // Mobile menu styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  mobileMenuContainer: {
+    backgroundColor: Colors.accent,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 40,
+    maxHeight: '80%',
+  },
+  mobileMenuHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.gray200,
+  },
+  mobileMenuItems: {
+    paddingVertical: 8,
+  },
+  mobileMenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    gap: 16,
+  },
+  mobileMenuItemActive: {
+    backgroundColor: Colors.gray100,
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.primary,
+  },
+  mobileMenuText: {
+    fontSize: 17,
+    fontWeight: '500',
+    color: Colors.textSecondary,
+  },
+  mobileMenuTextActive: {
+    color: Colors.primary,
+    fontWeight: '600',
+  },
+  mobileUserInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: Colors.gray200,
+    marginTop: 8,
+  },
+  mobileUserText: {
+    fontSize: 14,
+    color: Colors.gray400,
   },
 });
