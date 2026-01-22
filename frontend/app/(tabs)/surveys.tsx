@@ -279,22 +279,34 @@ export default function SurveysScreen() {
             </Text>
           </View>
           
-          {item.is_closed ? (
-            <View style={styles.closedBadge}>
-              <Ionicons name="lock-closed" size={16} color="#ef4444" />
-              <Text style={styles.closedText}>Encerrada</Text>
-            </View>
-          ) : item.has_answered ? (
-            <View style={styles.answeredBadge}>
-              <Ionicons name="checkmark-circle" size={16} color="#10b981" />
-              <Text style={styles.answeredText}>Respondida</Text>
-            </View>
-          ) : (
-            <View style={styles.pendingBadge}>
-              <Text style={styles.pendingText}>Participar</Text>
-              <Ionicons name="chevron-forward" size={16} color="#1e3a5f" />
-            </View>
-          )}
+          <View style={styles.cardActions}>
+            <TouchableOpacity
+              style={styles.shareButton}
+              onPress={(e) => {
+                e.stopPropagation();
+                openShareModal(item);
+              }}
+            >
+              <Ionicons name="share-social-outline" size={18} color="#6b7280" />
+            </TouchableOpacity>
+            
+            {item.is_closed ? (
+              <View style={styles.closedBadge}>
+                <Ionicons name="lock-closed" size={16} color="#ef4444" />
+                <Text style={styles.closedText}>Encerrada</Text>
+              </View>
+            ) : item.has_answered ? (
+              <View style={styles.answeredBadge}>
+                <Ionicons name="checkmark-circle" size={16} color="#10b981" />
+                <Text style={styles.answeredText}>Respondida</Text>
+              </View>
+            ) : (
+              <View style={styles.pendingBadge}>
+                <Text style={styles.pendingText}>Participar</Text>
+                <Ionicons name="chevron-forward" size={16} color="#1e3a5f" />
+              </View>
+            )}
+          </View>
         </View>
         
         <View style={styles.cardDates}>
