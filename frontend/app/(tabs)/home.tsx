@@ -167,7 +167,7 @@ export default function HomeScreen() {
               <ActivityIndicator size="large" color={Colors.primary} />
             </View>
           ) : featuredItems.length > 0 ? (
-            <View style={[styles.featuredGrid, isDesktop && styles.featuredGridDesktop]}>
+            <View style={styles.featuredGrid}>
               {featuredItems.map(renderFeaturedCard)}
             </View>
           ) : (
@@ -178,38 +178,12 @@ export default function HomeScreen() {
               </Text>
               {isOwner && (
                 <Text style={styles.emptyFeaturedHint}>
-                  Vá às "Sondagens" e clique na estrela para destacar.
+                  Vá às "Sondagens" ou "Resultados" e clique na estrela para destacar.
                 </Text>
               )}
             </View>
           )}
         </View>
-
-        {/* Gestão de Destaques - Apenas para Owner */}
-        {isOwner && featuredItems.length > 0 && (
-          <View style={styles.manageSection}>
-            <View style={styles.manageSectionHeader}>
-              <Ionicons name="settings-outline" size={20} color={Colors.primary} />
-              <Text style={styles.manageSectionTitle}>Gerir Destaques</Text>
-            </View>
-            <Text style={styles.manageHint}>
-              {featuredItems.length}/3 destaques ativos. Para remover, vá às "Sondagens" e clique na estrela.
-            </Text>
-            <View style={styles.currentFeatured}>
-              {featuredItems.map((item) => (
-                <View key={item.id} style={styles.featuredListItem}>
-                  <Ionicons 
-                    name={item.type === 'survey' ? 'clipboard' : 'newspaper'} 
-                    size={16} 
-                    color={Colors.primary} 
-                  />
-                  <Text style={styles.featuredListTitle} numberOfLines={1}>{item.title}</Text>
-                  <Ionicons name="star" size={14} color="#f59e0b" />
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
 
         {/* PARTICIPA NAS NOSSAS SONDAGENS */}
         <View style={styles.section}>
