@@ -312,10 +312,6 @@ const styles = StyleSheet.create({
   featuredGrid: {
     gap: 16,
   },
-  featuredGridDesktop: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
   featuredCard: {
     backgroundColor: Colors.gray50,
     borderRadius: 12,
@@ -324,10 +320,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray200,
     position: 'relative',
     overflow: 'hidden',
-  },
-  featuredCardDesktop: {
-    width: '31%',
-    marginRight: '2%',
+    width: '100%',
+    marginBottom: 0,
   },
   featuredHeader: {
     flexDirection: 'row',
