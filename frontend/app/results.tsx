@@ -7,6 +7,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   useWindowDimensions,
+  Alert,
+  Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +16,7 @@ import api from '../utils/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BarChart } from 'react-native-chart-kit';
 import { Colors, Fonts } from '../constants/colors';
+import { useAuth } from '../contexts/AuthContext';
 
 interface QuestionResult {
   question_index: number;
@@ -37,9 +40,15 @@ export default function ResultsScreen() {
   const chartWidth = isDesktop ? Math.min(width - 128, 600) : width - 64;
   const [results, setResults] = useState<SurveyResults | null>(null);
   const [loading, setLoading] = useState(true);
+  const [featured, setFeatured] = useState(false);
+  const { user } = useAuth();
+  const isOwner = user?.role === 'owner';
 
   useEffect(() => {
     fetchResults();
+    if (isOwner) {
+      fetchFeaturedStatus();
+    }
   }, [id]);
 
   const fetchResults = async () => {
@@ -50,6 +59,42 @@ export default function ResultsScreen() {
       console.error('Error fetching results:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchFeaturedStatus = async () => {
+    try {
+      const response = await api.get('/api/surveys');
+      const survey = response.data.find((s: any) => s.id === id);
+      if (survey) {
+        setFeatured(survey.featured || false);
+      }
+    } catch (error) {
+      console.error('Error fetching featured status:', error);
+    }
+  };
+
+  const handleToggleFeature = async () => {
+    try {
+      await api.put(`/api/surveys/${id}/feature`);
+      setFeatured(!featured);
+      
+      const message = featured 
+        ? 'Destaque removido com sucesso' 
+        : 'Resultado destacado com sucesso';
+      
+      if (Platform.OS === 'web') {
+        alert(message);
+      } else {
+        Alert.alert('Sucesso', message);
+      }
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.detail || 'Erro ao atualizar destaque';
+      if (Platform.OS === 'web') {
+        alert('Erro: ' + errorMsg);
+      } else {
+        Alert.alert('Erro', errorMsg);
+      }
     }
   };
 
