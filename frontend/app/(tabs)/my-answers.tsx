@@ -143,9 +143,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '100%',
   },
-  columnWrapper: {
-    justifyContent: 'space-between',
-  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
@@ -158,9 +155,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
-  },
-  cardDesktop: {
-    width: '48%',
+    width: '100%',
   },
   cardHeader: {
     flexDirection: 'row',
