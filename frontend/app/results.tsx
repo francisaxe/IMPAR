@@ -314,6 +314,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  featureButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerTitle: {
     fontSize: 18,
     fontFamily: Fonts.heading.bold,
@@ -336,11 +342,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.gray200,
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   surveyTitle: {
     fontSize: 24,
     fontFamily: Fonts.heading.bold,
     color: '#111827',
-    marginBottom: 16,
+    flex: 1,
   },
   responseCount: {
     flexDirection: 'row',
