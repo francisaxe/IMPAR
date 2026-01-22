@@ -353,6 +353,85 @@ export default function SurveysScreen() {
           />
         </View>
       )}
+
+      {/* Share Modal */}
+      <Modal
+        visible={shareModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={closeShareModal}
+      >
+        <TouchableOpacity 
+          style={styles.modalOverlay} 
+          activeOpacity={1} 
+          onPress={closeShareModal}
+        >
+          <View style={styles.shareModalContainer}>
+            <View style={styles.shareModalHeader}>
+              <Text style={styles.shareModalTitle}>Partilhar Sondagem</Text>
+              <TouchableOpacity onPress={closeShareModal} style={styles.closeButton}>
+                <Ionicons name="close" size={24} color="#6b7280" />
+              </TouchableOpacity>
+            </View>
+            
+            {selectedSurvey && (
+              <Text style={styles.shareModalSurveyTitle} numberOfLines={2}>
+                {selectedSurvey.title}
+              </Text>
+            )}
+
+            <View style={styles.shareOptions}>
+              <TouchableOpacity 
+                style={styles.shareOption}
+                onPress={() => handleShare('facebook')}
+              >
+                <View style={[styles.shareIconContainer, { backgroundColor: '#1877F2' }]}>
+                  <Ionicons name="logo-facebook" size={24} color="#fff" />
+                </View>
+                <Text style={styles.shareOptionText}>Facebook</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.shareOption}
+                onPress={() => handleShare('twitter')}
+              >
+                <View style={[styles.shareIconContainer, { backgroundColor: '#000' }]}>
+                  <Ionicons name="logo-twitter" size={24} color="#fff" />
+                </View>
+                <Text style={styles.shareOptionText}>X (Twitter)</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.shareOption}
+                onPress={() => handleShare('whatsapp')}
+              >
+                <View style={[styles.shareIconContainer, { backgroundColor: '#25D366' }]}>
+                  <Ionicons name="logo-whatsapp" size={24} color="#fff" />
+                </View>
+                <Text style={styles.shareOptionText}>WhatsApp</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.shareOption}
+                onPress={() => handleShare('linkedin')}
+              >
+                <View style={[styles.shareIconContainer, { backgroundColor: '#0A66C2' }]}>
+                  <Ionicons name="logo-linkedin" size={24} color="#fff" />
+                </View>
+                <Text style={styles.shareOptionText}>LinkedIn</Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity 
+              style={styles.copyLinkButton}
+              onPress={() => handleShare('copy')}
+            >
+              <Ionicons name="link-outline" size={20} color={Colors.primary} />
+              <Text style={styles.copyLinkText}>Copiar Link</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 }
