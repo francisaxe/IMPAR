@@ -454,10 +454,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
-  columnWrapper: {
-    justifyContent: 'space-between',
-    marginBottom: 0,
-  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
