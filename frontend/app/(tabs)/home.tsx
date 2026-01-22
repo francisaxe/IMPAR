@@ -79,7 +79,7 @@ export default function HomeScreen() {
   const renderFeaturedCard = (item: FeaturedItem) => (
     <TouchableOpacity 
       key={item.id}
-      style={[styles.featuredCard, isDesktop && styles.featuredCardDesktop]}
+      style={styles.featuredCard}
       onPress={() => handleFeaturedItemPress(item)}
       activeOpacity={0.7}
     >
