@@ -344,9 +344,7 @@ export default function SurveysScreen() {
             renderItem={renderSurveyCard}
             keyExtractor={(item) => item.id}
             contentContainerStyle={styles.listContent}
-            key={isDesktop ? 'desktop' : 'mobile'}
-            numColumns={isDesktop ? 2 : 1}
-            columnWrapperStyle={isDesktop ? styles.columnWrapper : undefined}
+            numColumns={1}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.primary]} />
             }
