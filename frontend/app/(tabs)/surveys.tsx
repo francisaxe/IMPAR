@@ -545,6 +545,14 @@ const styles = StyleSheet.create({
     color: '#6b7280',
     marginLeft: 6,
   },
+  cardActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  shareButton: {
+    padding: 8,
+    marginRight: 8,
+  },
   answeredBadge: {
     flexDirection: 'row',
     alignItems: 'center',
