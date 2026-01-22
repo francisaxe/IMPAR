@@ -418,53 +418,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: 'center',
   },
-  // Manage Section (Owner only)
-  manageSection: {
-    backgroundColor: '#fef3c7',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#fcd34d',
-  },
-  manageSectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  manageSectionTitle: {
-    fontSize: 16,
-    fontFamily: Fonts.heading.semiBold,
-    color: Colors.primary,
-    marginLeft: 8,
-  },
-  manageHint: {
-    fontSize: 13,
-    fontFamily: Fonts.body.regular,
-    color: '#92400e',
-    marginBottom: 12,
-  },
-  currentFeatured: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 8,
-  },
-  featuredListItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.gray100,
-  },
-  featuredListTitle: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: Fonts.body.regular,
-    color: '#374151',
-    marginLeft: 8,
-    marginRight: 8,
-  },
   // Regular Sections
   section: {
     backgroundColor: '#fff',
