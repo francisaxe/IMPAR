@@ -69,7 +69,7 @@ export default function MyAnswersScreen() {
 
   const renderResponseCard = ({ item }: { item: MyResponse }) => (
     <TouchableOpacity
-      style={[styles.card, isDesktop && styles.cardDesktop]}
+      style={styles.card}
       onPress={() => router.push(`/results?id=${item.survey_id}`)}
     >
       <View style={styles.cardHeader}>
