@@ -10,6 +10,9 @@ import {
   Alert,
   Platform,
   Dimensions,
+  Modal,
+  Linking,
+  Share,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,6 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../contexts/AuthContext';
 import { Colors, Fonts } from '../../constants/colors';
 import { isDesktop, getMaxContentWidth } from '../../utils/responsive';
+import * as Clipboard from 'expo-clipboard';
 
 const { width } = Dimensions.get('window');
 
