@@ -114,9 +114,7 @@ export default function MyAnswersScreen() {
             styles.listContent,
             isDesktop && styles.listContentDesktop
           ]}
-          key={isDesktop ? 'desktop' : 'mobile'}
-          numColumns={isDesktop ? 2 : 1}
-          columnWrapperStyle={isDesktop ? styles.columnWrapper : undefined}
+          numColumns={1}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.primary]} />
           }
