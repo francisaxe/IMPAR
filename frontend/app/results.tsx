@@ -252,8 +252,18 @@ export default function ResultsScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Resultados do Inquérito</Text>
-        <View style={{ width: 40 }} />
+        <Text style={styles.headerTitle}>Resultados da Sondagem</Text>
+        {isOwner ? (
+          <TouchableOpacity onPress={handleToggleFeature} style={styles.featureButton}>
+            <Ionicons 
+              name={featured ? "star" : "star-outline"} 
+              size={24} 
+              color={featured ? "#f59e0b" : "#fff"} 
+            />
+          </TouchableOpacity>
+        ) : (
+          <View style={{ width: 40 }} />
+        )}
       </View>
 
       <ScrollView contentContainerStyle={[
@@ -261,7 +271,12 @@ export default function ResultsScreen() {
         isDesktop && styles.scrollContentDesktop
       ]}>
         <View style={styles.surveyHeader}>
-          <Text style={styles.surveyTitle}>{results.title}</Text>
+          <View style={styles.titleRow}>
+            <Text style={styles.surveyTitle}>{results.title}</Text>
+            {featured && (
+              <Ionicons name="star" size={20} color="#f59e0b" style={{ marginLeft: 8 }} />
+            )}
+          </View>
           <View style={styles.responseCount}>
             <Ionicons name="people" size={24} color={Colors.primary} />
             <Text style={styles.responseCountText}>
