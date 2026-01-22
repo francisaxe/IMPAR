@@ -37,10 +37,14 @@ interface Survey {
   featured: boolean;
 }
 
+const BASE_URL = 'https://impar-surveys.preview.emergentagent.com';
+
 export default function SurveysScreen() {
   const [surveys, setSurveys] = useState<Survey[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [shareModalVisible, setShareModalVisible] = useState(false);
+  const [selectedSurvey, setSelectedSurvey] = useState<Survey | null>(null);
   const router = useRouter();
   const { user } = useAuth();
   const isOwner = user?.role === 'owner';
@@ -72,6 +76,80 @@ export default function SurveysScreen() {
     setRefreshing(true);
     fetchSurveys();
   }, []);
+
+  const openShareModal = (survey: Survey) => {
+    setSelectedSurvey(survey);
+    setShareModalVisible(true);
+  };
+
+  const closeShareModal = () => {
+    setShareModalVisible(false);
+    setSelectedSurvey(null);
+  };
+
+  const getSurveyUrl = (surveyId: string) => {
+    return `${BASE_URL}/survey-detail?id=${surveyId}`;
+  };
+
+  const handleShare = async (platform: string) => {
+    if (!selectedSurvey) return;
+    
+    const surveyUrl = getSurveyUrl(selectedSurvey.id);
+    const shareText = `Participa nesta sondagem IMPAR: "${selectedSurvey.title}"`;
+    const encodedUrl = encodeURIComponent(surveyUrl);
+    const encodedText = encodeURIComponent(shareText);
+
+    let shareUrl = '';
+
+    switch (platform) {
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodedText}%20${encodedUrl}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodeURIComponent(selectedSurvey.title)}`;
+        break;
+      case 'copy':
+        try {
+          await Clipboard.setStringAsync(surveyUrl);
+          if (Platform.OS === 'web') {
+            alert('Link copiado para a área de transferência!');
+          } else {
+            Alert.alert('Sucesso', 'Link copiado para a área de transferência!');
+          }
+        } catch (error) {
+          console.error('Error copying to clipboard:', error);
+        }
+        closeShareModal();
+        return;
+      case 'native':
+        try {
+          await Share.share({
+            message: `${shareText}\n${surveyUrl}`,
+            url: surveyUrl,
+            title: selectedSurvey.title,
+          });
+        } catch (error) {
+          console.error('Error sharing:', error);
+        }
+        closeShareModal();
+        return;
+    }
+
+    if (shareUrl) {
+      if (Platform.OS === 'web') {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+      } else {
+        Linking.openURL(shareUrl);
+      }
+    }
+    closeShareModal();
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
