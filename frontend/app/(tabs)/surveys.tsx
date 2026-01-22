@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
-    width: isDesktop ? '48%' : '100%',
+    width: '100%',
   },
   cardTouchable: {
     padding: 16,
