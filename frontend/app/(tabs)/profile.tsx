@@ -311,20 +311,72 @@ export default function ProfileScreen() {
             {profile?.lived_abroad && renderInfoRow('Duração no Estrangeiro', profile?.abroad_duration || '', 'abroad_duration')}
           </View>
 
-          {/* Secção Juntar à Equipa */}
-          <View style={styles.teamSection}>
-            <Ionicons name="people" size={32} color={Colors.primary} />
-            <Text style={styles.teamTitle}>Quer fazer parte da equipa IMPAR?</Text>
-            <TouchableOpacity 
-              style={styles.teamButton}
-              onPress={() => setShowTeamModal(true)}
-            >
-              <Text style={styles.teamButtonText}>Clique aqui</Text>
-            </TouchableOpacity>
-          </View>
+          {/* Secção Juntar à Equipa (para utilizadores normais) */}
+          {!isOwner && (
+            <View style={styles.teamSection}>
+              <Ionicons name="people" size={32} color={Colors.primary} />
+              <Text style={styles.teamTitle}>Quer fazer parte da equipa IMPAR?</Text>
+              <TouchableOpacity 
+                style={styles.teamButton}
+                onPress={() => setShowTeamModal(true)}
+              >
+                <Text style={styles.teamButtonText}>Clique aqui</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Secção Candidaturas à Equipa (para owner) */}
+          {isOwner && (
+            <View style={styles.applicationsSection}>
+              <View style={styles.applicationsSectionHeader}>
+                <Ionicons name="people" size={24} color={Colors.primary} />
+                <Text style={styles.applicationsSectionTitle}>Candidaturas à Equipa</Text>
+                <View style={styles.applicationsBadge}>
+                  <Text style={styles.applicationsBadgeText}>{teamApplications.length}</Text>
+                </View>
+              </View>
+              
+              {loadingApplications ? (
+                <ActivityIndicator size="small" color={Colors.primary} style={{ marginTop: 16 }} />
+              ) : teamApplications.length === 0 ? (
+                <View style={styles.emptyApplications}>
+                  <Ionicons name="mail-outline" size={32} color="#d1d5db" />
+                  <Text style={styles.emptyApplicationsText}>Nenhuma candidatura recebida</Text>
+                </View>
+              ) : (
+                teamApplications.map((app) => (
+                  <View key={app.id} style={styles.applicationCard}>
+                    <View style={styles.applicationHeader}>
+                      <View style={styles.applicationAvatar}>
+                        <Ionicons name="person" size={18} color={Colors.primary} />
+                      </View>
+                      <View style={styles.applicationInfo}>
+                        <Text style={styles.applicationName}>{app.user_name}</Text>
+                        <Text style={styles.applicationEmail}>{app.user_email}</Text>
+                      </View>
+                      <TouchableOpacity
+                        style={styles.deleteApplicationButton}
+                        onPress={() => handleDeleteApplication(app.id)}
+                      >
+                        <Ionicons name="trash-outline" size={18} color="#ef4444" />
+                      </TouchableOpacity>
+                    </View>
+                    <Text style={styles.applicationMessage}>"{app.message}"</Text>
+                    <Text style={styles.applicationDate}>
+                      {new Date(app.created_at).toLocaleDateString('pt-PT', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
+                    </Text>
+                  </View>
+                ))
+              )}
+            </View>
+          )}
 
           {/* Secção Administração (apenas para owner) */}
-          {user?.role === 'owner' && (
+          {isOwner && (
             <View style={styles.adminSection}>
               <Text style={styles.adminSectionTitle}>Administração</Text>
               <TouchableOpacity 
