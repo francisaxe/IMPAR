@@ -208,8 +208,6 @@ export default function ResultsScreen() {
               </View>
             );
           })}
-            </View>
-          ))}
         </View>
       </View>
     );
