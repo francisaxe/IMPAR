@@ -640,6 +640,50 @@ async def get_all_suggestions(current_user: dict = Depends(get_owner_user)):
     
     return result
 
+@api_router.delete("/suggestions/{suggestion_id}")
+async def delete_suggestion(suggestion_id: str, current_user: dict = Depends(get_owner_user)):
+    try:
+        result = await db.suggestions.delete_one({"_id": ObjectId(suggestion_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Sugestão não encontrada")
+        
+        return {"message": "Sugestão apagada com sucesso"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# Get all team applications (owner only)
+@api_router.get("/admin/team-applications")
+async def get_team_applications(current_user: dict = Depends(get_owner_user)):
+    applications = await db.applications.find().sort("created_at", -1).to_list(1000)
+    
+    result = []
+    for app in applications:
+        result.append({
+            "id": str(app["_id"]),
+            "user_id": app.get("user_id"),
+            "user_name": app.get("user_name"),
+            "user_email": app.get("user_email"),
+            "message": app.get("message"),
+            "created_at": app.get("created_at")
+        })
+    
+    return result
+
+@api_router.delete("/admin/team-applications/{application_id}")
+async def delete_team_application(application_id: str, current_user: dict = Depends(get_owner_user)):
+    try:
+        result = await db.applications.delete_one({"_id": ObjectId(application_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Candidatura não encontrada")
+        
+        return {"message": "Candidatura apagada com sucesso"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # ===========================================
 # Featured Content / Destaques Endpoints
 # ===========================================
