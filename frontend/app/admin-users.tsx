@@ -8,6 +8,8 @@ import {
   ActivityIndicator,
   useWindowDimensions,
   RefreshControl,
+  Platform,
+  Alert,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -56,6 +58,80 @@ export default function AdminUsersScreen() {
     } finally {
       setLoading(false);
       setRefreshing(false);
+    }
+  };
+
+  const downloadCSV = () => {
+    if (users.length === 0) {
+      if (Platform.OS === 'web') {
+        alert('Não há utilizadores para exportar');
+      } else {
+        Alert.alert('Aviso', 'Não há utilizadores para exportar');
+      }
+      return;
+    }
+
+    // Create CSV content
+    const headers = [
+      'Nome',
+      'Email',
+      'Telemóvel',
+      'Data Nascimento',
+      'Género',
+      'Nacionalidade',
+      'Distrito',
+      'Concelho',
+      'Freguesia',
+      'Estado Civil',
+      'Religião',
+      'Escolaridade',
+      'Profissão',
+      'Viveu no Estrangeiro',
+      'Duração Estrangeiro',
+      'Aceita Notificações',
+      'Data Registo'
+    ];
+
+    const csvRows = [headers.join(';')];
+
+    users.forEach(u => {
+      const row = [
+        u.name || '',
+        u.email || '',
+        u.phone || '',
+        u.birth_date || '',
+        u.gender || '',
+        u.nationality || '',
+        u.district || '',
+        u.municipality || '',
+        u.parish || '',
+        u.marital_status || '',
+        u.religion || '',
+        u.education_level || '',
+        u.profession || '',
+        u.lived_abroad ? 'Sim' : 'Não',
+        u.abroad_duration || '',
+        u.email_notifications ? 'Sim' : 'Não',
+        u.created_at ? new Date(u.created_at).toLocaleDateString('pt-PT') : ''
+      ];
+      csvRows.push(row.map(field => `"${field}"`).join(';'));
+    });
+
+    const csvContent = csvRows.join('\n');
+
+    if (Platform.OS === 'web') {
+      // Create and download file
+      const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `utilizadores_impar_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } else {
+      Alert.alert('Aviso', 'O download de CSV está disponível apenas na versão web');
     }
   };
 
