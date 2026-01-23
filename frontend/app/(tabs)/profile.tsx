@@ -269,6 +269,24 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Secção Administração (apenas para owner) */}
+          {user?.role === 'owner' && (
+            <View style={styles.adminSection}>
+              <Text style={styles.adminSectionTitle}>Administração</Text>
+              <TouchableOpacity 
+                style={styles.adminButton}
+                onPress={() => router.push('/admin-users')}
+              >
+                <Ionicons name="people-circle" size={24} color={Colors.primary} />
+                <View style={styles.adminButtonContent}>
+                  <Text style={styles.adminButtonTitle}>Ver Utilizadores Registados</Text>
+                  <Text style={styles.adminButtonSubtitle}>Aceder aos dados e emails dos utilizadores</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+              </TouchableOpacity>
+            </View>
+          )}
+
           {/* Botão Terminar Sessão */}
           <TouchableOpacity style={[styles.logoutButton, isDesktop && styles.logoutButtonDesktop]} onPress={handleLogout}>
             <Ionicons name="log-out-outline" size={24} color="#ef4444" />
