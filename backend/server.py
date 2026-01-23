@@ -167,6 +167,7 @@ async def register(user_data: UserRegister):
         "email": user_data.email,
         "password": hash_password(user_data.password),
         "name": user_data.name,
+        "phone": user_data.phone,
         "birth_date": user_data.birth_date,
         "gender": user_data.gender,
         "nationality": user_data.nationality,
@@ -179,6 +180,7 @@ async def register(user_data: UserRegister):
         "profession": user_data.profession,
         "lived_abroad": user_data.lived_abroad,
         "abroad_duration": user_data.abroad_duration if user_data.lived_abroad else None,
+        "email_notifications": user_data.email_notifications,
         "role": "user",  # Default role
         "created_at": datetime.utcnow()
     }
