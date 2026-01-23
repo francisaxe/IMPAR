@@ -44,6 +44,7 @@ export default function ProfileScreen() {
   const router = useRouter();
   const { width } = useWindowDimensions();
   const isDesktop = width >= 768;
+  const isOwner = user?.role === 'owner';
   
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,14 +52,21 @@ export default function ProfileScreen() {
   const [editedProfile, setEditedProfile] = useState<Partial<UserProfile>>({});
   const [saving, setSaving] = useState(false);
   
-  // Modal para candidatura à equipa
+  // Modal para candidatura à equipa (para utilizadores normais)
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [teamMessage, setTeamMessage] = useState('');
   const [submittingApplication, setSubmittingApplication] = useState(false);
+  
+  // Candidaturas à equipa (para owner)
+  const [teamApplications, setTeamApplications] = useState<any[]>([]);
+  const [loadingApplications, setLoadingApplications] = useState(false);
 
   useEffect(() => {
     fetchProfile();
-  }, []);
+    if (isOwner) {
+      fetchTeamApplications();
+    }
+  }, [isOwner]);
 
   const fetchProfile = async () => {
     try {
@@ -69,6 +77,52 @@ export default function ProfileScreen() {
       console.error('Error fetching profile:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTeamApplications = async () => {
+    setLoadingApplications(true);
+    try {
+      const response = await api.get('/api/admin/team-applications');
+      setTeamApplications(response.data);
+    } catch (error) {
+      console.error('Error fetching team applications:', error);
+    } finally {
+      setLoadingApplications(false);
+    }
+  };
+
+  const handleDeleteApplication = async (applicationId: string) => {
+    const confirmDelete = Platform.OS === 'web'
+      ? confirm('Tem a certeza que quer apagar esta candidatura?')
+      : await new Promise((resolve) => {
+          Alert.alert(
+            'Apagar Candidatura',
+            'Tem a certeza que quer apagar esta candidatura?',
+            [
+              { text: 'Cancelar', style: 'cancel', onPress: () => resolve(false) },
+              { text: 'Apagar', style: 'destructive', onPress: () => resolve(true) },
+            ]
+          );
+        });
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/api/admin/team-applications/${applicationId}`);
+      fetchTeamApplications();
+      if (Platform.OS === 'web') {
+        alert('Candidatura apagada com sucesso');
+      } else {
+        Alert.alert('Sucesso', 'Candidatura apagada com sucesso');
+      }
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.detail || 'Erro ao apagar candidatura';
+      if (Platform.OS === 'web') {
+        alert('Erro: ' + errorMsg);
+      } else {
+        Alert.alert('Erro', errorMsg);
+      }
     }
   };
 
