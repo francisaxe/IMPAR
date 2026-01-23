@@ -36,6 +36,7 @@ class UserRegister(BaseModel):
     email: EmailStr
     password: str
     name: str
+    phone: Optional[str] = None
     birth_date: str
     gender: str  # Masculino / Feminino
     nationality: str
@@ -48,6 +49,7 @@ class UserRegister(BaseModel):
     profession: str
     lived_abroad: bool
     abroad_duration: Optional[str] = None
+    email_notifications: bool = False
 
 class UserLogin(BaseModel):
     email: EmailStr
