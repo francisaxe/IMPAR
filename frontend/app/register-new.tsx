@@ -313,7 +313,7 @@ export default function RegisterScreen() {
 
               <View style={[styles.row, isDesktop && styles.rowDesktop]}>
                 <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
-                  <Text style={styles.label}>6. Estado Civil *</Text>
+                  <Text style={styles.label}>5. Estado Civil *</Text>
                   {renderPicker(
                     showMaritalPicker,
                     setShowMaritalPicker,
