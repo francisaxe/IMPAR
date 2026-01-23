@@ -38,6 +38,8 @@ export default function RegisterScreen() {
   const [profession, setProfession] = useState('');
   const [livedAbroad, setLivedAbroad] = useState('');
   const [abroadDuration, setAbroadDuration] = useState('');
+  const [phone, setPhone] = useState('');
+  const [emailNotifications, setEmailNotifications] = useState(false);
   const [loading, setLoading] = useState(false);
   
   const [showGenderPicker, setShowGenderPicker] = useState(false);
