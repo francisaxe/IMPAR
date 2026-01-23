@@ -82,6 +82,7 @@ export default function RegisterScreen() {
           email,
           password,
           name,
+          phone,
           birth_date: birthDate,
           gender,
           nationality,
@@ -94,6 +95,7 @@ export default function RegisterScreen() {
           profession,
           lived_abroad: livedAbroad === 'Sim',
           abroad_duration: livedAbroad === 'Sim' ? abroadDuration : null,
+          email_notifications: emailNotifications,
         }),
       });
 
