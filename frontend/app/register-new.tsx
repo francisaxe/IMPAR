@@ -177,7 +177,7 @@ export default function RegisterScreen() {
 
             <View style={styles.form}>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>1. Nome Completo *</Text>
+                <Text style={styles.label}>Nome Completo *</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Nome completo"
@@ -228,7 +228,7 @@ export default function RegisterScreen() {
 
               <View style={[styles.row, isDesktop && styles.rowDesktop]}>
                 <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
-                  <Text style={styles.label}>2. Data de Nascimento *</Text>
+                  <Text style={styles.label}>1. Data de Nascimento *</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="DD/MM/AAAA"
@@ -239,7 +239,7 @@ export default function RegisterScreen() {
                 </View>
 
                 <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
-                  <Text style={styles.label}>3. Género *</Text>
+                  <Text style={styles.label}>2. Género *</Text>
                   {renderPicker(
                     showGenderPicker,
                     setShowGenderPicker,
