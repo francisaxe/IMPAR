@@ -252,7 +252,7 @@ export default function RegisterScreen() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>4. Nacionalidade *</Text>
+                <Text style={styles.label}>3. Nacionalidade *</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Nacionalidade"
@@ -262,7 +262,7 @@ export default function RegisterScreen() {
                 />
               </View>
 
-              <Text style={styles.sectionTitle}>5. Onde Vive *</Text>
+              <Text style={styles.sectionTitle}>4. Onde Vive *</Text>
               
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Distrito *</Text>
