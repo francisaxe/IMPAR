@@ -134,12 +134,16 @@ export default function ResultsScreen() {
           fromZero
         />
         <View style={styles.statsContainer}>
-          {labels.map((label, idx) => (
-            <View key={idx} style={styles.statRow}>
-              <Text style={styles.statLabel}>{label}</Text>
-              <Text style={styles.statValue}>{values[idx]} votos</Text>
-            </View>
-          ))}
+          {labels.map((label, idx) => {
+            const total = values.reduce((a, b) => a + b, 0);
+            const percentage = total > 0 ? ((values[idx] / total) * 100).toFixed(1) : '0.0';
+            return (
+              <View key={idx} style={styles.statRow}>
+                <Text style={styles.statLabel}>{label}</Text>
+                <Text style={styles.statValue}>{percentage}%</Text>
+              </View>
+            );
+          })}
         </View>
       </View>
     );
