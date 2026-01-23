@@ -202,16 +202,28 @@ export default function RegisterScreen() {
                 </View>
 
                 <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
-                  <Text style={styles.label}>Palavra-passe *</Text>
+                  <Text style={styles.label}>Telemóvel *</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder="Palavra-passe (mín 6 caracteres)"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
+                    placeholder="Número de telemóvel"
+                    value={phone}
+                    onChangeText={setPhone}
+                    keyboardType="phone-pad"
                     placeholderTextColor={Colors.gray400}
                   />
                 </View>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Palavra-passe *</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Palavra-passe (mín 6 caracteres)"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  placeholderTextColor={Colors.gray400}
+                />
               </View>
 
               <View style={[styles.row, isDesktop && styles.rowDesktop]}>
