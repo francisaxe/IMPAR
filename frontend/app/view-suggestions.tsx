@@ -58,6 +58,41 @@ export default function ViewSuggestionsScreen() {
     fetchSuggestions();
   };
 
+  const handleDeleteSuggestion = async (suggestionId: string) => {
+    const confirmDelete = Platform.OS === 'web'
+      ? confirm('Tem a certeza que quer apagar esta sugestão?')
+      : await new Promise((resolve) => {
+          Alert.alert(
+            'Apagar Sugestão',
+            'Tem a certeza que quer apagar esta sugestão?',
+            [
+              { text: 'Cancelar', style: 'cancel', onPress: () => resolve(false) },
+              { text: 'Apagar', style: 'destructive', onPress: () => resolve(true) },
+            ]
+          );
+        });
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/api/suggestions/${suggestionId}`);
+      fetchSuggestions();
+      
+      if (Platform.OS === 'web') {
+        alert('Sugestão apagada com sucesso');
+      } else {
+        Alert.alert('Sucesso', 'Sugestão apagada com sucesso');
+      }
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.detail || 'Erro ao apagar sugestão';
+      if (Platform.OS === 'web') {
+        alert('Erro: ' + errorMsg);
+      } else {
+        Alert.alert('Erro', errorMsg);
+      }
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-PT', {
