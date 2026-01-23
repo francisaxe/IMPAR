@@ -125,6 +125,12 @@ export default function ViewSuggestionsScreen() {
           <Text style={styles.userName}>{item.user_name}</Text>
           <Text style={styles.date}>{formatDate(item.created_at)}</Text>
         </View>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeleteSuggestion(item.id)}
+        >
+          <Ionicons name="trash-outline" size={22} color="#ef4444" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.badgesContainer}>
