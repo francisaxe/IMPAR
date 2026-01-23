@@ -291,6 +291,9 @@ const styles = StyleSheet.create({
   userInfo: {
     flex: 1,
   },
+  deleteButton: {
+    padding: 8,
+  },
   userName: {
     fontSize: 16,
     fontWeight: '600',
