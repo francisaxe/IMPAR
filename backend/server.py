@@ -230,6 +230,36 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         "role": current_user["role"]
     }
 
+# Admin endpoint - Get all users (owner only)
+@api_router.get("/admin/users")
+async def get_all_users(current_user: dict = Depends(get_owner_user)):
+    users = await db.users.find({"role": "user"}).sort("created_at", -1).to_list(1000)
+    
+    result = []
+    for user in users:
+        result.append({
+            "id": str(user["_id"]),
+            "email": user["email"],
+            "name": user.get("name", ""),
+            "phone": user.get("phone", ""),
+            "birth_date": user.get("birth_date", ""),
+            "gender": user.get("gender", ""),
+            "nationality": user.get("nationality", ""),
+            "district": user.get("district", ""),
+            "municipality": user.get("municipality", ""),
+            "parish": user.get("parish", ""),
+            "marital_status": user.get("marital_status", ""),
+            "religion": user.get("religion", ""),
+            "education_level": user.get("education_level", ""),
+            "profession": user.get("profession", ""),
+            "lived_abroad": user.get("lived_abroad", False),
+            "abroad_duration": user.get("abroad_duration", ""),
+            "email_notifications": user.get("email_notifications", False),
+            "created_at": user.get("created_at", "")
+        })
+    
+    return result
+
 @api_router.get("/profile")
 async def get_profile(current_user: dict = Depends(get_current_user)):
     return {
