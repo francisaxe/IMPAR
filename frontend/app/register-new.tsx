@@ -385,6 +385,25 @@ export default function RegisterScreen() {
                 </View>
               )}
 
+              {/* Checkbox de consentimento para notificações */}
+              <TouchableOpacity 
+                style={styles.checkboxContainer}
+                onPress={() => setEmailNotifications(!emailNotifications)}
+                activeOpacity={0.7}
+              >
+                <View style={[
+                  styles.checkbox,
+                  emailNotifications && styles.checkboxChecked
+                ]}>
+                  {emailNotifications && (
+                    <Ionicons name="checkmark" size={16} color="#fff" />
+                  )}
+                </View>
+                <Text style={styles.checkboxLabel}>
+                  Aceito receber notificações por email quando forem publicadas novas sondagens
+                </Text>
+              </TouchableOpacity>
+
               <TouchableOpacity
                 style={[styles.button, loading && styles.buttonDisabled]}
                 onPress={handleRegister}
