@@ -363,6 +363,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  downloadButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerTitle: {
     fontSize: 18,
     fontFamily: Fonts.heading.bold,
@@ -389,6 +395,24 @@ const styles = StyleSheet.create({
     maxWidth: 900,
     alignSelf: 'center',
     width: '100%',
+  },
+  downloadCSVButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#eef2ff',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+  },
+  downloadCSVText: {
+    fontSize: 14,
+    fontFamily: Fonts.body.semiBold,
+    color: Colors.primary,
+    marginLeft: 8,
   },
   summaryCard: {
     flexDirection: 'row',
