@@ -194,14 +194,20 @@ export default function ResultsScreen() {
         />
 
         <View style={styles.statsContainer}>
-          {labels.map((label, idx) => (
-            <View key={idx} style={styles.statRow}>
-              <View style={styles.starRow}>
-                {[...Array(parseInt(label))].map((_, i) => (
-                  <Ionicons key={i} name="star" size={14} color="#fbbf24" />
-                ))}
+          {labels.map((label, idx) => {
+            const total = values.reduce((a, b) => a + b, 0);
+            const percentage = total > 0 ? ((values[idx] / total) * 100).toFixed(1) : '0.0';
+            return (
+              <View key={idx} style={styles.statRow}>
+                <View style={styles.starRow}>
+                  {[...Array(parseInt(label))].map((_, i) => (
+                    <Ionicons key={i} name="star" size={14} color="#fbbf24" />
+                  ))}
+                </View>
+                <Text style={styles.statValue}>{percentage}%</Text>
               </View>
-              <Text style={styles.statValue}>{values[idx]} respostas</Text>
+            );
+          })}
             </View>
           ))}
         </View>
