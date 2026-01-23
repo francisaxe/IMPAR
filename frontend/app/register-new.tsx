@@ -325,7 +325,7 @@ export default function RegisterScreen() {
                 </View>
 
                 <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
-                  <Text style={styles.label}>7. Religião *</Text>
+                  <Text style={styles.label}>6. Religião *</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="Religião"
@@ -338,7 +338,7 @@ export default function RegisterScreen() {
 
               <View style={[styles.row, isDesktop && styles.rowDesktop]}>
                 <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
-                  <Text style={styles.label}>8. Nível de Escolaridade *</Text>
+                  <Text style={styles.label}>7. Nível de Escolaridade *</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="Nível mais elevado completado"
@@ -349,7 +349,7 @@ export default function RegisterScreen() {
                 </View>
 
                 <View style={[styles.inputGroup, isDesktop && styles.halfWidth]}>
-                  <Text style={styles.label}>9. Profissão *</Text>
+                  <Text style={styles.label}>8. Profissão *</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="Profissão"
@@ -361,7 +361,7 @@ export default function RegisterScreen() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>10. Já viveu no estrangeiro? *</Text>
+                <Text style={styles.label}>9. Já viveu no estrangeiro? *</Text>
                 {renderPicker(
                   showAbroadPicker,
                   setShowAbroadPicker,
@@ -374,7 +374,7 @@ export default function RegisterScreen() {
 
               {livedAbroad === 'Sim' && (
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>10.2. Quanto tempo? *</Text>
+                  <Text style={styles.label}>9.1. Quanto tempo? *</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="Ex: 2 anos, 6 meses"
