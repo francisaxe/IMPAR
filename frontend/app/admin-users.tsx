@@ -207,7 +207,9 @@ export default function AdminUsersScreen() {
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Utilizadores Registados</Text>
-        <View style={{ width: 40 }} />
+        <TouchableOpacity onPress={downloadCSV} style={styles.downloadButton}>
+          <Ionicons name="download-outline" size={24} color="#fff" />
+        </TouchableOpacity>
       </View>
 
       <ScrollView 
@@ -219,6 +221,12 @@ export default function AdminUsersScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.primary]} />
         }
       >
+        {/* Download CSV Button */}
+        <TouchableOpacity style={styles.downloadCSVButton} onPress={downloadCSV}>
+          <Ionicons name="download-outline" size={20} color={Colors.primary} />
+          <Text style={styles.downloadCSVText}>Exportar para CSV</Text>
+        </TouchableOpacity>
+
         {/* Summary Card */}
         <View style={styles.summaryCard}>
           <View style={styles.summaryItem}>
