@@ -656,7 +656,7 @@ async def delete_suggestion(suggestion_id: str, current_user: dict = Depends(get
 # Get all team applications (owner only)
 @api_router.get("/admin/team-applications")
 async def get_team_applications(current_user: dict = Depends(get_owner_user)):
-    applications = await db.applications.find().sort("created_at", -1).to_list(1000)
+    applications = await db.team_applications.find().sort("created_at", -1).to_list(1000)
     
     result = []
     for app in applications:
@@ -674,7 +674,7 @@ async def get_team_applications(current_user: dict = Depends(get_owner_user)):
 @api_router.delete("/admin/team-applications/{application_id}")
 async def delete_team_application(application_id: str, current_user: dict = Depends(get_owner_user)):
     try:
-        result = await db.applications.delete_one({"_id": ObjectId(application_id)})
+        result = await db.team_applications.delete_one({"_id": ObjectId(application_id)})
         if result.deleted_count == 0:
             raise HTTPException(status_code=404, detail="Candidatura não encontrada")
         
