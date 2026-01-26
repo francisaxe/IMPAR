@@ -272,14 +272,16 @@ export default function SurveysScreen() {
         </View>
         
         <View style={styles.cardFooter}>
-          <View style={styles.cardStats}>
-            <Ionicons name="people-outline" size={16} color="#6b7280" />
-            <Text style={styles.cardStatsText}>
-              {item.response_count} {item.response_count === 1 ? 'resposta' : 'respostas'}
-            </Text>
-          </View>
+          {isOwner && (
+            <View style={styles.cardStats}>
+              <Ionicons name="people-outline" size={16} color="#6b7280" />
+              <Text style={styles.cardStatsText}>
+                {item.response_count} {item.response_count === 1 ? 'resposta' : 'respostas'}
+              </Text>
+            </View>
+          )}
           
-          <View style={styles.cardActions}>
+          <View style={[styles.cardActions, !isOwner && { flex: 1, justifyContent: 'flex-end' }]}>
             <TouchableOpacity
               style={styles.shareButton}
               onPress={(e) => {
