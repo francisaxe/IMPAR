@@ -285,12 +285,14 @@ export default function ResultsScreen() {
               <Ionicons name="star" size={20} color="#f59e0b" style={{ marginLeft: 8 }} />
             )}
           </View>
-          <View style={styles.responseCount}>
-            <Ionicons name="people" size={24} color={Colors.primary} />
-            <Text style={styles.responseCountText}>
-              {results.total_responses} {results.total_responses === 1 ? 'Resposta' : 'Respostas'}
-            </Text>
-          </View>
+          {isOwner && (
+            <View style={styles.responseCount}>
+              <Ionicons name="people" size={24} color={Colors.primary} />
+              <Text style={styles.responseCountText}>
+                {results.total_responses} {results.total_responses === 1 ? 'Resposta' : 'Respostas'}
+              </Text>
+            </View>
+          )}
         </View>
 
         {results.aggregated_results.map(renderQuestionResult)}
